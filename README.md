@@ -4,6 +4,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
+*Before you can run*
+You need to have a local cert for a valid https connection since https is required for webRTC;
+a nice description to add one can be found here
+[https://github.com/Chatmosphere/reactapp.git](https://github.com/Chatmosphere/reactapp.git)
+
 In the project directory, you can run:
 
 ### `yarn start`
