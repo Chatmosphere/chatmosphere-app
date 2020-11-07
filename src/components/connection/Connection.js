@@ -3,14 +3,29 @@ import {connectionOptions, jitsiInitOptions} from './options'
 import {Room} from './Room'
 import create from 'zustand'
 import omit from 'lodash'
+import {devtools} from 'zustand/middleware'
+import { findRenderedDOMComponentWithClass } from 'react-dom/test-utils'
+import produce from 'immer'
 
  /* globals: JitisMeetJS */
- export const useStore = create(set => ({
+ export const useStore = create(devtools((set,get) => ({
    localTracks: [],
-   users: {},
+   users: {}, //{ sajkldfjks:{audio:track, video:track}, 3ja9djak:{audio:track, video:track}  }
    addUser: (id) => set(state => ({users: {...state.users, [id]:{} } }) ),
-   removeUser: (id) => set(state => omit(state, [id], true))
- }))
+   removeUser: (id) => set(state => omit(state, [id], true)),
+   addAudioTrack: (id, track) => {
+    const newUsers = produce(get().users, draftUsers => {
+      draftUsers[id]['audio'] = track 
+    })
+    set(state => ({users: newUsers}))
+   },
+   addVideoTrack: (id, track) => {
+     const newUsers = produce(get().users, draftUsers => {
+       draftUsers[id]['video'] = track
+     })
+     set(state => ({users: newUsers}))
+   }
+ })))
 
  //no reload?
 const Connection = () => {
@@ -20,6 +35,9 @@ const Connection = () => {
   const [JitsiMeetJS, setJitsiMeet] = useState()
   const [localTracks, setLocalTracks] = useState([])
   const [remoteTracks, setRemoteTracks] = useState({})
+  
+  const tmpUser = useStore(state => state.users)
+  console.log(tmpUser)
 
   useEffect(() => {
     const jsMeet = async () => window.JitsiMeetJS
@@ -35,7 +53,7 @@ const Connection = () => {
     const tmpConnection = new jsMeet.JitsiConnection(null, null, connectionOptions)
     tmpConnection.addEventListener(jsMeet.events.connection.CONNECTION_ESTABLISHED, () => {setConnected(true)});
     tmpConnection.addEventListener(jsMeet.events.connection.CONNECTION_FAILED, () => console.log("failed"));
-    tmpConnection.addEventListener(jsMeet.events.connection.CONNECTION_DISCONNECTED, () => console.log("disconnect"));
+    tmpConnection.addEventListener(jsMeet.events.connection.CONNECTION_DISCONNECTED, () => console.log("disconnect, cleanup here"));
     tmpConnection.connect()
     setJitsiMeet(jsMeet)
     setConnection(tmpConnection)
@@ -44,7 +62,8 @@ const Connection = () => {
   return (
     <div>
       {connected && <Room roomName="conference2" JitsiMeetJS={JitsiMeetJS} connection={connection} />}
-      TEst
+      Some Content Here
+
     </div> 
   )
 }

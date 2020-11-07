@@ -7,7 +7,7 @@ export const conferenceOptions = {
 }
 
 export const jitsiInitOptions = {
-  disableAudioLevels: true,
+  disableAudioLevels: false,
   // disableSimulcast: false,
   // // useIPv6:true, // can be off
   // enableWindowOnErrorHandler: false,
