@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {connectionOptions, jitsiInitOptions} from './options'
 import {Room} from './Room'
-import { useStore } from './connectionStore'
+import { useStore } from './store'
 
  /* globals: JitisMeetJS */
 
@@ -11,11 +11,6 @@ const Connection = () => {
   const [connection, setConnection] = useState(undefined)
   const [connected, setConnected] = useState(false)
   const [JitsiMeetJS, setJitsiMeet] = useState()
-  const [localTracks, setLocalTracks] = useState([])
-  const [remoteTracks, setRemoteTracks] = useState({})
-  
-  const tmpUser = useStore(state => state.users)
-  console.log(tmpUser)
 
   useEffect(() => {
     const jsMeet = async () => window.JitsiMeetJS

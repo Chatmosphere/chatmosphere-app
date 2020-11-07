@@ -1,24 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { User } from '../User';
 import { conferenceName, conferenceOptions, jitsiInitOptions } from './options';
-import {useStore} from './connectionStore'
+import {useStore} from './store'
 
 export const Room = ({roomName, JitsiMeetJS, connection}) => {
 
   const [room, setRoom] = useState(undefined)
-  const [users, _setUsers] = useState({}) //form shall be {id239s9d:{audio:trackObj, video:trackObj}}
-  const usersRef = useRef(users) // functional state is really annoying :/ envenListeners catch closure values so we need to use fucking refs ?? Thats stupid
-  const setUsers = data => {
-    usersRef.current = data
-    _setUsers(data)
-  }
 
-  //pubStore
+  //publicStore
   const addUser = useStore(state => state.addUser)
-  // const deleteUser = useStore(state => state.deleteUser)
+  const removeUser = useStore(state => state.removeUser)
   const addAudioTrack = useStore(state => state.addAudioTrack)
   const addVideoTrack = useStore(state => state.addVideoTrack)
-  // const pubUsers = useStore(state => state.users)
+  const users = useStore(state => state.users)
   
   useEffect(() => {
     if(connection && JitsiMeetJS) {
@@ -37,24 +31,18 @@ export const Room = ({roomName, JitsiMeetJS, connection}) => {
       setRoom(r)
     }
     return((r) => {
-        // if(room !== undefined) room.leave()
+        // if(room !== undefined) room.leave() //this throws errors, but why? guess i need a callback like https://github.com/jitsi/lib-jitsi-meet/issues/1330#issuecomment-703742442
         console.log("ROOM LEAVE CALLED, connection is ", r)
     })
   },[connection])
 
   const on_remote_track_added = (track) => {
     if(track.isLocal()) return // also run on your own tracks so exit
-    track.addEventListener(JitsiMeetJS.events.track.TRACK_MUTE_CHANGED, () => console.log('remote track muted')) //maybe there'S an error thrown because jitsi holds a reference of the track on participant disconnect
     track.addEventListener(JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,() => console.log('remote track stopped'))
     track.addEventListener(JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED,deviceId =>console.log(`track audio output device was changed to ${deviceId}`))
 
     const id = track.getParticipantId() // get user id of track
     track.getType() === "audio" ? addAudioTrack(id, track) : addVideoTrack(id, track)
-    const currentUserTracks = {...usersRef.current[id]}
-    track.getType() === "video" ? currentUserTracks['video'] = track : currentUserTracks['audio'] = track// set/replace either "video" or "audio"
-    const shallowUsers = {...usersRef.current}
-    shallowUsers[id] = currentUserTracks
-    setUsers(shallowUsers)
   }
 
   const on_remote_track_removed = (track) => {
@@ -65,17 +53,11 @@ export const Room = ({roomName, JitsiMeetJS, connection}) => {
 
   }
   const on_user_joined = (id) => {
-    const tmpUsers = {...usersRef.current, 
-      [id]: {}
-    }
     addUser(id)
-    setUsers(tmpUsers)
   }
 
   const on_user_left = (id) => {
-    const {[id]:value, ...tmpUsers} = usersRef.current// thats a really neat trick, falling in ❤️ with code
-    console.log("2. User left ", id)
-    setUsers(tmpUsers)
+    removeUser(id)
   }
   const on_remote_track_audio_level_changed = () => {
 
@@ -88,7 +70,7 @@ export const Room = ({roomName, JitsiMeetJS, connection}) => {
     <div>
       {Object.keys(users).map((id) => {
         return(
-            <User key={id} id={id} tracks={users[id]}/>
+            <User key={id} id={id}/>
         )
       })}
     </div>
