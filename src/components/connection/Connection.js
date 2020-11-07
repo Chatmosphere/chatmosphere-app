@@ -1,31 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import {connectionOptions, jitsiInitOptions} from './options'
 import {Room} from './Room'
-import create from 'zustand'
-import omit from 'lodash'
-import {devtools} from 'zustand/middleware'
-import { findRenderedDOMComponentWithClass } from 'react-dom/test-utils'
-import produce from 'immer'
+import { useStore } from './connectionStore'
 
  /* globals: JitisMeetJS */
- export const useStore = create(devtools((set,get) => ({
-   localTracks: [],
-   users: {}, //{ sajkldfjks:{audio:track, video:track}, 3ja9djak:{audio:track, video:track}  }
-   addUser: (id) => set(state => ({users: {...state.users, [id]:{} } }) ),
-   removeUser: (id) => set(state => omit(state, [id], true)),
-   addAudioTrack: (id, track) => {
-    const newUsers = produce(get().users, draftUsers => {
-      draftUsers[id]['audio'] = track 
-    })
-    set(state => ({users: newUsers}))
-   },
-   addVideoTrack: (id, track) => {
-     const newUsers = produce(get().users, draftUsers => {
-       draftUsers[id]['video'] = track
-     })
-     set(state => ({users: newUsers}))
-   }
- })))
 
  //no reload?
 const Connection = () => {

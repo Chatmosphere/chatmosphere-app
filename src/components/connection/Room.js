@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { User } from '../User';
 import { conferenceName, conferenceOptions, jitsiInitOptions } from './options';
-import {useStore} from './Connection'
+import {useStore} from './connectionStore'
 
 export const Room = ({roomName, JitsiMeetJS, connection}) => {
 
@@ -44,8 +44,6 @@ export const Room = ({roomName, JitsiMeetJS, connection}) => {
 
   const on_remote_track_added = (track) => {
     if(track.isLocal()) return // also run on your own tracks so exit
-
-    track.addEventListener(JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED, (audioLevel) => null)
     track.addEventListener(JitsiMeetJS.events.track.TRACK_MUTE_CHANGED, () => console.log('remote track muted')) //maybe there'S an error thrown because jitsi holds a reference of the track on participant disconnect
     track.addEventListener(JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,() => console.log('remote track stopped'))
     track.addEventListener(JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED,deviceId =>console.log(`track audio output device was changed to ${deviceId}`))
@@ -57,12 +55,12 @@ export const Room = ({roomName, JitsiMeetJS, connection}) => {
     const shallowUsers = {...usersRef.current}
     shallowUsers[id] = currentUserTracks
     setUsers(shallowUsers)
-    // track.getType() === "video" ? addVideoTrack(id, track) : addAudioTrack(id, track)
   }
 
   const on_remote_track_removed = (track) => {
     console.log()
   }
+
   const on_conference_joined = () => {
 
   }
