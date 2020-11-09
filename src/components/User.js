@@ -5,13 +5,19 @@ export const User = ({id}) => {
 
   const audioRef = useCallback(node => {
     console.count("CALLBACK CALLED")
-    if(node !== null) {
-      audioTrack.attach(node)
+    if(node !== null ) {
+      if(audioTrack.containers.length === 0) {
+        audioTrack.attach(node)
+      }
+      console.log("TestReturn is :::::: ", audioTrack)
     }
   })
   const videoRef = useCallback(node => {
     if(node !== null) {
-      videoTrack.attach(node)
+      if(videoTrack.containers.length === 0) {
+        videoTrack.attach(node)
+      }
+      console.log("TestReturn is :::::: ", videoTrack)
     }
   })
 
@@ -38,11 +44,48 @@ export const User = ({id}) => {
     // console.log("Audio level is ", audioLevel)
   }
 
+  //Fix Video not shown - reattaching works quite well
+  const onVideoClicked = (e) => {
+    videoTrack.detach(e.target)
+    videoTrack.attach(e.target)
+    console.log(e.target)
+  }
+
   return(
     <div>
       This is User {id}
-      {audioTrack && <audio autoPlay='1' ref={audioRef} className="remoteTrack ${id}audio" id='${id}audio' /> }
-      {videoTrack && <video autoPlay='1' ref={videoRef} className='remoteTrack ${id}video' id='${id}video' />}
+      {audioTrack && <audio autoPlay='1' ref={audioRef} className={`remoteTrack audioTrack ${id}audio`} id={`${id}audio`} /> }
+      {/* {videoTrack && <video autoPlay='1' ref={videoRef} onClick={onVideoClicked} className={`remoteTrack videoTrack ${id}video`} id={`${id}video`} />} */}
+      <VideoTrack id={id} />
+    </div>
+  )
+}
+
+const VideoTrack = ({id}) => {
+
+  const videoStyles = {
+    background: 'blue'
+  }
+
+  const videoTrack = useStore(useCallback(store => store.users[id]['video'], [id]))
+
+  const myRef = useCallback(node => {
+    if(node !== null) {
+      if(videoTrack.containers.length === 0) {
+        videoTrack.attach(node)
+      }
+    }
+  })
+
+  const onVideoClicked = (e) => {
+    videoTrack.detach(e.target)
+    videoTrack.attach(e.target)
+    console.log(e.target)
+  }
+
+  return (
+    <div>
+      {videoTrack && <video autoPlay='1' ref={myRef} style={videoStyles} onClick={onVideoClicked} className={`remoteTrack videoTrack ${id}video`} id={`${id}video`} />}
     </div>
   )
 }
