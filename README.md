@@ -7,7 +7,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 *Before you can run*
 You need to have a local cert for a valid https connection since https is required for webRTC;
 a nice description to add one can be found here
-[https://github.com/Chatmosphere/reactapp.git](https://github.com/Chatmosphere/reactapp.git)
+[https://www.freecodecamp.org/news/how-to-set-up-https-locally-with-create-react-app/](https://www.freecodecamp.org/news/how-to-set-up-https-locally-with-create-react-app/)
 
 In the project directory, you can run:
 
