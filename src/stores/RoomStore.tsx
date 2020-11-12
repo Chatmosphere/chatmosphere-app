@@ -18,6 +18,7 @@ import omit from "lodash";
 type IJitsiRoom = any; //to fill later
 
 type ITrack = any; //to fill later
+
 export type IAudioTrack = ITrack & {
   audioLevel: number;
   // attach: (element: any) => void;
@@ -128,7 +129,25 @@ function createStore() {
       }
     }, [JitsiMeetJS]);
 
+    useEffect(() => {
+      if (state.room.joined) {
+        try{state.jitsiRoom.addTrack(state.room.egoUser?.audio)}catch(e){}
+        try{connectionStore.connection.addTrack(state.room.egoUser?.audio)}catch(e){}
+        try{connectionStore.jitsi.addTrack(state.room.egoUser?.audio)}catch(e){}
+      }
+    }, [state.room.joined,state.room.egoUser?.audio]);
+
+    useEffect(() => {
+      if (state.room.joined) {
+        console.log("addTrack:",state.room.egoUser?.video,state.jitsiRoom)
+        try{state.jitsiRoom.addTrack(state.room.egoUser?.video)}catch(e){}
+        try{connectionStore.connection.addTrack(state.room.egoUser?.video)}catch(e){}
+        try{connectionStore.jitsi.addTrack(state.room.egoUser?.video)}catch(e){}
+      }
+    }, [state.room.joined,state.room.egoUser?.video]);
+
     const on_remote_track_added = (track) => {
+      console.log("on_remote_track_added:",track)
       if (track.isLocal()) return; // also run on your own tracks so exit
       track.addEventListener(JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED, () =>
         console.log("remote track stopped")
@@ -139,8 +158,6 @@ function createStore() {
           console.log(`track audio output device was changed to ${deviceId}`)
       );
 
-      const id = track.getParticipantId(); // get user id of track
-      const trackType = track.getType() === "audio" ? "audio" : "video";
       // stateSetter.room.users.setKey(id, { userId: id, [trackType]: track });
       track.getType() === "audio" ? addAudioTrack(track) : addVideoTrack(track);
     };
@@ -148,9 +165,10 @@ function createStore() {
     function onLocalTracksAdded(tracks) {
       stateSetter.room.egoUser?.set({userId:tracks[0].getParticipantId()})
       let localTracks = tracks;
-      console.log("LOCAL TRACKS ADDED ", localTracks);
+      console.log("LOCAL TRACKS ADDED ", localTracks,state.room.joined);
       localTracks.map(function (localTrack, i) {
         console.log("Tracks parsed ", localTrack, " Number ", i);
+        
         localTrack.getType() === "video"
           ? addVideoTrack(localTrack, true)
           : addAudioTrack(localTrack, true);

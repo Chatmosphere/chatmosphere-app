@@ -16,10 +16,12 @@ const Video: React.FC<IVideo> = (props) => {
   return (
     <div>
       <video
+       width={300}
+       height={300}
         autoPlay={true}
         ref={videoRef}
-        className={`remoteTrack audioTrack ${props.userId}audio`}
-        id={`${props.userId}audio`}
+        className={`videoTrack ${props.userId}video`}
+        id={`${props.userId}video`}
       >
         {/* <source src={"source.mp4"} type="video/mp4" /> */}
       </video>
