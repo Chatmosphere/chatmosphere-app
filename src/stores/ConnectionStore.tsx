@@ -31,8 +31,8 @@ type IState = {
    connected: boolean 
 };
         const initialState: IState = {
-          jitsi: {},
-          connection:{},
+          jitsi: undefined,
+          connection:undefined,
           connected: false
         };
 
@@ -53,7 +53,8 @@ function createStore() {
       };
     }, []);
 
-    const initConnection = useCallback((jsMeet) => {
+    // const initConnection = useCallback((jsMeet) => {
+    const initConnection = (jsMeet) => {
       jsMeet.setLogLevel(jsMeet.logLevels.ERROR);
       jsMeet.init(jitsiInitOptions);
 
@@ -65,8 +66,8 @@ function createStore() {
       tmpConnection.addEventListener(
         jsMeet.events.connection.CONNECTION_ESTABLISHED,
         () => {
-          stateSetter.connected.set(true);
-          // setState(state=>({...state,connected:true}))
+          // stateSetter.connected.set(true);
+          setState(state=>({...state,connected:true}))
         }
       );
       tmpConnection.addEventListener(
@@ -87,7 +88,7 @@ function createStore() {
       })); */
       // stateSetter.set(state=>({...state,jitsi:jsMeet}))
       // stateSetter.set(state=>({...state,connection:tmpConnection}))
-    },[stateSetter,state])
+    }//,[stateSetter,state])
 
     console.log("ConnectionStore:",state)
     const contextObject: IConnectionStore = {

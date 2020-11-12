@@ -17,11 +17,6 @@ import omit from "lodash";
 
 type IJitsiRoom = any; //to fill later
 
-type IRoom = IJitsiRoom & {
-  egoUser: IUser;
-  users: { [userId: string]: IUser };
-}
-
 
 type ITrack = any; //to fill later
 type IAudioTrack = ITrack&{audioLevel:number}
@@ -33,9 +28,15 @@ export type IUser = {
   video?: ITrack;
 };
 
+type IRoom = {
+  egoUser?: IUser;
+  users: { [userId: string]: IUser };
+}
+
 type IState = {
   roomName: string;
-  room: IRoom;
+  room: IRoom,
+  jitsiRoom:IJitsiRoom
 }
 
 type IRoomStore = IState & {
@@ -45,9 +46,10 @@ type IRoomStore = IState & {
 const initialState: IState = {
   roomName: "",
   room: {
-    egoUser: { userId: "" },
+    egoUser: undefined,
     users: {},
   },
+  jitsiRoom:undefined
 };
 
 function createStore() {
@@ -64,7 +66,7 @@ function createStore() {
     const JitsiMeetJS = connectionStore.jitsi;
 
     useEffect(() => {
-      console.log("join room",connectionStore.connection , JitsiMeetJS , state.roomName)
+      console.log("join room",connectionStore.connection , JitsiMeetJS , state.roomName,conferenceOptions)
       if (connectionStore.connection && JitsiMeetJS && state.roomName) {
         const room = connectionStore.connection.initJitsiConference(
           state.roomName,
@@ -93,11 +95,11 @@ function createStore() {
         // r.on(JitsiMeetJS.events.conference.PHONE_NUMBER_CHANGED, onPhoneNumberChanged);
         room.addCommandListener("pos", on_position_received);
         room.join(); // FFFUUUUUUUUUUUUCK THATS IT GOD DAMNIT
-        console.log("state:",state,stateSetter,room)
-        stateSetter.room.set(room);
+        console.log("state:",{state,stateSetter,room})
+        stateSetter.jitsiRoom.set(room);
       }
       return () => {
-        setState((state) => {state.room.leave&&state.room.leave()
+        setState((state) => {state.jitsiRoom?.leave()
           return state});
       };
     }, [state.roomName,connectionStore.connection, JitsiMeetJS]);
@@ -147,7 +149,11 @@ function createStore() {
     console.log("RoomStore:",state)
     const contextObject: IRoomStore = {
       ...state,
-      joinRoom: (roomName: string) => stateSetter.roomName.set(roomName),
+      joinRoom: (roomName: string) => 
+      {
+        console.log("joinRoom:",roomName)
+        stateSetter.roomName.set(roomName)
+      },
     };
 
     // getPhoneState = () => contextObject

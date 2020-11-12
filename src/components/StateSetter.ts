@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect, useCallback, Dispatch, SetStateAction } from "react"
+import {omit,merge} from "lodash";
 
 type IDynamicKeyValue<T> = {
   [key in keyof T]: IDynamicKeyValue<ValueOf<T>> | IDynamicKeyValue<ValueOf<T>>[]
@@ -39,13 +40,32 @@ export default function createStateSetter<T extends Object>(
   props: [T, Dispatch<SetStateAction<T>>]
 ): [T, IDynamicObjectSetter<T>, Dispatch<SetStateAction<T>>] {
   let circularReferenceChecker = new Set<object>()
-  let [newState, newStateSetter] = createStateSetterReqursive(props[0], (newVal) => {
-    props[1](newVal)
+  let newState=props[0], newStateSetter, setState=props[1]
+   let newSetState=props[1]
+  const changedCallback= (newValue: T)=>{
+
     circularReferenceChecker.clear()
-  },circularReferenceChecker)
-  console.log("circularReferenceChecker:",circularReferenceChecker)
+    newState = newValue
+    props[1]((prevState)=>{
+        let returnedSetter = createStateSetterReqursive(prevState, changedCallback,circularReferenceChecker)
+        newState = returnedSetter[0]
+        newStateSetter = returnedSetter[1]
+        return newValue
+        })
+  }
+  let returnedSetter = createStateSetterReqursive(newState, changedCallback,circularReferenceChecker)
+  newState = returnedSetter[0]
+  newStateSetter = returnedSetter[1]
+  newSetState = ((callBack:(x: T) => T) => {
+    props[1]((prevState:T)=>{
+      const newState=callBack(prevState)
+      changedCallback(newState)
+      return newState
+    })
+  }) as Dispatch<SetStateAction<T>>
+  // console.log("circularReferenceChecker:",circularReferenceChecker)
   circularReferenceChecker.clear()
-  return [props[0], newStateSetter, props[1]]
+  return [newState, newStateSetter, newSetState]
 }
 
 function createStateSetterReqursive<T extends Object>(
@@ -62,7 +82,7 @@ function createStateSetterReqursive<T extends Object>(
     },
     set: (newValue: T | ((stateValue: T) => T)) => {
       const setStateAction = newValue as ((stateValue: T) => T)
-      if (setStateAction) {
+      if (setStateAction && typeof setStateAction==="function") {
         newState = setStateAction({ ...newState })
       } else {
         const tValue = newValue as T
@@ -81,10 +101,10 @@ function createStateSetterReqursive<T extends Object>(
       const obj = val as any
       type valueType = typeof val
       let value = obj[key]
-      console.log("typeof value:",typeof value)
+      // console.log("typeof value:",typeof value)
       if (!(typeof value === "object"||typeof value === "undefined")) {
         let [newPrimitiveValue, valuePrimitiveSetter] = createStateSetterPrimitive(value, (newValue) => {
-          newState = { ...newState, [key]: newPrimitiveValue }
+          newState = { ...newState, [key]: newValue }
           stateSetter[key] = valuePrimitiveSetter
           changedCallback(newState)
         })
