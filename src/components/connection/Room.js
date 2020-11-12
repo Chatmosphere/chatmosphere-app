@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { User } from '../User';
 import { conferenceName, conferenceOptions, jitsiInitOptions } from './options';
-import {useStore} from './store'
+import {useJitsiStore, useStore} from './store'
 
 export const Room = ({roomName, JitsiMeetJS, connection}) => {
 

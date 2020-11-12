@@ -1,6 +1,6 @@
 // SETTINGS - these are Connection and Room Options for the Jitsi lib
 
-export const conferenceName = "conference2" //introduce Zustand
+export const conferenceName = "conference" //introduce Zustand
 
 export const conferenceOptions = {
   openBridgeChannel: false //what is this doing?

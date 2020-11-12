@@ -34,7 +34,7 @@ const Connection = () => {
 
   return (
     <div>
-      {connected && <Room roomName="conference2" JitsiMeetJS={JitsiMeetJS} connection={connection} />}
+      {connected && <Room roomName="conference" JitsiMeetJS={JitsiMeetJS} connection={connection} />}
       Some Content Here
 
     </div> 
