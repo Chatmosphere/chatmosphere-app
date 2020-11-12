@@ -17,27 +17,32 @@ import omit from "lodash";
 
 type IJitsiRoom = any; //to fill later
 
-
 type ITrack = any; //to fill later
-type IAudioTrack = ITrack&{audioLevel:number}
-type IVideoTrack = ITrack&{}
+export type IAudioTrack = ITrack & {
+  audioLevel: number;
+  // attach: (element: any) => void;
+};
+export type IVideoTrack = ITrack & {
+  // attach: (element: any) => void;
+};
 
 export type IUser = {
   userId: string;
-  audio?: ITrack;
-  video?: ITrack;
+  audio?: IAudioTrack;
+  video?: IVideoTrack;
 };
 
 type IRoom = {
+  joined: boolean;
   egoUser?: IUser;
   users: { [userId: string]: IUser };
-}
+};
 
 type IState = {
   roomName: string;
-  room: IRoom,
-  jitsiRoom:IJitsiRoom
-}
+  room: IRoom;
+  jitsiRoom: IJitsiRoom;
+};
 
 type IRoomStore = IState & {
   joinRoom: (roomName: string) => void;
@@ -46,10 +51,11 @@ type IRoomStore = IState & {
 const initialState: IState = {
   roomName: "",
   room: {
+    joined: false,
     egoUser: undefined,
     users: {},
   },
-  jitsiRoom:undefined
+  jitsiRoom: undefined,
 };
 
 function createStore() {
@@ -66,7 +72,13 @@ function createStore() {
     const JitsiMeetJS = connectionStore.jitsi;
 
     useEffect(() => {
-      console.log("join room",connectionStore.connection , JitsiMeetJS , state.roomName,conferenceOptions)
+      console.log(
+        "join room",
+        connectionStore.connection,
+        JitsiMeetJS,
+        state.roomName,
+        conferenceOptions
+      );
       if (connectionStore.connection && JitsiMeetJS && state.roomName) {
         const room = connectionStore.connection.initJitsiConference(
           state.roomName,
@@ -95,14 +107,26 @@ function createStore() {
         // r.on(JitsiMeetJS.events.conference.PHONE_NUMBER_CHANGED, onPhoneNumberChanged);
         room.addCommandListener("pos", on_position_received);
         room.join(); // FFFUUUUUUUUUUUUCK THATS IT GOD DAMNIT
-        console.log("state:",{state,stateSetter,room})
+        console.log("state:", { state, stateSetter, room });
         stateSetter.jitsiRoom.set(room);
       }
       return () => {
-        setState((state) => {state.jitsiRoom?.leave()
-          return state});
+        setState((state) => {
+          state.jitsiRoom?.leave();
+          return state;
+        });
       };
-    }, [state.roomName,connectionStore.connection, JitsiMeetJS]);
+    }, [state.roomName, connectionStore.connection, JitsiMeetJS]);
+
+    useEffect(() => {
+      if (JitsiMeetJS) {
+        JitsiMeetJS.createLocalTracks({ devices: ["audio", "video"] }, true)
+          .then(onLocalTracksAdded)
+          .catch((error) => {
+            throw error;
+          });
+      }
+    }, [JitsiMeetJS]);
 
     const on_remote_track_added = (track) => {
       if (track.isLocal()) return; // also run on your own tracks so exit
@@ -118,26 +142,58 @@ function createStore() {
       const id = track.getParticipantId(); // get user id of track
       const trackType = track.getType() === "audio" ? "audio" : "video";
       // stateSetter.room.users.setKey(id, { userId: id, [trackType]: track });
-      track.getType() === "audio" ? addAudioTrack(track) : addVideoTrack(track)
+      track.getType() === "audio" ? addAudioTrack(track) : addVideoTrack(track);
     };
 
-    const addAudioTrack = (track) => {
+    function onLocalTracksAdded(tracks) {
+      stateSetter.room.egoUser?.set({userId:tracks[0].getParticipantId()})
+      let localTracks = tracks;
+      console.log("LOCAL TRACKS ADDED ", localTracks);
+      localTracks.map(function (localTrack, i) {
+        console.log("Tracks parsed ", localTrack, " Number ", i);
+        localTrack.getType() === "video"
+          ? addVideoTrack(localTrack, true)
+          : addAudioTrack(localTrack, true);
+        // if (state.room.joined) room.addTrack(localTrack)
+      });
+    }
+
+    const addAudioTrack = (track, ego?: boolean) => {
       const id = track.getParticipantId(); // get user id of track
-      track.addEventListener(window.JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED, audiolevel=>state.room.users[id].audio.audioLevel.set(audiolevel))
-      track.addEventListener(window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED, () => console.log('remote track muted')) //maybe there'S an error thrown because jitsi holds a reference of the track on participant disconnect
-      stateSetter.room.users[id].audio.set(track);
-      console.log("addAudioTrack:",track);
+      const user = ego ? stateSetter.room.egoUser : stateSetter.room.users[id];
+      track.addEventListener(
+        window.JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED,
+        (audiolevel) => user?.audio?.audioLevel.set(audiolevel)
+      );
+      track.addEventListener(
+        window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED,
+        () => console.log("remote track muted")
+      ); //maybe there'S an error thrown because jitsi holds a reference of the track on participant disconnect
+      // localTrack.addEventListener(JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED, on_local_tracks_stopped)
+      // localTrack.addEventListener(JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED, on_local_track_audio_output_changed)
+      user?.set(user=>({...user,audio:track,id:id}));
+      // user?.audio.set(track);
+      console.log("addAudioTrack:", { ego, id, track });
     };
-                  const addVideoTrack = (track) => {
-                  }
+    const addVideoTrack = (track, ego?: boolean) => {
+      const id = track.getParticipantId(); // get user id of track
+      const user = ego ? stateSetter.room.egoUser : stateSetter.room.users[id];
+      user?.set(user=>({...user,video:track,id:id}));
+    };
 
     const on_remote_track_removed = (track) => {
-      console.log("on_remote_track_removed:",track);
+      console.log("on_remote_track_removed:", track);
     };
 
-    const on_conference_joined = () => {};
+    const on_conference_joined = () => {
+      stateSetter.room.joined.set(true);
+    };
     const on_user_joined = (id) => {
-      stateSetter.room.users.set(users=>({...users,[id]:{ userId: id }}))
+      console.log("on_user_joined:",id)
+      stateSetter.room.users.set((users) => ({
+        ...users,
+        [id]: { userId: id },
+      }));
       // stateSetter.room.users.setKey(id, { userId: id });
     };
 
@@ -146,13 +202,12 @@ function createStore() {
     };
     const on_remote_track_audio_level_changed = () => {};
     const on_position_received = () => {};
-    console.log("RoomStore:",state)
+    console.log("RoomStore:", state);
     const contextObject: IRoomStore = {
       ...state,
-      joinRoom: (roomName: string) => 
-      {
-        console.log("joinRoom:",roomName)
-        stateSetter.roomName.set(roomName)
+      joinRoom: (roomName: string) => {
+        console.log("joinRoom:", roomName);
+        stateSetter.roomName.set(roomName);
       },
     };
 

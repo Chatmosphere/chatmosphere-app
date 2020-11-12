@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ConnectionStore from '../../stores/ConnectionStore';
 import RoomStore from '../../stores/RoomStore';
-import { conferenceName, conferenceOptions, jitsiInitOptions } from './options';
+import { conferenceName, conferenceOptions, jitsiInitOptions } from '../connection/options';
 import User from './User';
 
 const Room:React.FC = (props) => {
@@ -13,6 +13,7 @@ const Room:React.FC = (props) => {
   return (
     <div>
       {console.log("Room.roomStore:",roomStore)}
+      {roomStore.room&&roomStore.room.egoUser&&<User className="ego" {...roomStore.room.egoUser}/>}
       {roomStore.room && Object.keys(roomStore.room.users).map((id) => 
             <User key={id} {...roomStore.room.users[id]}/>
       )}

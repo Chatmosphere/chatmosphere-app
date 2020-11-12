@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './App.css';
-import Room from './components/connection/Room';
+import Room from './components/views/Room';
 import ConnectionStore from './stores/ConnectionStore';
 import RoomStore from './stores/RoomStore';
 
