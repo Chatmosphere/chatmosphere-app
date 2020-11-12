@@ -1,11 +1,19 @@
 import * as React from 'react';
 import './App.css';
-import Connection from './components/connection/Connection';
+import Room from './components/connection/Room';
+import ConnectionStore from './stores/ConnectionStore';
+import RoomStore from './stores/RoomStore';
 
 function App() {
   return (
     <div className="App">
-      <Connection />
+      <ConnectionStore.Provider >
+      <RoomStore.Provider >
+        <Room />
+      </RoomStore.Provider >
+
+
+      </ConnectionStore.Provider>
     </div>
   );
 }
