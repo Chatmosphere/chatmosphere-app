@@ -49,9 +49,6 @@ function createStore() {
       jsMeet().then((value) => initConnection(value));
       return () => {
         state.connection?.disconnect()
-        /* setState((state) => {
-          state.connection?.disconnect()
-          return state}); */
       };
     }, []);
 
@@ -69,7 +66,6 @@ function createStore() {
         jsMeet.events.connection.CONNECTION_ESTABLISHED,
         () => {
           stateSetter.connected.set(true);
-          // setState(state=>({...state,connected:true}))
         }
       );
       tmpConnection.addEventListener(
@@ -81,16 +77,9 @@ function createStore() {
         () => console.log("disconnect, cleanup here")
       );
       tmpConnection.connect();
-      // console.log("tmpConnection:",jsMeet,tmpConnection)
-      // setState(state=>({...state,jitsi:jsMeet ,connection:tmpConnection}))
-      // stateSetter.jitsi.set(jsMeet);
-      // stateSetter.connection.set(tmpConnection);
-      /* stateSetter.connection.set((connection) => ({
-        ...connection,
-        ...tmpConnection,
-      })); */
+      
+    
       stateSetter.set(state=>({...state,jitsi:jsMeet,connection:tmpConnection}))
-      // stateSetter.set(state=>({...state,connection:tmpConnection}))
     }//,[stateSetter,state])
 
     console.log("ConnectionStore:",state)
@@ -98,7 +87,6 @@ function createStore() {
       ...state,
     };
 
-    // getPhoneState = () => contextObject
     return (
       <Context.Provider value={contextObject}>{children}</Context.Provider>
     );

@@ -73,13 +73,7 @@ function createStore() {
     const JitsiMeetJS = connectionStore.jitsi;
 
     useEffect(() => {
-      console.log(
-        "join room",
-        connectionStore.connection,
-        JitsiMeetJS,
-        state.roomName,
-        conferenceOptions
-      );
+      
       if (connectionStore.connection && JitsiMeetJS && state.roomName) {
         const room = connectionStore.connection.initJitsiConference(
           state.roomName,
@@ -108,14 +102,9 @@ function createStore() {
         // r.on(JitsiMeetJS.events.conference.PHONE_NUMBER_CHANGED, onPhoneNumberChanged);
         room.addCommandListener("pos", on_position_received);
         room.join(); // FFFUUUUUUUUUUUUCK THATS IT GOD DAMNIT
-        console.log("join room state:", { state, stateSetter, room });
         stateSetter.jitsiRoom.set(room);
       }
       return () => {
-        /* setState((state) => {
-          state.jitsiRoom?.leave();
-          return state;
-        }); */
         state.jitsiRoom?.leave();
       };
     }, [state.roomName, connectionStore.connection, JitsiMeetJS]);

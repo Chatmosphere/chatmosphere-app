@@ -49,7 +49,6 @@ export default function createStateSetter<T extends Object>(
     props[1]((prevState)=>{
       let returnedSetter = createStateSetterReqursive(newValue, changedCallback,circularReferenceChecker)
       newState = returnedSetter[0]
-      console.log("StateSetter changedCallback store:",{prevState,newState,newValue})
       newStateSetter = returnedSetter[1]
       return newValue
     })
@@ -103,7 +102,6 @@ function createStateSetterReqursive<T extends Object>(
       const obj = val as any
       type valueType = typeof val
       let value = obj[key]
-      // console.log("typeof value:",typeof value)
       if (!(typeof value === "object"||typeof value === "undefined")) {
         let [newPrimitiveValue, valuePrimitiveSetter] = createStateSetterPrimitive(value, (newValue) => {
           newState = { ...newState, [key]: newValue }
@@ -129,14 +127,6 @@ function createStateSetterReqursive<T extends Object>(
     }
     // stateSetter[key] = valueSetter
 
-    /* type valuetype = typeof value
-        stateSetter[key] = valueSetter
-        stateSetter[key] = {
-          ...newValue,
-          set: (newValue: valuetype) => {
-            newState = { ...newState, [key]: newValue }
-          }
-        } */
   })
 }
 
