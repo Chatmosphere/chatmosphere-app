@@ -66,7 +66,7 @@ function createStore() {
   });
 
   function Provider({ children }: { children: React.ReactNode }) {
-    const [state, stateSetter, setState] = createStateSetter(
+    const [state, stateSetter] = createStateSetter(
       useState<IState>(initialState)
     );
     const connectionStore = ConnectionStore.useStore();
@@ -108,14 +108,15 @@ function createStore() {
         // r.on(JitsiMeetJS.events.conference.PHONE_NUMBER_CHANGED, onPhoneNumberChanged);
         room.addCommandListener("pos", on_position_received);
         room.join(); // FFFUUUUUUUUUUUUCK THATS IT GOD DAMNIT
-        console.log("state:", { state, stateSetter, room });
+        console.log("join room state:", { state, stateSetter, room });
         stateSetter.jitsiRoom.set(room);
       }
       return () => {
-        setState((state) => {
+        /* setState((state) => {
           state.jitsiRoom?.leave();
           return state;
-        });
+        }); */
+        state.jitsiRoom?.leave();
       };
     }, [state.roomName, connectionStore.connection, JitsiMeetJS]);
 

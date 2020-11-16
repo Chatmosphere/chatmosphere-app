@@ -40,7 +40,7 @@ function createStore() {
   const Context = React.createContext<IConnectionStore>(initialState);
 
   function Provider({ children }: { children: React.ReactNode }) {
-    const [state, stateSetter, setState] = createStateSetter(
+    const [state, stateSetter] = createStateSetter(
       useState<IState>(initialState)
     );
 
@@ -48,8 +48,10 @@ function createStore() {
       const jsMeet = async () => window.JitsiMeetJS;
       jsMeet().then((value) => initConnection(value));
       return () => {
-        setState((state) => {state.connection?.disconnect()
-        return state});
+        state.connection?.disconnect()
+        /* setState((state) => {
+          state.connection?.disconnect()
+          return state}); */
       };
     }, []);
 
@@ -66,8 +68,8 @@ function createStore() {
       tmpConnection.addEventListener(
         jsMeet.events.connection.CONNECTION_ESTABLISHED,
         () => {
-          // stateSetter.connected.set(true);
-          setState(state=>({...state,connected:true}))
+          stateSetter.connected.set(true);
+          // setState(state=>({...state,connected:true}))
         }
       );
       tmpConnection.addEventListener(
@@ -79,14 +81,15 @@ function createStore() {
         () => console.log("disconnect, cleanup here")
       );
       tmpConnection.connect();
-      console.log("tmpConnection:",jsMeet,tmpConnection)
-      setState(state=>({...state,jitsi:jsMeet ,connection:tmpConnection}))
-      /* stateSetter.jitsi.set(jsMeet);
-      stateSetter.connection.set((connection) => ({
+      // console.log("tmpConnection:",jsMeet,tmpConnection)
+      // setState(state=>({...state,jitsi:jsMeet ,connection:tmpConnection}))
+      // stateSetter.jitsi.set(jsMeet);
+      // stateSetter.connection.set(tmpConnection);
+      /* stateSetter.connection.set((connection) => ({
         ...connection,
         ...tmpConnection,
       })); */
-      // stateSetter.set(state=>({...state,jitsi:jsMeet}))
+      stateSetter.set(state=>({...state,jitsi:jsMeet,connection:tmpConnection}))
       // stateSetter.set(state=>({...state,connection:tmpConnection}))
     }//,[stateSetter,state])
 

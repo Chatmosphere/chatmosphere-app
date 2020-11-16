@@ -38,34 +38,36 @@ type IDynamicValueOrSetter<T> = IDynamicKeyValueSetter<T> | IDynamicObjectSetter
 
 export default function createStateSetter<T extends Object>(
   props: [T, Dispatch<SetStateAction<T>>]
-): [T, IDynamicObjectSetter<T>, Dispatch<SetStateAction<T>>] {
+): [T, IDynamicObjectSetter<T>/* , Dispatch<SetStateAction<T>> */] {
   let circularReferenceChecker = new Set<object>()
   let newState=props[0], newStateSetter, setState=props[1]
-   let newSetState=props[1]
+  //  let newSetState=props[1]
   const changedCallback= (newValue: T)=>{
 
     circularReferenceChecker.clear()
     newState = newValue
     props[1]((prevState)=>{
-        let returnedSetter = createStateSetterReqursive(prevState, changedCallback,circularReferenceChecker)
-        newState = returnedSetter[0]
-        newStateSetter = returnedSetter[1]
-        return newValue
-        })
+      let returnedSetter = createStateSetterReqursive(newValue, changedCallback,circularReferenceChecker)
+      newState = returnedSetter[0]
+      console.log("StateSetter changedCallback store:",{prevState,newState,newValue})
+      newStateSetter = returnedSetter[1]
+      return newValue
+    })
   }
   let returnedSetter = createStateSetterReqursive(newState, changedCallback,circularReferenceChecker)
   newState = returnedSetter[0]
   newStateSetter = returnedSetter[1]
-  newSetState = ((callBack:(x: T) => T) => {
+  /* newSetState = ((callBack:(x: T) => T) => {
     props[1]((prevState:T)=>{
       const newState=callBack(prevState)
+      console.log("StateSetter setState store:",{prevState,newState})
       changedCallback(newState)
       return newState
     })
-  }) as Dispatch<SetStateAction<T>>
+  }) as Dispatch<SetStateAction<T>> */
   // console.log("circularReferenceChecker:",circularReferenceChecker)
   circularReferenceChecker.clear()
-  return [newState, newStateSetter, newSetState]
+  return [newState, newStateSetter]//, newSetState]
 }
 
 function createStateSetterReqursive<T extends Object>(
