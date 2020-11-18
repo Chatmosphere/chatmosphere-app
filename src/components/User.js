@@ -15,6 +15,8 @@ export const User = ({id}) => {
 
   const audioTrack = useStore(useCallback(store => store.users[id]['audio'], [id]))
   const videoTrack = useStore(useCallback(store => store.users[id]['video'], [id]))
+  const isMute = useStore(store => store.users[id]['mute'])
+  const colog = useStore(state => state.colog)
   const [pos, setPos] = useState({x:0, y:0})
 
   const clickDelta = useRef({x:0, y:0})
@@ -39,10 +41,10 @@ export const User = ({id}) => {
   useEffect(() => {
     if(audioTrack !== undefined) {
       audioTrack.addEventListener(window.JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED, onAudioLEvelChanged)
-      audioTrack.addEventListener(window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED, () => console.log('remote track muted')) //maybe there'S an error thrown because jitsi holds a reference of the track on participant disconnect
+      audioTrack.addEventListener(window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED, () => console.log('remote mute changed')) //maybe there'S an error thrown because jitsi holds a reference of the track on participant disconnect
     }
-    return ()=>{
-      audioTrack?.removeEventListener(window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED, () => console.log('remote track muted')) //maybe there'S an error thrown because jitsi holds a reference of the track on participant disconnect
+    return (audioTrack)=>{
+      audioTrack?.removeEventListener(window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED, () => console.log('remote mute changed')) //maybe there'S an error thrown because jitsi holds a reference of the track on participant disconnect
       audioTrack?.removeEventListener(window.JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED, onAudioLEvelChanged)
     }
   },[audioTrack])
@@ -84,6 +86,7 @@ export const User = ({id}) => {
   return(
     <div ref={myElement} style={{transform:`translate3d(${pos.x}px, ${pos.y}px,0)`}} onPointerDown={onDown} className="userContainer" >
       This is User {id}
+      User is {isMute ? "Mute" : "Unmuted"}  
       {audioTrack && <audio autoPlay='1' ref={audioRef} className={`remoteTrack audioTrack ${id}audio`} id={`${id}audio`} /> }
       {/* {videoTrack && <video autoPlay='1' ref={videoRef} onClick={onVideoClicked} className={`remoteTrack videoTrack ${id}video`} id={`${id}video`} />} */}
       <VideoTrack id={id} />
@@ -119,8 +122,8 @@ const VideoTrack = ({id}) => {
   const vRef = useRef()
   //Fix Video not shown - reattaching works quite well
   const onVideoClicked = (e) => {
-    // videoTrack.detach(e.target)
-    // videoTrack.attach(e.target)
+    videoTrack.detach(e.target)
+    videoTrack.attach(e.target)
     // console.log(e.target)
   }
 
