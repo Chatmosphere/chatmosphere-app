@@ -1,11 +1,7 @@
 import React, { useState, useContext, useEffect, useCallback, Dispatch, SetStateAction } from "react"
-import {omit,merge} from "lodash";
 
 type IDynamicKeyValue<T> = {
-  [key in keyof T]: IDynamicKeyValue<ValueOf<T>> | IDynamicKeyValue<ValueOf<T>>[]
-}
-type IDynamicObject<T> = {
-  [key in keyof T]: IDynamicObject<ValueOf<T>> | IDynamicKeyValue<ValueOf<T>> | IDynamicKeyValue<ValueOf<T>>[]
+  [key in keyof T]: IDynamicKeyValue<T[key]> | IDynamicKeyValue<T[key]>[]
 }
 
 type ValueOf<T> = T[keyof T]
@@ -21,20 +17,8 @@ type IKeyValue<T> = {
 type IDynamicKeyValueSetter<T extends Object> = {
   [key in keyof T]: IDynamicObjectSetter<T[key]>
 } & T
-/* {
-  set: (newValue: ValueOf<T>) => void
-  // setKey: (key: keyof T, value: ValueOf<T>) => void
-  setKey: (key: string, value: ValueOf<T>) => void
-} */
-
-type PrimitiveValueSetter<T> = IDynamicValueSetter<T>
-type ObjectValueSetter<T extends Object> = T & IDynamicObjectSetter<T>
 
 type IDynamicObjectSetter<T extends Object> = IDynamicValueSetter<T> & IDynamicKeyValueSetter<T>
-
-type IDynamicValueOrSetter<T> = IDynamicKeyValueSetter<T> | IDynamicObjectSetter<T>
-
-// type extractGeneric<Type> = Type extends TypeWithGeneric<infer X> ? X : never
 
 export default function createStateSetter<T extends Object>(
   props: [T, Dispatch<SetStateAction<T>>]
@@ -56,6 +40,9 @@ export default function createStateSetter<T extends Object>(
   let returnedSetter = createStateSetterReqursive(newState, changedCallback,circularReferenceChecker)
   newState = returnedSetter[0]
   newStateSetter = returnedSetter[1]
+  //setState is not exposed. 
+  //Because when setState is called, the state object needs to compared to the new state to be able to update changedCallback functions.
+  // Otherwise on set() function is called old state will be overwritten on the new one.
   /* newSetState = ((callBack:(x: T) => T) => {
     props[1]((prevState:T)=>{
       const newState=callBack(prevState)
@@ -66,7 +53,7 @@ export default function createStateSetter<T extends Object>(
   }) as Dispatch<SetStateAction<T>> */
   // console.log("circularReferenceChecker:",circularReferenceChecker)
   circularReferenceChecker.clear()
-  return [newState, newStateSetter]//, newSetState]
+  return [newState, newStateSetter]//, newSetState] 
 }
 
 function createStateSetterReqursive<T extends Object>(
