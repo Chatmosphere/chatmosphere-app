@@ -1,3 +1,14 @@
 .App {
   text-align: center;
 }
+
+.room{
+  width: 500px;
+  height: 500px;
+  
+}
+.ego:nth-child(1){
+    position: absolute;
+    left:300px;
+    top:300px
+}
