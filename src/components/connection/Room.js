@@ -5,7 +5,7 @@ import {useJitsiStore, useStore} from './store'
 
 export const Room = ({roomName, JitsiMeetJS, connection}) => {
 
-  const [room, setRoom] = useState(undefined)
+  const [room, setRoom] = useStore(state => [state.room, state.setRoom])
 
   //publicStore
   const addUser = useStore(state => state.addUser)
@@ -32,7 +32,6 @@ export const Room = ({roomName, JitsiMeetJS, connection}) => {
     }
     return((r) => {
         // if(room !== undefined) room.leave() //this throws errors, but why? guess i need a callback like https://github.com/jitsi/lib-jitsi-meet/issues/1330#issuecomment-703742442
-        console.log("ROOM LEAVE CALLED, connection is ", r)
     })
   },[connection])
 
@@ -46,7 +45,6 @@ export const Room = ({roomName, JitsiMeetJS, connection}) => {
   }
 
   const on_remote_track_removed = (track) => {
-    console.log()
   }
 
   const on_conference_joined = () => {
