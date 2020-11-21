@@ -9,7 +9,6 @@ export const User = ({id}) => {
       if(audioTrack.containers.length === 0) {
         audioTrack.attach(node)
       }
-      console.log("TestReturn is :::::: ", audioTrack)
     }
   })
 
@@ -24,7 +23,6 @@ export const User = ({id}) => {
   const myElement = useRef()
 
   useEffect(() => {
-    console.log("Elemenet is", myElement.current)
   }, [myElement.current])
 
   const setDelta = (pos) => {
@@ -32,8 +30,6 @@ export const User = ({id}) => {
   }
 
   useEffect(() => {
-    console.log("PASSED USER IS ", id)
-    console.log("in users jsmeet is ", window.JitsiMeetJS)
     // ref not ready here? so the following doesnt work, thats weird; adding refCallbacks at line 6 works
     // if(tracks.video) tracks.video.attach(VideoEl)
   },[videoTrack])
@@ -110,16 +106,24 @@ const VideoTrack = ({id}) => {
 
   const videoTrack = useStore(useCallback(store => store.users[id]['video'], [id]))
 
-  const refCallback = useCallback(node => {
-    if(node !== null) {
-      vRef.current = node
-      if(videoTrack.containers.length === 0) {
-        videoTrack.attach(node)
-      }
-    }
-  })
+  // const refCallback = useCallback(node => {
+  //   if(node !== null) {
+  //     vRef.current = node
+  //     if(videoTrack.containers.length === 0) {
+  //       videoTrack.attach(node)
+  //     }
+  //   }
+  // })
+  const myRef = useRef()
 
-  const vRef = useRef()
+  useEffect(() => {
+    // if(videoTrack) videoTrack.attach(myRef.current)
+    videoTrack?.attach(myRef.current)
+    return(() => {
+      videoTrack?.detach(myRef.current)
+    })
+  },[videoTrack])
+
   //Fix Video not shown - reattaching works quite well
   const onVideoClicked = (e) => {
     videoTrack.detach(e.target)
@@ -129,8 +133,7 @@ const VideoTrack = ({id}) => {
 
   return (
     <div>
-      {console.count("RERENDERS")}
-      {videoTrack && <video autoPlay='1' ref={refCallback} style={videoStyles} onClick={onVideoClicked} className={`remoteTrack videoTrack ${id}video`} id={`${id}video`} />}
+      {videoTrack && <video autoPlay='1' ref={myRef} style={videoStyles} onClick={onVideoClicked} className={`remoteTrack videoTrack ${id}video`} id={`${id}video`} />}
     </div>
   )
 }
