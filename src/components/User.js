@@ -3,15 +3,6 @@ import { useStore } from './connection/store';
 
 export const User = ({id}) => {
 
-  const audioRef = useCallback(node => {
-    console.count("CALLBACK CALLED")
-    if(node !== null ) {
-      if(audioTrack.containers.length === 0) {
-        audioTrack.attach(node)
-      }
-    }
-  })
-
   const audioTrack = useStore(useCallback(store => store.users[id]['audio'], [id]))
   const videoTrack = useStore(useCallback(store => store.users[id]['video'], [id]))
   const isMute = useStore(store => store.users[id]['mute'])
@@ -20,10 +11,10 @@ export const User = ({id}) => {
 
   const clickDelta = useRef({x:0, y:0})
   const active = useRef(false)
-  const myElement = useRef()
+  const userNode = useRef()
 
   useEffect(() => {
-  }, [myElement.current])
+  }, [userNode.current])
 
   const setDelta = (pos) => {
     clickDelta.current = pos
@@ -53,15 +44,15 @@ export const User = ({id}) => {
     // if(active.current === true) setPos({x:e.clientX - clickDelta.current.x, y:e.clientY - clickDelta.current.y})
 
     //without rerendering - better I guess - does yusufs lib offers a no-update-solution?
-    if(active.current === true && myElement.current !== undefined) {
+    if(active.current === true && userNode.current !== undefined) {
       const xPos = e.clientX - clickDelta.current.x
       const yPos = e.clientY - clickDelta.current.y
       const myStyle = {
         transform: `translate3d(${xPos}px, ${yPos}px,0)`,
         width: '200px'
       }
-      myElement.current.setAttribute('style', `transform:translate3d(${xPos}px, ${yPos}px,0)`)
-      // myElement.current.setAttribute('style', myStyle)
+      userNode.current.setAttribute('style', `transform:translate3d(${xPos}px, ${yPos}px,0)`)
+      // userNode.current.setAttribute('style', myStyle)
     }  
   }
 
@@ -80,12 +71,11 @@ export const User = ({id}) => {
   }
 
   return(
-    <div ref={myElement} style={{transform:`translate3d(${pos.x}px, ${pos.y}px,0)`}} onPointerDown={onDown} className="userContainer" >
+    <div ref={userNode} style={{transform:`translate3d(${pos.x}px, ${pos.y}px,0)`}} onPointerDown={onDown} className="userContainer" >
       This is User {id}
       User is {isMute ? "Mute" : "Unmuted"}  
-      {audioTrack && <audio autoPlay='1' ref={audioRef} className={`remoteTrack audioTrack ${id}audio`} id={`${id}audio`} /> }
-      {/* {videoTrack && <video autoPlay='1' ref={videoRef} onClick={onVideoClicked} className={`remoteTrack videoTrack ${id}video`} id={`${id}video`} />} */}
       <VideoTrack id={id} />
+      <AudioTrack id={id} />
     </div>
   )
 }
@@ -128,4 +118,19 @@ const VideoTrack = ({id}) => {
   )
 }
 
-const AudioTrack = () => null
+const AudioTrack = ({id}) => {
+  const audioTrack = useStore(useCallback(store => store.users[id]['audio'], [id]))
+  const myRef = useRef()
+
+  useEffect(() => {
+    audioTrack?.attach(myRef.current)
+    return(() => {
+      audioTrack?.detach(myRef.current)
+    })
+  },[audioTrack])
+
+  return (
+    <audio autoPlay='1' ref={myRef} className={`remoteTrack audioTrack ${id}audio`} id={`${id}audio`} />
+  )
+}
+
