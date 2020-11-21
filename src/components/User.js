@@ -106,29 +106,19 @@ const VideoTrack = ({id}) => {
 
   const videoTrack = useStore(useCallback(store => store.users[id]['video'], [id]))
 
-  // const refCallback = useCallback(node => {
-  //   if(node !== null) {
-  //     vRef.current = node
-  //     if(videoTrack.containers.length === 0) {
-  //       videoTrack.attach(node)
-  //     }
-  //   }
-  // })
   const myRef = useRef()
 
   useEffect(() => {
-    // if(videoTrack) videoTrack.attach(myRef.current)
     videoTrack?.attach(myRef.current)
     return(() => {
       videoTrack?.detach(myRef.current)
     })
   },[videoTrack])
 
-  //Fix Video not shown - reattaching works quite well
+  //Fix if Video not shown - reattaching works quite well
   const onVideoClicked = (e) => {
     videoTrack.detach(e.target)
     videoTrack.attach(e.target)
-    // console.log(e.target)
   }
 
   return (
@@ -137,3 +127,5 @@ const VideoTrack = ({id}) => {
     </div>
   )
 }
+
+const AudioTrack = () => null
