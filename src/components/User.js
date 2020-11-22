@@ -5,6 +5,7 @@ export const User = ({id}) => {
 
   const audioTrack = useStore(useCallback(store => store.users[id]['audio'], [id]))
   const videoTrack = useStore(useCallback(store => store.users[id]['video'], [id]))
+  const myPos = useStore(useCallback(store => store.users[id]['pos'], [id]))
   const isMute = useStore(store => store.users[id]['mute'])
   const colog = useStore(state => state.colog)
   const [pos, setPos] = useState({x:0, y:0})
@@ -16,6 +17,11 @@ export const User = ({id}) => {
   const setDelta = (pos) => {
     clickDelta.current = pos
   }
+
+  useEffect(() => {
+    console.log("USER POS UPDATED ", myPos)
+    setPos(myPos)
+  },[myPos])
 
   useEffect(() => {
     // ref not ready here? so the following doesnt work, thats weird; adding refCallbacks at line 6 works
@@ -98,7 +104,8 @@ const VideoTrack = ({id}) => {
   const myRef = useRef()
 
   useEffect(() => {
-    if(videoTrack?.containers?.length === 0) videoTrack?.attach(myRef.current)
+    // if(videoTrack?.containers?.length === 0) videoTrack?.attach(myRef.current)
+    videoTrack?.attach(myRef.current)
     return(() => {
       videoTrack?.detach(myRef.current)
     })
@@ -122,7 +129,8 @@ const AudioTrack = ({id}) => {
   const myRef = useRef()
 
   useEffect(() => {
-    if(audioTrack?.containers?.length === 0) audioTrack?.attach(myRef.current)
+    // if(audioTrack?.containers?.length === 0) audioTrack?.attach(myRef.current)
+    audioTrack?.attach(myRef.current)
     return(() => {
       audioTrack?.detach(myRef.current)
     })

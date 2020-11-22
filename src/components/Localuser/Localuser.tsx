@@ -9,8 +9,6 @@ const UserContainer = styled.div`
   position:absolute;
 `
 
-
-
 export const Localuser: React.FC = () => {
   const jsMeet: any = useStore((store) => store.jsMeet);
 	const [ localTracks, setLocalTracks ] = useState([]);
@@ -25,14 +23,15 @@ export const Localuser: React.FC = () => {
     room.sendCommand("pos", {value:pos})
   }
 
-  const throttledSendPos = throttle(sendPositionToPeers, 100)
+  const throttledSendPos = throttle(sendPositionToPeers, 200)
 
   const onDrag = (e) => {
     if(active.current === true && localUserNode.current !== null) {
       const xPos = e.clientX - clickDelta.current.x
       const yPos = e.clientY - clickDelta.current.y
-      // throttledSendPos({x:xPos, y:yPos})
-      room.sendCommand("pos", {value:{x:xPos, y:yPos}})
+      const newPos = JSON.stringify({id:myID, x:xPos, y:yPos})
+      throttledSendPos(newPos)
+      // sendPositionToPeers(newPos)
       // room.setLocalParticipantProperty('pos', `{x:${xPos}, y:${yPos}}`)
       localUserNode.current.setAttribute('style', `left:${xPos}px; top:${yPos}px`)
   }

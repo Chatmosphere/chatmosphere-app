@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { User } from '../User';
 import { conferenceName, conferenceOptions, jitsiInitOptions } from './options';
 import {useJitsiStore, useStore} from './../Store/store'
+import { parseJsonText } from 'typescript';
 
 export const Room = ({roomName, JitsiMeetJS, connection}) => {
 
@@ -12,6 +13,7 @@ export const Room = ({roomName, JitsiMeetJS, connection}) => {
   const removeUser = useStore(state => state.removeUser)
   const addAudioTrack = useStore(state => state.addAudioTrack)
   const addVideoTrack = useStore(state => state.addVideoTrack)
+  const updateUserPos = useStore(state => state.updateUserPos)
   const users = useStore(state => state.users)
   
   useEffect(() => {
@@ -27,7 +29,7 @@ export const Room = ({roomName, JitsiMeetJS, connection}) => {
       r.on(JitsiMeetJS.events.conference.TRACK_AUDIO_LEVEL_CHANGED, on_remote_track_audio_level_changed);
       // r.on(JitsiMeetJS.events.conference.PHONE_NUMBER_CHANGED, onPhoneNumberChanged);
       // r.addCommandListener("pos", onPositionReceived)
-      r.addCommandListener("pos", (ev) => console.log(ev.value.x))
+      r.addCommandListener("pos", onPositionReceived)
       // r.on(JitsiMeetJS.events.conference.PARTICIPANT_PROPERTY_CHANGED, (e) => console.log("Property Changed ", e))
       r.join(); // FFFUUUUUUUUUUUUCK THATS IT GOD DAMNIT
       setRoom(r)
@@ -38,7 +40,8 @@ export const Room = ({roomName, JitsiMeetJS, connection}) => {
   },[connection])
 
   const onPositionReceived = (e) => {
-    console.log("POSITION EVENT RECEIVED ", e)
+    const pos = JSON.parse(e.value)
+    updateUserPos(pos.id, {x:pos.x, y:pos.y})
   }
 
   const on_remote_track_added = (track) => {

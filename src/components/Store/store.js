@@ -24,9 +24,10 @@ export const [useStore, store] = create((set, get) => ({
 		//  REMOTE USERS
 		users: {}, //{ sajkldfjks:{audio:track, video:track}, 3ja9djak:{audio:track, video:track}  }
 		addUser: (id) => set((state) => produce(state, (draft) => {
-			draft.users[id] = {mute:false}
+			draft.users[id] = {mute:false,pos:{x:0,y:0}}
 		})),
 		removeUser: (id) => set((state) => omit(state, [id], true)),
+		updateUserPos: (id, pos) => set(state => produce(state, newState => {newState.users[id]['pos'] = pos})),
 		addAudioTrack: (id, track) => {
 			track.addEventListener(window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED, () => get().toggleMute(id, track)) //works but is called twice 
 			const newUsers = produce(get().users, (draftUsers) => {
