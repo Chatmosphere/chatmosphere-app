@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Localuser } from '../Localuser/Localuser'
 import {connectionOptions, jitsiInitOptions} from './options'
 import {Room} from './Room'
-import { useStore } from './store'
+import { useStore } from './../Store/store'
 
  /* globals: JitisMeetJS */
 

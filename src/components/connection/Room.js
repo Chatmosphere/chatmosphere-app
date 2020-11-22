@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { User } from '../User';
 import { conferenceName, conferenceOptions, jitsiInitOptions } from './options';
-import {useJitsiStore, useStore} from './store'
+import {useJitsiStore, useStore} from './../Store/store'
 
 export const Room = ({roomName, JitsiMeetJS, connection}) => {
 
@@ -26,7 +26,9 @@ export const Room = ({roomName, JitsiMeetJS, connection}) => {
       // r.on(JitsiMeetJS.events.conference.DISPLAY_NAME_CHANGED, onUserNameChanged);
       r.on(JitsiMeetJS.events.conference.TRACK_AUDIO_LEVEL_CHANGED, on_remote_track_audio_level_changed);
       // r.on(JitsiMeetJS.events.conference.PHONE_NUMBER_CHANGED, onPhoneNumberChanged);
-      r.addCommandListener("pos", on_position_received)
+      // r.addCommandListener("pos", onPositionReceived)
+      r.addCommandListener("pos", (ev) => console.log(ev.value.x))
+      // r.on(JitsiMeetJS.events.conference.PARTICIPANT_PROPERTY_CHANGED, (e) => console.log("Property Changed ", e))
       r.join(); // FFFUUUUUUUUUUUUCK THATS IT GOD DAMNIT
       setRoom(r)
     }
@@ -34,6 +36,10 @@ export const Room = ({roomName, JitsiMeetJS, connection}) => {
         // if(room !== undefined) room.leave() //this throws errors, but why? guess i need a callback like https://github.com/jitsi/lib-jitsi-meet/issues/1330#issuecomment-703742442
     })
   },[connection])
+
+  const onPositionReceived = (e) => {
+    console.log("POSITION EVENT RECEIVED ", e)
+  }
 
   const on_remote_track_added = (track) => {
     if(track.isLocal()) return // also run on your own tracks so exit
@@ -60,9 +66,6 @@ export const Room = ({roomName, JitsiMeetJS, connection}) => {
   const on_remote_track_audio_level_changed = () => {
 
   }
-  const on_position_received = () => {
-
-  } 
 
   return (
     <div>

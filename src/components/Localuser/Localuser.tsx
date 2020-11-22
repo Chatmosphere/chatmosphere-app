@@ -1,12 +1,60 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useStore } from '../connection/store';
+import styled from 'styled-components';
+import { useStore } from './../Store/store';
+import {throttle} from 'lodash'
 
-export const Localuser: React.FC = ({ videoTrack: any }: any) => {
+
+const UserContainer = styled.div`
+  width: 200px;
+  position:absolute;
+`
+
+
+
+export const Localuser: React.FC = () => {
   const jsMeet: any = useStore((store) => store.jsMeet);
 	const [ localTracks, setLocalTracks ] = useState([]);
-
-
+  const localUserNode = useRef<HTMLDivElement>(null)
+  const room = useStore(store => store.room)
+  const [myID, setMyID] = useState()
   
+  const clickDelta = useRef({x:0, y:0})
+  const active:any = useRef(false)
+
+  function sendPositionToPeers(pos) {
+    room.sendCommand("pos", {value:pos})
+  }
+
+  const throttledSendPos = throttle(sendPositionToPeers, 100)
+
+  const onDrag = (e) => {
+    if(active.current === true && localUserNode.current !== null) {
+      const xPos = e.clientX - clickDelta.current.x
+      const yPos = e.clientY - clickDelta.current.y
+      // throttledSendPos({x:xPos, y:yPos})
+      room.sendCommand("pos", {value:{x:xPos, y:yPos}})
+      // room.setLocalParticipantProperty('pos', `{x:${xPos}, y:${yPos}}`)
+      localUserNode.current.setAttribute('style', `left:${xPos}px; top:${yPos}px`)
+  }
+}
+  const onUp = () => {
+    active.current = false
+    document.removeEventListener('pointerup', onUp)
+    document.removeEventListener('pointermove', onDrag)
+  }
+  const onDown = (e) => {
+    e.preventDefault()
+    active.current = true
+    const boundingRect = e.currentTarget.getBoundingClientRect()
+    clickDelta.current = {x: e.clientX - boundingRect.x, y:e.clientY - boundingRect.y}
+    document.addEventListener('pointerup', onUp)
+    document.addEventListener('pointermove', onDrag)
+  }
+
+  useEffect(()=>{
+    setMyID(room?.myUserId())
+  },[room])
+
 	useEffect(
 		() => {
 			jsMeet
@@ -21,7 +69,6 @@ export const Localuser: React.FC = ({ videoTrack: any }: any) => {
             // track.attach(videoRef.current)
           });
           setLocalTracks(tracks);
-          
 				})
 				.catch((error) => {
 					throw error;
@@ -31,29 +78,39 @@ export const Localuser: React.FC = ({ videoTrack: any }: any) => {
   );
 
 	return (
-		<div>
+		<UserContainer ref={localUserNode} onPointerDown={onDown} className="localUserContainer">
       {localTracks.map((track:any) => {
         if(track?.getType() === 'video') return <LocalVideo key={track.track.id} track={track} />
         if(track.getType() === 'audio') return <LocalAudio key={track.track.id} track={track} />
       })}
       Video
-		</div>
+		</UserContainer>
 	);
-};
+}
+
+const Video = styled.video`
+  width: 200px; 
+  height: 200px;
+  object-position: 50% 50%;
+  display: block;
+  border-radius: 100px;
+  object-fit: cover;
+`
 
 const LocalVideo = ({track}) => {
   const myRef:any = useRef()
   const room:any = useStore(store => store.room)
 
+
   useEffect(()=> {
-    track.attach(myRef.current)
+    if(track?.containers?.length === 0) track.attach(myRef.current)
   },[track])
 
   useEffect(() => {
     room.addTrack(track)
   },[room, track])
 
-  return <video autoPlay={true} ref={myRef} className={`localTrack videoTrack`} />
+  return <Video autoPlay={true} ref={myRef} className={`localTrack videoTrack`} />
 }
 
 
@@ -65,7 +122,7 @@ const LocalAudio = ({track}) => {
   const [audioLevel, setAudioLevel] = useState(0)
 
   useEffect(() => {
-    track.attach(myRef.current)
+    if(track?.containers?.length === 0) track.attach(myRef.current)
     track.addEventListener(jsMeet.events.track.TRACK_AUDIO_LEVEL_CHANGED, setAudioLevel)
   },[track])
 

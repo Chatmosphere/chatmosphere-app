@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useStore } from './connection/store';
+import { useStore } from './Store/store';
 
 export const User = ({id}) => {
 
@@ -11,10 +11,7 @@ export const User = ({id}) => {
 
   const clickDelta = useRef({x:0, y:0})
   const active = useRef(false)
-  const userNode = useRef()
-
-  useEffect(() => {
-  }, [userNode.current])
+  const userNode = useRef()  
 
   const setDelta = (pos) => {
     clickDelta.current = pos
@@ -70,8 +67,10 @@ export const User = ({id}) => {
     document.removeEventListener('pointermove', onDrag)
   }
 
+  console.log("User is rendererd")
+
   return(
-    <div ref={userNode} style={{transform:`translate3d(${pos.x}px, ${pos.y}px,0)`}} onPointerDown={onDown} className="userContainer" >
+    <div ref={userNode} style={{transform:`translate3d(${pos.x}px, ${pos.y}px,0)`}} className="userContainer" >
       This is User {id}
       User is {isMute ? "Mute" : "Unmuted"}  
       <VideoTrack id={id} />
@@ -99,7 +98,7 @@ const VideoTrack = ({id}) => {
   const myRef = useRef()
 
   useEffect(() => {
-    videoTrack?.attach(myRef.current)
+    if(videoTrack?.containers?.length === 0) videoTrack?.attach(myRef.current)
     return(() => {
       videoTrack?.detach(myRef.current)
     })
@@ -123,7 +122,7 @@ const AudioTrack = ({id}) => {
   const myRef = useRef()
 
   useEffect(() => {
-    audioTrack?.attach(myRef.current)
+    if(audioTrack?.containers?.length === 0) audioTrack?.attach(myRef.current)
     return(() => {
       audioTrack?.detach(myRef.current)
     })

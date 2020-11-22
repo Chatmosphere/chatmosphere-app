@@ -4,7 +4,7 @@ import { devtools } from 'zustand/middleware';
 import produce from 'immer';
 import { useEffect } from 'react';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
-import { connectionOptions, jitsiInitOptions } from './options';
+import { connectionOptions, jitsiInitOptions } from '../connection/options';
 import { connected } from 'process';
 import { isSwitchStatement } from 'typescript';
 
