@@ -7,7 +7,6 @@ export const User = ({id}) => {
   const videoTrack = useStore(useCallback(store => store.users[id]['video'], [id]))
   const myPos = useStore(useCallback(store => store.users[id]['pos'], [id]))
   const isMute = useStore(store => store.users[id]['mute'])
-  const colog = useStore(state => state.colog)
   const [pos, setPos] = useState({x:0, y:0})
 
   const clickDelta = useRef({x:0, y:0})
@@ -20,7 +19,7 @@ export const User = ({id}) => {
 
   useEffect(() => {
     console.log("USER POS UPDATED ", myPos)
-    setPos(myPos)
+    // setPos(myPos)
   },[myPos])
 
   useEffect(() => {
@@ -50,10 +49,6 @@ export const User = ({id}) => {
     if(active.current === true && userNode.current !== undefined) {
       const xPos = e.clientX - clickDelta.current.x
       const yPos = e.clientY - clickDelta.current.y
-      const myStyle = {
-        transform: `translate3d(${xPos}px, ${yPos}px,0)`,
-        width: '200px'
-      }
       userNode.current.setAttribute('style', `transform:translate3d(${xPos}px, ${yPos}px,0)`)
       // userNode.current.setAttribute('style', myStyle)
     }  
@@ -76,7 +71,7 @@ export const User = ({id}) => {
   console.log("User is rendererd")
 
   return(
-    <div ref={userNode} style={{position:'absolute', left:`${pos.x}px`, top:`${pos.y}px`}} className="userContainer" >
+    <div ref={userNode} style={{position:'absolute', left:`${myPos.x}px`, top:`${myPos.y}px`}} className="userContainer" >
       This is User {id}
       User is {isMute ? "Mute" : "Unmuted"}  
       <VideoTrack id={id} />
@@ -131,7 +126,6 @@ const AudioTrack = ({id}) => {
   useEffect(() => {
     const el = myRef.current
     audioTrack?.attach(el)
-    debugger
     return(() => {
       audioTrack?.detach(el)
     })

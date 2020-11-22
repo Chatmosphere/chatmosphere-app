@@ -11,9 +11,10 @@ const UserContainer = styled.div`
 
 export const Localuser: React.FC = () => {
   const jsMeet: any = useStore((store) => store.jsMeet);
+  const room = useStore(store => store.room)
+  const calculateVolumes = useStore(store => store.calculateVolumes)
 	const [ localTracks, setLocalTracks ] = useState([]);
   const localUserNode = useRef<HTMLDivElement>(null)
-  const room = useStore(store => store.room)
   const [myID, setMyID] = useState()
   
   const clickDelta = useRef({x:0, y:0})
@@ -31,6 +32,7 @@ export const Localuser: React.FC = () => {
       const yPos = e.clientY - clickDelta.current.y
       const newPos = JSON.stringify({id:myID, x:xPos, y:yPos})
       throttledSendPos(newPos)
+      calculateVolumes({x:xPos, y:yPos})
       // sendPositionToPeers(newPos)
       // room.setLocalParticipantProperty('pos', `{x:${xPos}, y:${yPos}}`)
       localUserNode.current.setAttribute('style', `left:${xPos}px; top:${yPos}px`)
