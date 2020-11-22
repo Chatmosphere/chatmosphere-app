@@ -84,7 +84,7 @@ export const Localuser: React.FC = () => {
         if(track?.getType() === 'video') return <LocalVideo key={track.track.id} track={track} />
         if(track.getType() === 'audio') return <LocalAudio key={track.track.id} track={track} />
       })}
-      Video
+      This is You
 		</UserContainer>
 	);
 }

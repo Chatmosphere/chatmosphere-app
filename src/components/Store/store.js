@@ -37,12 +37,14 @@ export const [useStore, store] = create((set, get) => ({
 			set((state) => ({ users: newUsers }));
 		},
 		calculateVolumes: (localPos) => {
-				const users = get().users
+			const users = get().users
+			set(state => produce(state, newState => {
 				Object.keys(users).map((key, i) => {
-					const pos = users[key].pos
-					const d = getVolumeByDistance(localPos, pos)
-					console.log("DISTANCE VOLUME IS ", d)
+					const user = users[key]
+					const d = getVolumeByDistance(localPos, user.pos)
+					newState.users[key]['volume'] = d
 				})
+			}))
 		},
 		toggleMute: (id, track) => {
 			set(state => produce(state, newState => {newState.users[id]['mute'] = track.muted}))

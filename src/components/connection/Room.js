@@ -34,8 +34,8 @@ export const Room = ({roomName, JitsiMeetJS, connection}) => {
       r.join(); // FFFUUUUUUUUUUUUCK THATS IT GOD DAMNIT
       setRoom(r)
     }
-    return((r) => {
-        // if(room !== undefined) room.leave() //this throws errors, but why? guess i need a callback like https://github.com/jitsi/lib-jitsi-meet/issues/1330#issuecomment-703742442
+    return(() => {
+        // if(r) r?.leave()
     })
   },[connection])
 

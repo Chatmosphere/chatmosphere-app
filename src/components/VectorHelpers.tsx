@@ -8,13 +8,14 @@ export const getVectorDistance = (p1:Point, p2:Point):number => {
 }
 
 export const mapVolumeToDist = (max:number, dist:number):number => {
-	const p = dist/max
+	const volume = 1 - dist/max
+	const p = volume > 0 ? volume : 0
 	return p
 }
 
 export const getVolumeByDistance = (p1:Point, p2:Point):number => {
 	const d = getVectorDistance(p1, p2)
-	const dWidth = document.body.clientWidth
+	const dWidth = document.body.clientWidth / 2
 	const v = mapVolumeToDist(dWidth, d)
 	return v
 }

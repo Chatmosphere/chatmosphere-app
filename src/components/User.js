@@ -3,79 +3,17 @@ import { useStore } from './Store/store';
 
 export const User = ({id}) => {
 
-  const audioTrack = useStore(useCallback(store => store.users[id]['audio'], [id]))
-  const videoTrack = useStore(useCallback(store => store.users[id]['video'], [id]))
   const myPos = useStore(useCallback(store => store.users[id]['pos'], [id]))
+  const myVolume = useStore(useCallback(store => store.users[id]['volume'], [id]))
   const isMute = useStore(store => store.users[id]['mute'])
-  const [pos, setPos] = useState({x:0, y:0})
-
-  const clickDelta = useRef({x:0, y:0})
-  const active = useRef(false)
-  const userNode = useRef()  
-
-  const setDelta = (pos) => {
-    clickDelta.current = pos
-  }
-
-  useEffect(() => {
-    console.log("USER POS UPDATED ", myPos)
-    // setPos(myPos)
-  },[myPos])
-
-  useEffect(() => {
-    // ref not ready here? so the following doesnt work, thats weird; adding refCallbacks at line 6 works
-    // if(tracks.video) tracks.video.attach(VideoEl)
-  },[videoTrack])
-  
-  useEffect(() => {
-    if(audioTrack !== undefined) {
-      audioTrack.addEventListener(window.JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED, onAudioLEvelChanged)
-      audioTrack.addEventListener(window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED, () => console.log('remote mute changed')) //maybe there'S an error thrown because jitsi holds a reference of the track on participant disconnect
-    }
-    return (audioTrack)=>{
-      audioTrack?.removeEventListener(window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED, () => console.log('remote mute changed')) //maybe there'S an error thrown because jitsi holds a reference of the track on participant disconnect
-      audioTrack?.removeEventListener(window.JitsiMeetJS.events.track.TRACK_AUDIO_LEVEL_CHANGED, onAudioLEvelChanged)
-    }
-  },[audioTrack])
-
-  const onAudioLEvelChanged = (audioLevel) => {
-    // console.log("Audio level is ", audioLevel)
-  }
-
-  const onDrag = (e) => {
-    // if(active.current === true) setPos({x:e.clientX - clickDelta.current.x, y:e.clientY - clickDelta.current.y})
-
-    //without rerendering - better I guess - does yusufs lib offers a no-update-solution?
-    if(active.current === true && userNode.current !== undefined) {
-      const xPos = e.clientX - clickDelta.current.x
-      const yPos = e.clientY - clickDelta.current.y
-      userNode.current.setAttribute('style', `transform:translate3d(${xPos}px, ${yPos}px,0)`)
-      // userNode.current.setAttribute('style', myStyle)
-    }  
-  }
-
-  const onDown = (e) => {
-    e.preventDefault()
-    active.current = true
-    const boundingRect = e.currentTarget.getBoundingClientRect()
-    setDelta({x: e.clientX - boundingRect.x, y:e.clientY - boundingRect.y}) 
-    document.addEventListener('pointerup', onUp)
-    document.addEventListener('pointermove', onDrag)
-  }
-  const onUp = (e) => {
-    active.current = false
-    document.removeEventListener('pointerup', onUp)
-    document.removeEventListener('pointermove', onDrag)
-  }
-
-  console.log("User is rendererd")
 
   return(
-    <div ref={userNode} style={{position:'absolute', left:`${myPos.x}px`, top:`${myPos.y}px`}} className="userContainer" >
-      This is User {id}
-      User is {isMute ? "Mute" : "Unmuted"}  
+    <div style={{position:'absolute', left:`${myPos.x}px`, top:`${myPos.y}px`}} className="userContainer" >
       <VideoTrack id={id} />
-      <AudioTrack id={id} />
+      <AudioTrack id={id} volume={myVolume} />
+      <div>This is User {id}</div>
+      <div>Volume {myVolume}</div>
+      <div>User is {isMute ? "Mute" : "Unmuted"}</div>
     </div>
   )
 }
@@ -119,9 +57,14 @@ const VideoTrack = ({id}) => {
   )
 }
 
-const AudioTrack = ({id}) => {
+const AudioTrack = ({id, volume}) => {
   const audioTrack = useStore(useCallback(store => store.users[id]['audio'], [id]))
   const myRef = useRef()
+
+  useEffect(() => {
+    myRef.current.volume = volume
+
+  }, [volume])
 
   useEffect(() => {
     const el = myRef.current
