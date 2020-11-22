@@ -76,7 +76,7 @@ export const User = ({id}) => {
   console.log("User is rendererd")
 
   return(
-    <div ref={userNode} style={{transform:`translate3d(${pos.x}px, ${pos.y}px,0)`}} className="userContainer" >
+    <div ref={userNode} style={{position:'absolute', left:`${pos.x}px`, top:`${pos.y}px`}} className="userContainer" >
       This is User {id}
       User is {isMute ? "Mute" : "Unmuted"}  
       <VideoTrack id={id} />
@@ -104,10 +104,10 @@ const VideoTrack = ({id}) => {
   const myRef = useRef()
 
   useEffect(() => {
-    // if(videoTrack?.containers?.length === 0) videoTrack?.attach(myRef.current)
-    videoTrack?.attach(myRef.current)
+    const el = myRef.current
+    videoTrack?.attach(el)
     return(() => {
-      videoTrack?.detach(myRef.current)
+      videoTrack?.detach(el)
     })
   },[videoTrack])
 
@@ -129,10 +129,11 @@ const AudioTrack = ({id}) => {
   const myRef = useRef()
 
   useEffect(() => {
-    // if(audioTrack?.containers?.length === 0) audioTrack?.attach(myRef.current)
-    audioTrack?.attach(myRef.current)
+    const el = myRef.current
+    audioTrack?.attach(el)
+    debugger
     return(() => {
-      audioTrack?.detach(myRef.current)
+      audioTrack?.detach(el)
     })
   },[audioTrack])
 

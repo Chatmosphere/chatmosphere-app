@@ -2,13 +2,12 @@ import create from 'zustand';
 import omit from 'lodash';
 import { devtools } from 'zustand/middleware';
 import produce from 'immer';
-import { useEffect } from 'react';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
 import { connectionOptions, jitsiInitOptions } from '../connection/options';
-import { connected } from 'process';
-import { isSwitchStatement } from 'typescript';
 
 const getInitJitsi = async () => await window.JitsiMeetJS
+
+const userInit = {mute:false, volume:1, pos:{x:0,y:0}}
 
 export const [useStore, store] = create((set, get) => ({
 		//  IMMER PRODUCER
@@ -24,9 +23,10 @@ export const [useStore, store] = create((set, get) => ({
 		//  REMOTE USERS
 		users: {}, //{ sajkldfjks:{audio:track, video:track}, 3ja9djak:{audio:track, video:track}  }
 		addUser: (id) => set((state) => produce(state, (draft) => {
-			draft.users[id] = {mute:false,pos:{x:0,y:0}}
+			draft.users[id] = {mute:false, volume:1, pos:{x:0,y:0}}
 		})),
 		removeUser: (id) => set((state) => omit(state, [id], true)),
+		// updateUserPos: (id, pos) => set(state => produce(state, newState => {newState.users[id]['pos'] = pos})),
 		updateUserPos: (id, pos) => set(state => produce(state, newState => {newState.users[id]['pos'] = pos})),
 		addAudioTrack: (id, track) => {
 			track.addEventListener(window.JitsiMeetJS.events.track.TRACK_MUTE_CHANGED, () => get().toggleMute(id, track)) //works but is called twice 
