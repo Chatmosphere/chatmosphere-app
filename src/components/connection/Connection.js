@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Localuser } from '../Localuser/Localuser'
 import {connectionOptions, jitsiInitOptions} from './options'
-import {Room} from './Room'
+import {Conference} from './Conference'
 import { useStore } from './../Store/store'
 
  /* globals: JitisMeetJS */
@@ -13,11 +13,12 @@ const Connection = () => {
   const [connected, setConnected] = useState(false)
   const [JitsiMeetJS, setJitsiMeet] = useState()
   const setJsMeet = useStore(state => state.setJsMeet)
+  const clearLocalTracks = useStore(state => state.clearLocalTracks)
+  const clearUsers = useStore(state => state.clearUsers)
 
   useEffect(() => {
     const jsMeet = async () => window.JitsiMeetJS
     jsMeet().then(value => initConnection(value))
-
     return((connection) => {
       connection?.disconnect()
     })
@@ -29,7 +30,7 @@ const Connection = () => {
     const tmpConnection = new jsMeet.JitsiConnection(null, null, connectionOptions)
     tmpConnection.addEventListener(jsMeet.events.connection.CONNECTION_ESTABLISHED, () => {setConnected(true)});
     tmpConnection.addEventListener(jsMeet.events.connection.CONNECTION_FAILED, () => console.log("failed"));
-    tmpConnection.addEventListener(jsMeet.events.connection.CONNECTION_DISCONNECTED, () => console.log("disconnect, cleanup here"));
+    tmpConnection.addEventListener(jsMeet.events.connection.CONNECTION_DISCONNECTED, clearLocalTracks);
     tmpConnection.connect()
     setJitsiMeet(jsMeet)
     setJsMeet(jsMeet)
@@ -38,7 +39,7 @@ const Connection = () => {
 
   return (
     <div>
-      {connected && <Room roomName="conference" JitsiMeetJS={JitsiMeetJS} connection={connection} />}
+      {connected && <Conference roomName="conference" JitsiMeetJS={JitsiMeetJS} connection={connection} />}
       {connected && <Localuser/>}
       Some Content Here
 

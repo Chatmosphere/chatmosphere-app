@@ -13,7 +13,10 @@ export const Localuser: React.FC = () => {
   const jsMeet: any = useStore((store) => store.jsMeet);
   const room = useStore(store => store.room)
   const calculateVolumes = useStore(store => store.calculateVolumes)
-	const [ localTracks, setLocalTracks ] = useState([]);
+  const setLocalPos = useStore(store => store.setLocalPos)
+  // const [ localTracks, setLocalTracks ] = useState([]);
+  const localTracks = useStore(store => store.localTracks)
+  const setLocalTracks = useStore(store => store.setLocalTracks)
   const localUserNode = useRef<HTMLDivElement>(null)
   const [myID, setMyID] = useState()
   
@@ -32,6 +35,7 @@ export const Localuser: React.FC = () => {
       const yPos = e.clientY - clickDelta.current.y
       const newPos = JSON.stringify({id:myID, x:xPos, y:yPos})
       throttledSendPos(newPos)
+      setLocalPos({x:xPos, y:yPos})
       calculateVolumes({x:xPos, y:yPos})
       // sendPositionToPeers(newPos)
       // room.setLocalParticipantProperty('pos', `{x:${xPos}, y:${yPos}}`)
@@ -53,30 +57,16 @@ export const Localuser: React.FC = () => {
   }
 
   useEffect(()=>{
-    setMyID(room?.myUserId())
+    if(room?.myUserId()) setMyID(room.myUserId())
   },[room])
 
 	useEffect(
 		() => {
 			jsMeet
 				.createLocalTracks({ devices: [ 'audio', 'video' ] }, true)
-				.then((tracks) => {
-          tracks.map((track: any, i) => {
-            
-						// track.addEventListener(jsMeet.events.track.TRACK_MUTE_CHANGED, on_ego_mute_changed)
-						// track.addEventListener(jsMeet.events.track.LOCAL_TRACK_STOPPED, on_local_tracks_stopped)
-						// track.addEventListener(jsMeet.events.track.TRACK_AUDIO_OUTPUT_CHANGED, on_local_track_audio_output_changed)
-            // track.getType() === 'video' ? setVideoTrack(track) : setAudioTrack(track)
-            // track.attach(videoRef.current)
-          });
-          setLocalTracks(tracks);
-				})
-				.catch((error) => {
-					throw error;
-				});
-		},
-		[ jsMeet ]
-  );
+				.then(tracks => {setLocalTracks(tracks)})
+				.catch(error => {throw error;});
+	},[ jsMeet ])
 
 	return (
 		<UserContainer ref={localUserNode} onPointerDown={onDown} className="localUserContainer">
@@ -104,7 +94,12 @@ const LocalVideo = ({track}) => {
 
 
   useEffect(()=> {
-    if(track?.containers?.length === 0) track.attach(myRef.current)
+    const el = myRef.current
+    if(track?.containers?.length === 0) track.attach(el)
+    return (() => {
+      // track.detach(el)
+      track.dispose()
+    })
   },[track])
 
   useEffect(() => {
@@ -123,8 +118,14 @@ const LocalAudio = ({track}) => {
   const [audioLevel, setAudioLevel] = useState(0)
 
   useEffect(() => {
+    const el = myRef.current
     if(track?.containers?.length === 0) track.attach(myRef.current)
     track.addEventListener(jsMeet.events.track.TRACK_AUDIO_LEVEL_CHANGED, setAudioLevel)
+    return (() => {
+      track.removeEventListener(jsMeet.events.track.TRACK_AUDIO_LEVEL_CHANGED, setAudioLevel)
+      // track.detach(el)
+      track.dispose()
+    })
   },[track])
 
   useEffect(() => {

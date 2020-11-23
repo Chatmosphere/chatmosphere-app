@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { User } from '../User';
 import { conferenceName, conferenceOptions, jitsiInitOptions } from './options';
-import {useJitsiStore, useStore} from './../Store/store'
+import {useJitsiStore, useStore} from '../Store/store'
 import { parseJsonText } from 'typescript';
 
-export const Room = ({roomName, JitsiMeetJS, connection}) => {
+export const Conference = ({roomName, JitsiMeetJS, connection}) => {
 
   const [room, setRoom] = useStore(state => [state.room, state.setRoom])
 
@@ -54,6 +54,8 @@ export const Room = ({roomName, JitsiMeetJS, connection}) => {
   }
 
   const on_remote_track_removed = (track) => {
+    
+    track.dispose()
   }
 
   const on_conference_joined = () => {
@@ -64,6 +66,7 @@ export const Room = ({roomName, JitsiMeetJS, connection}) => {
   }
 
   const on_user_left = (id) => {
+    console.log("USER LEFT !!!!!!!! ", id)
     removeUser(id)
   }
   const on_remote_track_audio_level_changed = () => {

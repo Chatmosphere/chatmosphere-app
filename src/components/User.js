@@ -6,6 +6,12 @@ export const User = ({id}) => {
   const myPos = useStore(useCallback(store => store.users[id]['pos'], [id]))
   const myVolume = useStore(useCallback(store => store.users[id]['volume'], [id]))
   const isMute = useStore(store => store.users[id]['mute'])
+  const calculateVolume = useStore(store => store.calculateVolume)
+
+  useEffect(() => {
+    calculateVolume(id)
+  },[id, calculateVolume, myPos])
+
 
   return(
     <div style={{position:'absolute', left:`${myPos.x}px`, top:`${myPos.y}px`}} className="userContainer" >
@@ -33,14 +39,17 @@ const VideoTrack = ({id}) => {
   }
 
   const videoTrack = useStore(useCallback(store => store.users[id]['video'], [id]))
+  // const active = useStore(useCallback(store => store.users[id]['video']['stream']['active'], [id]))
 
   const myRef = useRef()
 
   useEffect(() => {
     const el = myRef.current
+    console.log("Active ", videoTrack?.stream?.active)
     videoTrack?.attach(el)
     return(() => {
-      videoTrack?.detach(el)
+      // videoTrack?.detach(el)
+      videoTrack?.dispose()
     })
   },[videoTrack])
 
@@ -70,7 +79,8 @@ const AudioTrack = ({id, volume}) => {
     const el = myRef.current
     audioTrack?.attach(el)
     return(() => {
-      audioTrack?.detach(el)
+      // audioTrack?.detach(el)
+      audioTrack?.dispose()
     })
   },[audioTrack])
 
