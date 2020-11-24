@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useStore } from './Store/store';
+import { useStore } from '../Store/store';
+import { Name } from './Name';
 
 export const User = ({id}) => {
 
@@ -17,8 +18,8 @@ export const User = ({id}) => {
     <div style={{position:'absolute', left:`${myPos.x}px`, top:`${myPos.y}px`}} className="userContainer" >
       <VideoTrack id={id} />
       <AudioTrack id={id} volume={myVolume} />
-      <div>This is User {id}</div>
-      <div>Volume {myVolume}</div>
+      <Name>User {id}</Name>
+      <div>Volume {Math.round(myVolume * 11)}</div>
       <div>User is {isMute ? "Mute" : "Unmuted"}</div>
     </div>
   )
@@ -49,6 +50,7 @@ const VideoTrack = ({id}) => {
     videoTrack?.attach(el)
     return(() => {
       // videoTrack?.detach(el)
+      console.log("Is dispose even called?")
       videoTrack?.dispose()
     })
   },[videoTrack])

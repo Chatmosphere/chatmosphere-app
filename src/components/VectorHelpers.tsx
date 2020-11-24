@@ -15,7 +15,8 @@ export const mapVolumeToDist = (max:number, dist:number):number => {
 
 export const getVolumeByDistance = (p1:Point, p2:Point):number => {
 	const d = getVectorDistance(p1, p2)
-	const dWidth = document.body.clientWidth / 2
+	// const dWidth = document.body.clientWidth / 2 // relative distance based on screen size
+	const dWidth = 600 // 3 * video size as a starter?
 	const v = mapVolumeToDist(dWidth, d)
 	return v
 }

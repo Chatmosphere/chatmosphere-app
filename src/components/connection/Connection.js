@@ -3,6 +3,7 @@ import { Localuser } from '../Localuser/Localuser'
 import {connectionOptions, jitsiInitOptions} from './options'
 import {Conference} from './Conference'
 import { useStore } from './../Store/store'
+import { Header } from '../Header/Header'
 
  /* globals: JitisMeetJS */
 
@@ -41,7 +42,7 @@ const Connection = () => {
     <div>
       {connected && <Conference roomName="conference" JitsiMeetJS={JitsiMeetJS} connection={connection} />}
       {connected && <Localuser/>}
-      Some Content Here
+      <Header>Chatmosphere</Header>
 
     </div> 
   )

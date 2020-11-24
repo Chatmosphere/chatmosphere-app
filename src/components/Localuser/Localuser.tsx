@@ -2,26 +2,50 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useStore } from './../Store/store';
 import {throttle} from 'lodash'
+import { Name } from '../User/Name';
 
+interface IUserContainer {
+  readonly isActive :boolean
+  readonly pos: {x:number, y:number}
+}
 
-const UserContainer = styled.div`
+const UserContainer = styled.div<IUserContainer>`
   width: 200px;
+  height:200px;
   position:absolute;
-`
+  border: 4px solid;
+  &:after {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    border: 2px dotted #CCC;
+    content: "";
+    width: 1000px;
+    height: 1000px;
+    display:block;
+    border-radius: 500px;
+  }
+  border-radius: 300px;
+  left: ${props => props.pos.x}px;
+  top: ${props => props.pos.y}px;
+  border-color: ${props => props.isActive ? "red"  : "black"}
+  `
 
 export const Localuser: React.FC = () => {
   const jsMeet: any = useStore((store) => store.jsMeet);
   const room = useStore(store => store.room)
   const calculateVolumes = useStore(store => store.calculateVolumes)
+  const pos = useStore(store => store.localPos)
   const setLocalPos = useStore(store => store.setLocalPos)
   // const [ localTracks, setLocalTracks ] = useState([]);
   const localTracks = useStore(store => store.localTracks)
   const setLocalTracks = useStore(store => store.setLocalTracks)
   const localUserNode = useRef<HTMLDivElement>(null)
   const [myID, setMyID] = useState()
-  
+  const [isActive, setActive] = useState(false)
   const clickDelta = useRef({x:0, y:0})
-  const active:any = useRef(false)
+  
 
   function sendPositionToPeers(pos) {
     room.sendCommand("pos", {value:pos})
@@ -30,26 +54,23 @@ export const Localuser: React.FC = () => {
   const throttledSendPos = throttle(sendPositionToPeers, 200)
 
   const onDrag = (e) => {
-    if(active.current === true && localUserNode.current !== null) {
       const xPos = e.clientX - clickDelta.current.x
       const yPos = e.clientY - clickDelta.current.y
       const newPos = JSON.stringify({id:myID, x:xPos, y:yPos})
       throttledSendPos(newPos)
       setLocalPos({x:xPos, y:yPos})
       calculateVolumes({x:xPos, y:yPos})
-      // sendPositionToPeers(newPos)
-      // room.setLocalParticipantProperty('pos', `{x:${xPos}, y:${yPos}}`)
-      localUserNode.current.setAttribute('style', `left:${xPos}px; top:${yPos}px`)
-  }
+      // Still think rerendering is a waste and should be handled with transient updates
+      // if(localUserNode.current) localUserNode.current.setAttribute('style', `left:${xPos}px; top:${yPos}px`)
 }
   const onUp = () => {
-    active.current = false
+    setActive(false)
     document.removeEventListener('pointerup', onUp)
     document.removeEventListener('pointermove', onDrag)
   }
   const onDown = (e) => {
     e.preventDefault()
-    active.current = true
+    setActive(true)
     const boundingRect = e.currentTarget.getBoundingClientRect()
     clickDelta.current = {x: e.clientX - boundingRect.x, y:e.clientY - boundingRect.y}
     document.addEventListener('pointerup', onUp)
@@ -69,12 +90,12 @@ export const Localuser: React.FC = () => {
 	},[ jsMeet ])
 
 	return (
-		<UserContainer ref={localUserNode} onPointerDown={onDown} className="localUserContainer">
+		<UserContainer ref={localUserNode} isActive={isActive} pos={pos} onPointerDown={onDown} className="localUserContainer">
       {localTracks.map((track:any) => {
         if(track?.getType() === 'video') return <LocalVideo key={track.track.id} track={track} />
         if(track.getType() === 'audio') return <LocalAudio key={track.track.id} track={track} />
       })}
-      This is You
+      <Name>This is You</Name>
 		</UserContainer>
 	);
 }
@@ -97,8 +118,8 @@ const LocalVideo = ({track}) => {
     const el = myRef.current
     if(track?.containers?.length === 0) track.attach(el)
     return (() => {
-      // track.detach(el)
-      track.dispose()
+      track.detach(el)
+      // track.dispose()
     })
   },[track])
 
@@ -123,8 +144,8 @@ const LocalAudio = ({track}) => {
     track.addEventListener(jsMeet.events.track.TRACK_AUDIO_LEVEL_CHANGED, setAudioLevel)
     return (() => {
       track.removeEventListener(jsMeet.events.track.TRACK_AUDIO_LEVEL_CHANGED, setAudioLevel)
-      // track.detach(el)
-      track.dispose()
+      track.detach(el)
+      // track.dispose()
     })
   },[track])
 

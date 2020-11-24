@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { User } from '../User';
+import { User } from '../User/User';
 import { conferenceName, conferenceOptions, jitsiInitOptions } from './options';
 import {useJitsiStore, useStore} from '../Store/store'
 import { parseJsonText } from 'typescript';
