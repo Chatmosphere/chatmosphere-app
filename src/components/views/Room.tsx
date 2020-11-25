@@ -24,9 +24,6 @@ const Room: React.FC = (props) => {
           {roomStore.room && roomStore.room.egoUser && (
             <User className="ego" {...roomStore.room.egoUser} />
           )}
-          {roomStore.room && roomStore.room.egoUser && (
-            <User className="ego" {...roomStore.room.egoUser} />
-          )}
           {roomStore.room &&
             Object.keys(roomStore.room.users).map((id) => (
               <User key={id} {...roomStore.room.users[id]} />
