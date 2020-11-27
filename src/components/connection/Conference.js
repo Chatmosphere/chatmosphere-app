@@ -1,24 +1,23 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import { User } from '../User/User';
-import { conferenceName, conferenceOptions, jitsiInitOptions } from './options';
-import {useJitsiStore, useStore} from '../Store/store'
-import { parseJsonText } from 'typescript';
+import { conferenceOptions } from './options';
+import { useStore} from '../Store/store'
+import { useConnectionStore } from '../Store/ConnectionStore';
+import { useUserStore } from '../Store/UserStore';
 
-export const Conference = ({roomName, JitsiMeetJS, connection}) => {
+export const Conference = ({connection}) => {
 
-  const [room, setRoom] = useStore(state => [state.room, state.setRoom])
+  const [room, setRoom] = useConnectionStore(state => [state.room, state.setRoom])
+  const {conferenceName} = useConnectionStore()
 
   //publicStore
-  const addUser = useStore(state => state.addUser)
-  const removeUser = useStore(state => state.removeUser)
-  const addAudioTrack = useStore(state => state.addAudioTrack)
-  const addVideoTrack = useStore(state => state.addVideoTrack)
-  const updateUserPos = useStore(state => state.updateUserPos)
-  const users = useStore(state => state.users)
+  const { addUser, removeUser, addAudioTrack, addVideoTrack, updateUserPosition} = useUserStore()
+  const JitsiMeetJS = useConnectionStore(state => state.jsMeet)
   
   useEffect(() => {
-    if(connection && JitsiMeetJS) {
-      const r = connection.initJitsiConference(roomName, conferenceOptions)
+    console.log("CALLED HOW OFTEN ", JitsiMeetJS)
+    if( JitsiMeetJS) {
+      const r = connection.initJitsiConference(conferenceName, conferenceOptions)
       r.on(JitsiMeetJS.events.conference.TRACK_ADDED, on_remote_track_added)
       r.on(JitsiMeetJS.events.conference.TRACK_REMOVED, on_remote_track_removed)
       r.on(JitsiMeetJS.events.conference.CONFERENCE_JOINED, on_conference_joined)
@@ -35,20 +34,20 @@ export const Conference = ({roomName, JitsiMeetJS, connection}) => {
       setRoom(r)
     }
     return(() => {
+      room?.leave()
         // if(r) r?.leave()
     })
-  },[connection])
+  },[connection, JitsiMeetJS])
 
   const onPositionReceived = (e) => {
     const pos = JSON.parse(e.value)
-    updateUserPos(pos.id, {x:pos.x, y:pos.y})
+    updateUserPosition(pos.id, {x:pos.x, y:pos.y})
   }
 
   const on_remote_track_added = (track) => {
     if(track.isLocal()) return // also run on your own tracks so exit
     track.addEventListener(JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,() => console.log('remote track stopped'))
     track.addEventListener(JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED,deviceId =>console.log(`track audio output device was changed to ${deviceId}`))
-
     const id = track.getParticipantId() // get user id of track
     track.getType() === "audio" ? addAudioTrack(id, track) : addVideoTrack(id, track)
   }
@@ -74,12 +73,6 @@ export const Conference = ({roomName, JitsiMeetJS, connection}) => {
   }
 
   return (
-    <div>
-      {Object.keys(users).map((id) => {
-        return(
-            <User key={id} id={id}/>
-        )
-      })}
-    </div>
+    null
   )
 }

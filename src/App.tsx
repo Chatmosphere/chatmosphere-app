@@ -1,11 +1,17 @@
 import * as React from 'react';
 import './App.css';
-import Connection from './components/connection/Connection';
+import JitsiConnection from './components/connection/JitsiConnection';
+import { Header } from './components/Header/Header';
+import { Localuser } from './components/Localuser/Localuser';
+import { Users } from './components/User/Users';
 
 function App() {
   return (
     <div className="App">
-      <Connection />
+      <Header>Chatmosphere</Header>
+      <JitsiConnection />
+      <Users />
+      <Localuser />
     </div>
   );
 }

@@ -7,7 +7,7 @@ import { getVolumeByDistance } from '../VectorHelpers';
 
 
 
-export const [useStore, store] = create((set, get) => ({
+export const useStore = create((set, get) => ({
 		//  IMMER PRODUCER
 		set: fn => set(produce(fn)),
 		//  CONNECTION PART
@@ -90,6 +90,3 @@ export const [useStore, store] = create((set, get) => ({
 	})
 );
 
-if(process.env.NODE_ENV === 'development') {
-	mountStoreDevtool('Store', store)
-}

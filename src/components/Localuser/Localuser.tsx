@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useStore } from './../Store/store';
 import {throttle} from 'lodash'
 import { Name } from '../User/Name';
+import { useConnectionStore } from '../Store/ConnectionStore';
+import { useLocalStore } from '../Store/LocalStore';
+import { useUserStore } from '../Store/UserStore';
 
 interface IUserContainer {
   readonly isActive :boolean
@@ -29,18 +31,16 @@ const UserContainer = styled.div<IUserContainer>`
   border-radius: 300px;
   left: ${props => props.pos.x}px;
   top: ${props => props.pos.y}px;
-  border-color: ${props => props.isActive ? "red"  : "black"}
+  border-color: ${props => props.isActive ? "#9ec9ff"  : "#5a7aa3"}
   `
 
 export const Localuser: React.FC = () => {
-  const jsMeet: any = useStore((store) => store.jsMeet);
-  const room = useStore(store => store.room)
-  const calculateVolumes = useStore(store => store.calculateVolumes)
-  const pos = useStore(store => store.localPos)
-  const setLocalPos = useStore(store => store.setLocalPos)
-  // const [ localTracks, setLocalTracks ] = useState([]);
-  const localTracks = useStore(store => store.localTracks)
-  const setLocalTracks = useStore(store => store.setLocalTracks)
+  const { jsMeet, room } = useConnectionStore()
+
+  const calculateVolumes = useUserStore(store => store.calculateVolumes)
+  const pos = useLocalStore(store => store.localPosition)
+  const { setLocalPosition, localTracks, setLocalTracks } = useLocalStore()
+
   const localUserNode = useRef<HTMLDivElement>(null)
   const [myID, setMyID] = useState()
   const [isActive, setActive] = useState(false)
@@ -48,7 +48,7 @@ export const Localuser: React.FC = () => {
   
 
   function sendPositionToPeers(pos) {
-    room.sendCommand("pos", {value:pos})
+    if(room !== null) room.sendCommand("pos", {value:pos})
   }
 
   const throttledSendPos = throttle(sendPositionToPeers, 200)
@@ -58,7 +58,7 @@ export const Localuser: React.FC = () => {
       const yPos = e.clientY - clickDelta.current.y
       const newPos = JSON.stringify({id:myID, x:xPos, y:yPos})
       throttledSendPos(newPos)
-      setLocalPos({x:xPos, y:yPos})
+      setLocalPosition({x:xPos, y:yPos})
       calculateVolumes({x:xPos, y:yPos})
       // Still think rerendering is a waste and should be handled with transient updates
       // if(localUserNode.current) localUserNode.current.setAttribute('style', `left:${xPos}px; top:${yPos}px`)
@@ -81,13 +81,12 @@ export const Localuser: React.FC = () => {
     if(room?.myUserId()) setMyID(room.myUserId())
   },[room])
 
-	useEffect(
-		() => {
+	useEffect(() => {
 			jsMeet
-				.createLocalTracks({ devices: [ 'audio', 'video' ] }, true)
+				?.createLocalTracks({ devices: [ 'audio', 'video' ] }, true)
 				.then(tracks => {setLocalTracks(tracks)})
 				.catch(error => {throw error;});
-	},[ jsMeet ])
+	},[ jsMeet, setLocalTracks ])
 
 	return (
 		<UserContainer ref={localUserNode} isActive={isActive} pos={pos} onPointerDown={onDown} className="localUserContainer">
@@ -111,7 +110,7 @@ const Video = styled.video`
 
 const LocalVideo = ({track}) => {
   const myRef:any = useRef()
-  const room:any = useStore(store => store.room)
+  const room:any = useConnectionStore(store => store.room)
 
 
   useEffect(()=> {
@@ -124,7 +123,7 @@ const LocalVideo = ({track}) => {
   },[track])
 
   useEffect(() => {
-    room.addTrack(track)
+    room?.addTrack(track)
   },[room, track])
 
   return <Video autoPlay={true} ref={myRef} className={`localTrack videoTrack`} />
@@ -133,8 +132,8 @@ const LocalVideo = ({track}) => {
 
 const LocalAudio = ({track}) => {
   const myRef:any = useRef()
-  const room:any = useStore(store => store.room)
-  const jsMeet:any = useStore(store => store.jsMeet)
+  const room:any = useConnectionStore(store => store.room)
+  const jsMeet:any = useConnectionStore(store => store.jsMeet)
 
   const [audioLevel, setAudioLevel] = useState(0)
 
@@ -150,7 +149,7 @@ const LocalAudio = ({track}) => {
   },[track])
 
   useEffect(() => {
-    room.addTrack(track)
+    room?.addTrack(track)
   },[room,track])
 
   return <audio autoPlay={true} muted={true} id='localAudio${id}' />

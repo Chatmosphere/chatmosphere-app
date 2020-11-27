@@ -1,26 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import { Localuser } from '../Localuser/Localuser'
 import {connectionOptions, jitsiInitOptions} from './options'
 import {Conference} from './Conference'
-import { useStore } from './../Store/store'
-import { Header } from '../Header/Header'
+import { useLocalStore } from '../Store/LocalStore'
+import { useConnectionStore } from '../Store/ConnectionStore'
 
  /* globals: JitisMeetJS */
 
  //no reload?
-const Connection = () => {
+const JitsiConnection = () => {
 
   const [connection, setConnection] = useState(undefined)
-  const [connected, setConnected] = useState(false)
-  const [JitsiMeetJS, setJitsiMeet] = useState()
-  const setJsMeet = useStore(state => state.setJsMeet)
-  const clearLocalTracks = useStore(state => state.clearLocalTracks)
-  const clearUsers = useStore(state => state.clearUsers)
+  const {connected, setConnected} = useConnectionStore()
+  const setJsMeet = useConnectionStore(state => state.setJsMeet)
+  const clearLocalTracks = useLocalStore(state => state.clearLocalTracks)
 
   useEffect(() => {
     const jsMeet = async () => window.JitsiMeetJS
-    jsMeet().then(value => initConnection(value))
-    return((connection) => {
+    jsMeet().then((value) => initConnection(value))
+    return(() => {
       connection?.disconnect()
     })
   },[])
@@ -33,20 +30,16 @@ const Connection = () => {
     tmpConnection.addEventListener(jsMeet.events.connection.CONNECTION_FAILED, () => console.log("failed"));
     tmpConnection.addEventListener(jsMeet.events.connection.CONNECTION_DISCONNECTED, clearLocalTracks);
     tmpConnection.connect()
-    setJitsiMeet(jsMeet)
     setJsMeet(jsMeet)
     setConnection(tmpConnection)
   }
 
   return (
-    <div>
-      {connected && <Conference roomName="conference" JitsiMeetJS={JitsiMeetJS} connection={connection} />}
-      {connected && <Localuser/>}
-      <Header>Chatmosphere</Header>
-
-    </div> 
+    <>
+      {connected && <Conference connection={connection} />}
+    </>
   )
 }
 
 
-export default Connection
+export default JitsiConnection

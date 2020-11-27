@@ -1,21 +1,33 @@
-import create from "zustand";
+import create, { StoreApi } from "zustand";
+import { devtools } from "zustand/middleware";
 
 type Store = {
-  jsMeet:Object|null
-  setJsMeet: (jsMeet:Object) => void
-  room:Object|null
-  setRoom: (room:Object) => void
+  jsMeet:any
+  room:any
   joined:boolean
+  conferenceName: string
+  connected:boolean
+  setJsMeet: (jsMeet:any) => void
+  setRoom: (room:Object) => void
   joinRoom: () => void
   leaveRoom: () => void
+  setConnected: () => void
+  setDisconnected: () => void
 }
 
-export const useConnectionStore = create<Store>(set => ({
-  jsMeet:null,
-  setJsMeet: jsMeet => set({jsMeet: jsMeet}),
+export const useConnectionStore = create<Store>(devtools(set => ({
+  jsMeet:undefined,
   room:null,
-  setRoom: (room) => set({room: room}),
   joined: false,
+  conferenceName: 'conference',
+  connected:false,
+  setJsMeet: jsMeet => {
+    set({jsMeet: jsMeet})
+  },
+  setRoom: (room) => set({room: room}),
   joinRoom: () => set({joined:true}),
   leaveRoom: () => set({joined:false}),
-}))
+  setConnected: () => set({connected:true}),
+  setDisconnected: () => set({connected:false})
+}),'ConnectionStore'))
+
