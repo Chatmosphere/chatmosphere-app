@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect } from 'react';
-import { useUserStore } from '../Store/UserStore';
-import { AudioTrack } from './Audio';
+import { useConferenceStore } from '../Store/ConferenceStore';
+import { AudioTrack } from './AudioTrack';
 import { Name } from './Name';
-import { VideoTrack } from './Video';
+import { VideoTrack } from './VideoTrack';
 
 export const User = ({id}) => {
 
-  const myPos = useUserStore(useCallback(store => store.users[id]['pos'], [id]))
-  const myVolume = useUserStore(useCallback(store => store.users[id]['volume'], [id]))
-  const isMute = useUserStore(store => store.users[id]['mute'])
-  const calculateVolume = useUserStore(store => store.calculateVolume)
+  const myPos = useConferenceStore(useCallback(store => store.users[id]['pos'], [id]))
+  const myVolume = useConferenceStore(useCallback(store => store.users[id]['volume'], [id]))
+  const isMute = useConferenceStore(store => store.users[id]['mute'])
+  const calculateVolume = useConferenceStore(store => store.calculateVolume)
 
   useEffect(() => {
     calculateVolume(id)

@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { useUserStore } from "../Store/UserStore"
+import { useConferenceStore } from '../Store/ConferenceStore';
 import { User } from "./User"
 
 export const Users = () => {
 
-  const {users} = useUserStore()
+  const {users} = useConferenceStore()
 
   return (
     <>

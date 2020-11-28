@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useCallback, useEffect, useRef } from "react"
 import styled from "styled-components"
-import { useUserStore } from "../Store/UserStore"
+import { useConferenceStore } from '../Store/ConferenceStore';
 
 
 const Video = styled.video`
@@ -16,7 +16,7 @@ const Video = styled.video`
 
 export const VideoTrack = ({id}) => {
 
-  const videoTrack:any = useUserStore(useCallback(store => store.users[id]['video'], [id]))
+  const videoTrack:any = useConferenceStore(useCallback(store => store.users[id]['video'], [id]))
   const myRef:any = useRef()
 
   useEffect(() => {

@@ -1,9 +1,8 @@
-import { current } from 'immer';
 import React, { useCallback, useEffect, useRef } from 'react';
-import { useUserStore } from '../Store/UserStore';
+import { useConferenceStore } from '../Store/ConferenceStore';
 
 export const AudioTrack = ({id, volume}) => {
-  const audioTrack:any = useUserStore(useCallback(store => store.users[id]['audio'], [id]))
+  const audioTrack:any = useConferenceStore(useCallback(store => store.users[id]['audio'], [id]))
   const myRef:any = useRef()
 
   useEffect(() => {

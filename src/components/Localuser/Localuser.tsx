@@ -4,7 +4,7 @@ import {throttle} from 'lodash'
 import { Name } from '../User/Name';
 import { useConnectionStore } from '../Store/ConnectionStore';
 import { useLocalStore } from '../Store/LocalStore';
-import { useUserStore } from '../Store/UserStore';
+import { useConferenceStore } from '../Store/ConferenceStore';
 
 interface IUserContainer {
   readonly isActive :boolean
@@ -35,9 +35,10 @@ const UserContainer = styled.div<IUserContainer>`
   `
 
 export const Localuser: React.FC = () => {
-  const { jsMeet, room } = useConnectionStore()
+  const { jsMeet } = useConnectionStore()
+  const conference = useConferenceStore(state => state.conferenceObject)
 
-  const calculateVolumes = useUserStore(store => store.calculateVolumes)
+  const calculateVolumes = useConferenceStore(store => store.calculateVolumes)
   const pos = useLocalStore(store => store.localPosition)
   const { setLocalPosition, localTracks, setLocalTracks } = useLocalStore()
 
@@ -48,7 +49,7 @@ export const Localuser: React.FC = () => {
   
 
   function sendPositionToPeers(pos) {
-    if(room !== null) room.sendCommand("pos", {value:pos})
+    conference?.sendCommand("pos", {value:pos})
   }
 
   const throttledSendPos = throttle(sendPositionToPeers, 200)
@@ -78,8 +79,8 @@ export const Localuser: React.FC = () => {
   }
 
   useEffect(()=>{
-    if(room?.myUserId()) setMyID(room.myUserId())
-  },[room])
+    if(conference?.myUserId()) setMyID(conference.myUserId())
+  },[conference])
 
 	useEffect(() => {
 			jsMeet
@@ -110,7 +111,7 @@ const Video = styled.video`
 
 const LocalVideo = ({track}) => {
   const myRef:any = useRef()
-  const room:any = useConnectionStore(store => store.room)
+  const room:any = useConferenceStore(store => store.conferenceObject)
 
 
   useEffect(()=> {
@@ -132,7 +133,7 @@ const LocalVideo = ({track}) => {
 
 const LocalAudio = ({track}) => {
   const myRef:any = useRef()
-  const room:any = useConnectionStore(store => store.room)
+  const room:any = useConferenceStore(store => store.conferenceObject)
   const jsMeet:any = useConnectionStore(store => store.jsMeet)
 
   const [audioLevel, setAudioLevel] = useState(0)
