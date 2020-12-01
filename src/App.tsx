@@ -4,6 +4,7 @@ import JitsiConnection from './components/connection/JitsiConnection';
 import { Header } from './components/Header/Header';
 import { Localuser } from './components/Localuser/Localuser';
 import { LocalStoreLogic } from './components/Store/LocalStore';
+import { Settings } from './components/Settings/Settings';
 import { Users } from './components/User/Users';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
       <LocalStoreLogic />
       <Users />
       <Localuser />
+      <Settings />
     </div>
   );
 }

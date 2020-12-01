@@ -1,6 +1,6 @@
 import { mountStoreDevtool } from "simple-zustand-devtools";
 import create from "zustand";
-import { connectionOptions, jitsiInitOptions } from "../connection/options";
+import { getConnectionOptions, jitsiInitOptions } from "../connection/options";
 import { IJitsiConference, Track } from "./ConferenceStore";
 
 type IJitsiEvents = {
@@ -40,6 +40,7 @@ type IJitsiConnection = {
 };
 
 type Store = {
+  serverUrl: string
   jsMeet?: IJsMeet;
   connection?: IJitsiConnection;
   connected: boolean;
@@ -50,20 +51,29 @@ type Store = {
   disconnectServer: () => void;
 };
 
-export const useConnectionStore = create<Store>((set, get) => ({
-  jsMeet: undefined,
-  room: null,
-  joined: false,
-  conferenceName: "conference",
-  connection: undefined,
-  connected: false,
-  initJitsiMeet: async () => {
+export const useConnectionStore = create<Store>((set, get) => {
+  
+  const initialState = {
+    serverUrl: "jitsi.chatmosphere.cc",
+    jsMeet:undefined,
+    room:null,
+    connection:undefined,
+    connected:false,
+  }
+
+  // # Private Functions
+  const _setConnected = () => set({connected:true}) //actually this should initiate a new conference object without joining it 
+  const _setDisconnected = () => set({connected:false})
+
+  // # Public Functions
+  const initJitsiMeet = async () => {
     // not sure if most elegant but now returns jitsi object and we can initialize conference nicely after server
     const promise = new Promise((res, rej) => {
       const jitsiMeet = async () => window.JitsiMeetJS;
       jitsiMeet().then((jsMeet) => {
         jsMeet.setLogLevel(jsMeet.logLevels.ERROR);
         jsMeet.init(jitsiInitOptions);
+        const connectionOptions = getConnectionOptions(get().serverUrl)
         const tmpConnection = new jsMeet.JitsiConnection(
           null,
           null,
@@ -71,7 +81,7 @@ export const useConnectionStore = create<Store>((set, get) => ({
         ); //should be callable to init new connection to different servers
         tmpConnection.addEventListener(
           jsMeet.events.connection.CONNECTION_ESTABLISHED,
-          get().setConnected
+          _setConnected
         );
         tmpConnection.addEventListener(
           jsMeet.events.connection.CONNECTION_FAILED,
@@ -79,7 +89,7 @@ export const useConnectionStore = create<Store>((set, get) => ({
         );
         tmpConnection.addEventListener(
           jsMeet.events.connection.CONNECTION_DISCONNECTED,
-          get().setDisconnected
+          _setDisconnected
         );
         tmpConnection.connect(); // TODO separate in own function to connect & disconnect to different servers or call connection.connect() / connection.disconnect() from components?
         set({ jsMeet: jsMeet, connection: tmpConnection });
@@ -89,7 +99,11 @@ export const useConnectionStore = create<Store>((set, get) => ({
     });
     // const result = await promise
     return await promise;
-  },
+  }
+  
+  return ({
+  ...initialState,
+  initJitsiMeet,
   connectServer: () => {
     get().connection?.connect();
   },
@@ -98,7 +112,7 @@ export const useConnectionStore = create<Store>((set, get) => ({
   },
   setConnected: () => set({ connected: true }), //actually this should initiate a new conference object without joining it
   setDisconnected: () => set({ connected: false }),
-}));
+})})
 
 if (process.env.NODE_ENV === "development") {
   mountStoreDevtool("useConnectionStore", useConnectionStore);

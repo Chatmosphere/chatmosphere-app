@@ -6,6 +6,7 @@ import { useLocalStore } from '../Store/LocalStore';
 import { useConferenceStore } from '../Store/ConferenceStore';
 import LocalVideo from './LocalVideo';
 import LocalAudio from './LocalAudio';
+import { localTrackOptions } from '../connection/options';
 
 interface IUserContainer {
   readonly isActive :boolean
@@ -17,23 +18,24 @@ const UserContainer = styled.div<IUserContainer>`
   height:200px;
   position:absolute;
   border: 4px solid;
-  &:after {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    left: 50%;
-    top: 50%;
-    border: 2px dotted #CCC;
-    content: "";
-    width: 1000px;
-    height: 1000px;
-    display:block;
-    border-radius: 500px;
-  }
   border-radius: 300px;
   left: ${props => props.pos.x}px;
   top: ${props => props.pos.y}px;
   border-color: ${props => props.isActive ? "#9ec9ff"  : "#5a7aa3"}
   `
+const AudioRadius = styled.div`
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  border: 2px dotted #CCC;
+  width: 1000px;
+  height: 1000px;
+  display:block;
+  border-radius: 500px;
+  pointer-events: none;
+  z-index: -100;
+`
 
 export const Localuser: React.FC = () => {
   const conference = useConferenceStore(state => state.conferenceObject)
@@ -84,6 +86,7 @@ export const Localuser: React.FC = () => {
 
 	return (
 		<UserContainer ref={localUserNode} isActive={isActive} pos={pos} onPointerDown={onDown} className="localUserContainer">
+      <AudioRadius></AudioRadius>
       {videoTrack && <LocalVideo key={videoTrack.track.id} track={videoTrack} />}
       {audioTrack && <LocalAudio key={audioTrack.track.id} track={audioTrack} />}
       <Name>This is You</Name>

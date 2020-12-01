@@ -24,7 +24,9 @@ export const LocalStoreLogic = () => {
       jsMeet
         ?.createLocalTracks({ devices: [ 'audio', 'video' ] }, true)
         .then(tracks => {setLocalTracks(tracks)})
-        .catch(error => {throw error;});
+        .catch(error => {
+          console.log(error)
+        });
   },[ jsMeet, setLocalTracks ])
   
   return <></>
