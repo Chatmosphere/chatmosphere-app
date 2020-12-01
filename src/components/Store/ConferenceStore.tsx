@@ -74,6 +74,13 @@ export const useConferenceStore = create((set:any,get:any):ConferenceStore => {
   const _updateUserPosition = (id:ID, pos:Point):void => set(state => produce(state, newState => {
     if(newState.users[id]) newState.users[id]['pos'] = pos
   }))
+  const _onTrackMuteChanged = (track:Track):void => {
+    if(track.getType() === 'video') return
+    const tmpID = track.getParticipantId()
+    set(state => produce(state, newState => {
+      if(newState.users[tmpID]) newState.users[tmpID]['mute'] = track.isMuted() //check in beginning sucks
+    }))
+  }
 
   const _onRemoteTrackAdded = (track:any):void => {
     if(track.isLocal()) return // also run on your own tracks so exit
@@ -103,7 +110,7 @@ export const useConferenceStore = create((set:any,get:any):ConferenceStore => {
       conference.on(JitsiMeetJS.events.conference.TRACK_ADDED, _onRemoteTrackAdded)
       conference.on(JitsiMeetJS.events.conference.TRACK_REMOVED, _onRemoteTrackRemoved)
       conference.on(JitsiMeetJS.events.conference.CONFERENCE_JOINED, () => set({isJoined:true})) //only Local User -> could be in LocalStore
-      //conference.on(JitsiMeetJS.events.conference.TRACK_MUTE_CHANGED, onTrackToggleMuted);
+      conference.on(JitsiMeetJS.events.conference.TRACK_MUTE_CHANGED, _onTrackMuteChanged);
       //conference.on(JitsiMeetJS.events.conference.DISPLAY_NAME_CHANGED, onUserNameChanged);
       // conference.on(JitsiMeetJS.events.conference.TRACK_AUDIO_LEVEL_CHANGED, on_remote_track_audio_level_changed);
       //conference.on(JitsiMeetJS.events.conference.PHONE_NUMBER_CHANGED, onPhoneNumberChanged);

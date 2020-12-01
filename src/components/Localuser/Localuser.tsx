@@ -17,18 +17,6 @@ const UserContainer = styled.div<IUserContainer>`
   height:200px;
   position:absolute;
   border: 4px solid;
-  /* &:after {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    left: 50%;
-    top: 50%;
-    border: 2px dotted #CCC;
-    content: "";
-    width: 1000px;
-    height: 1000px;
-    display:block;
-    border-radius: 500px;
-  } */
   border-radius: 300px;
   left: ${props => props.pos.x}px;
   top: ${props => props.pos.y}px;
@@ -45,6 +33,7 @@ const AudioRadius = styled.div`
   display:block;
   border-radius: 500px;
   pointer-events: none;
+  background: radial-gradient();
   z-index: -100;
 `
 

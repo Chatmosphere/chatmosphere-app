@@ -15,6 +15,8 @@ type ConnectionActions = {
   disconnectServer: () => void
 }
 
+
+// # Implementation
 export const useConnectionStore = create<ConnectionStore>((set,get) => {
   
   const initialState = {
@@ -52,7 +54,6 @@ export const useConnectionStore = create<ConnectionStore>((set,get) => {
     // const result = await promise 
     return await promise
   }
-
   const connectServer = () => { get().connection?.connect() }
   const disconnectServer = () => { get().connection?.disconnect() }
 

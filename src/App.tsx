@@ -1,6 +1,7 @@
 import * as React from 'react';
 import './App.css';
 import JitsiConnection from './components/connection/JitsiConnection';
+import { Footer } from './components/Footer/Footer';
 import { Header } from './components/Header/Header';
 import { Localuser } from './components/Localuser/Localuser';
 import { Settings } from './components/Settings/Settings';
@@ -14,6 +15,7 @@ function App() {
       <Users />
       <Localuser />
       <Settings />
+      <Footer />
     </div>
   );
 }
