@@ -6,7 +6,7 @@ import { getVolumeByDistance } from '../VectorHelpers';
 import { useConnectionStore } from './ConnectionStore';
 import { useLocalStore } from './LocalStore';
 
-// TS DEFINITIONS *******************************************
+// # TS DEFINITIONS *******************************************
 
 declare global {
   interface Window {
@@ -37,18 +37,18 @@ type UserActions = {
   calculateVolumes: (localPos:Point) => void
 }
 
-// IMPLEMENTATIONS *******************************************
+// # IMPLEMENTATIONS *******************************************
 
 export const useConferenceStore = create((set:any,get:any):ConferenceStore => {
 
   const initialState = {
     conferenceObject:undefined,
-    conferenceName:undefined,
+    conferenceName:"conference",
     isJoined:false,
     users:{},
   }
 
-  // Private Helper Functions *******************************************
+  // # Private Helper Functions *******************************************
   const _addUser = (id:ID) :void => set(state => produce(state, newState => {
     newState.users[id] = {mute:false, volume:1, pos:{x:0, y:0}}
   }))
@@ -90,13 +90,14 @@ export const useConferenceStore = create((set:any,get:any):ConferenceStore => {
     track.dispose()
   }
 
-  // Public functions *******************************************
+  // # Public functions *******************************************
   const init = ():void => {
     const JitsiMeetJS = useConnectionStore.getState().jsMeet 
     const connection = useConnectionStore.getState().connection //either move to ConnectionStore or handle undefined here
     const conferenceName = get().conferenceName || "conference"
+    
     if(connection && JitsiMeetJS && conferenceName) {
-      const conference = connection.initJitsiConference(conferenceName, conferenceOptions)
+      const conference = connection.initJitsiConference(conferenceName, conferenceOptions) //TODO before unload close connection
       conference.on(JitsiMeetJS.events.conference.USER_JOINED, _addUser)
       conference.on(JitsiMeetJS.events.conference.USER_LEFT, _removeUser)
       conference.on(JitsiMeetJS.events.conference.TRACK_ADDED, _onRemoteTrackAdded)
@@ -108,8 +109,11 @@ export const useConferenceStore = create((set:any,get:any):ConferenceStore => {
       //conference.on(JitsiMeetJS.events.conference.PHONE_NUMBER_CHANGED, onPhoneNumberChanged);
       conference.addCommandListener("pos", _onPositionReceived)
       // r.on(JitsiMeetJS.events.conference.PARTICIPANT_PROPERTY_CHANGED, (e) => console.log("Property Changed ", e))
+      window.addEventListener('beforeunload', leave) //does this help?  
+      window.addEventListener('unload', leave) //does this help?  fdkshafdsk
       conference.join()
       set({conferenceObject:conference})
+      console.log(conference.room.joined)
     } else {
       throw new Error('Jitsi Server connection has not been initialized or failed :( - did you call initJitsiMeet on ConnectionStore yet?')
     }
@@ -119,7 +123,8 @@ export const useConferenceStore = create((set:any,get:any):ConferenceStore => {
 
   }
   const leave = () => { 
-
+    const conference = get().conferenceObject
+    conference.leave()
   }
   const calculateVolume = (id:ID):void => set(state => produce(state, newState => {
     const localUserPosition:Point = useLocalStore.getState().localPosition //check if this is updated or kept by closure
@@ -133,7 +138,7 @@ export const useConferenceStore = create((set:any,get:any):ConferenceStore => {
       return null
     })
   }))
-  // Return Object *******************************************
+  // # Return Object *******************************************
   return {
     ...initialState,
     init,

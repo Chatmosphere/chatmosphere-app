@@ -15,13 +15,16 @@ type Store = {
   clearLocalTracks: () => void
 }
 
-export const useLocalStore = create<Store>(devtools((set,get) => ({
-  localTracks: [],
-  localPosition: {x:0, y:0},
-  setLocalPosition: newPosition => set({localPosition:newPosition}),
-  setLocalTracks: tracks => set({localTracks:tracks}),
-  clearLocalTracks: () => {
-    get().localTracks.map(track => track.dispose())
-    set({localTracks:[]})
-  }
-}),"LocalStore"))
+export const useLocalStore = create<Store>((set,get) => {
+  
+  return ({
+    localTracks: [],
+    localPosition: {x:0, y:0},
+    setLocalPosition: newPosition => set({localPosition:newPosition}),
+    setLocalTracks: tracks => set({localTracks:tracks}),
+    clearLocalTracks: () => {
+      get().localTracks.map(track => track.dispose())
+      set({localTracks:[]})
+    }
+  })
+})

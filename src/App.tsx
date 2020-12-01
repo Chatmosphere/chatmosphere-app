@@ -3,6 +3,7 @@ import './App.css';
 import JitsiConnection from './components/connection/JitsiConnection';
 import { Header } from './components/Header/Header';
 import { Localuser } from './components/Localuser/Localuser';
+import { Settings } from './components/Settings/Settings';
 import { Users } from './components/User/Users';
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
       <JitsiConnection />
       <Users />
       <Localuser />
+      <Settings />
     </div>
   );
 }
