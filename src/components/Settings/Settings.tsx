@@ -25,7 +25,7 @@ const ModalBox = styled.div`
 export const Settings = () => {
   const [ open, setOpen ] = useState(false);
   const serverName = useConnectionStore(store=>store.serverUrl)
-  const [inputValue, setInputValue] = useState(serverName)
+	const [inputValue, setInputValue] = useState(serverName)
 
   const handleInput = (e) => {
     const tmpInput = e.target.value //Sanitize here

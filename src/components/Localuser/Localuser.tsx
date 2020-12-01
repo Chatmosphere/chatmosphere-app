@@ -34,6 +34,7 @@ const AudioRadius = styled.div`
   display:block;
   border-radius: 500px;
   pointer-events: none;
+  background: radial-gradient();
   z-index: -100;
 `
 
