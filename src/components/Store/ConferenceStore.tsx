@@ -2,7 +2,7 @@ import produce from 'immer';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
 import create from 'zustand';
 import { conferenceOptions } from '../connection/options';
-import { getVolumeByDistance } from '../VectorHelpers';
+import { getVolumeByDistance } from '../../utils/VectorHelpers';
 import { useConnectionStore } from './ConnectionStore';
 import { useLocalStore } from './LocalStore';
 
@@ -61,6 +61,7 @@ type UserActions = {
   calculateVolume: (id:ID) => void
   calculateVolumes: (localPos:Point) => void
 }
+
 
 // # IMPLEMENTATIONS *******************************************
 
