@@ -1,10 +1,35 @@
 import { mountStoreDevtool } from "simple-zustand-devtools";
 import create from "zustand";
 import { connectionOptions, jitsiInitOptions } from "../connection/options";
+import { IJitsiConference, Track as Track } from "./ConferenceStore";
+
+type IJitsiEvents={
+  track:{LOCAL_TRACK_STOPPED,TRACK_AUDIO_OUTPUT_CHANGED,TRACK_AUDIO_LEVEL_CHANGED,
+    },
+  conference:{USER_JOINED,
+    USER_LEFT,
+    TRACK_ADDED,
+    TRACK_REMOVED,
+    CONFERENCE_JOINED,},
+  connection:{CONNECTION_ESTABLISHED,
+    CONNECTION_FAILED,
+    CONNECTION_DISCONNECTED,},
+}
+type IJsMeet={
+  addTrack:(track:Track)=>void
+  events:IJitsiEvents
+  createLocalTracks:(options:{ devices: ('audio'|'video')[]}, notSure:boolean)=>Promise<Track[]>
+}
+type IJitsiConnection={
+  initJitsiConference:(conferenceName:string, conferenceOptions)=>IJitsiConference
+  connect:()=>void
+  disconnect:()=>void
+  
+}
 
 type Store = {
-  jsMeet:any
-  connection:any
+  jsMeet?:IJsMeet
+  connection?:IJitsiConnection
   connected:boolean
   initJitsiMeet: () => any
   setConnected: () => void

@@ -16,7 +16,7 @@ const Video = styled.video`
 
 export const VideoTrack = ({id}) => {
 
-  const videoTrack:any = useConferenceStore(useCallback(store => store.users[id]['video'], [id]))
+  const videoTrack = useConferenceStore(useCallback(store => store.users[id].video, [id]))
   const myRef:any = useRef()
 
   useEffect(() => {
@@ -30,8 +30,8 @@ export const VideoTrack = ({id}) => {
 
    //Fix if Video not shown - reattaching works quite well
    const onVideoClicked = (e) => {
-    videoTrack.detach(e.target)
-    videoTrack.attach(e.target)
+    videoTrack?.detach(e.target)
+    videoTrack?.attach(e.target)
   }
 
   return (

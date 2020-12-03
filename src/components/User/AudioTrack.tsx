@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { useConferenceStore } from '../Store/ConferenceStore';
 
 export const AudioTrack = ({id, volume}) => {
-  const audioTrack:any = useConferenceStore(useCallback(store => store.users[id]['audio'], [id]))
+  const audioTrack = useConferenceStore(useCallback(store => store.users[id]['audio'], [id]))
   const myRef:any = useRef()
 
   useEffect(() => {

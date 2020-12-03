@@ -16,19 +16,35 @@ declare global {
 
 export type Track = {
   track:{id:string}
+  containers:any[]
   getType: () => 'video'|'audio'
   dispose: () => void
+  isLocal: () => boolean
+  addEventListener: (eventType:string,callback:(...rest)=>void) => boolean
+  removeEventListener: (eventType:string,callback:(...rest)=>void) => boolean
+  getParticipantId: () => ID
+  attach: (element:HTMLElement) => void
+  detach: (element:HTMLElement) => void
 }
-type AudioTrack = Track
-type VideoTrack = Track 
+export type AudioTrack = Track
+export type VideoTrack = Track 
 
-export type User = { id:string, mute:boolean, volume:number, pos:Point, audio?:AudioTrack, video?:VideoTrack }
-type Users = { id?:User }
+export type User = { id:ID, mute:boolean, volume:number, pos:Point, audio?:AudioTrack, video?:VideoTrack }
+type Users = { [id:string]:User }
 type Point = {x:number, y:number}
-type ID = number
+type ID = string
+
+export type IJitsiConference={
+  on: (eventType:string,callback:(...rest)=>void) => boolean
+  addCommandListener: (command:string,callback:(e:any)=>void) => boolean
+  sendCommand: (command:string,payload:any) => boolean
+  join:()=>void
+  addTrack:(track:Track)=>void
+  myUserId:()=>ID
+}
 
 type ConferenceStore = {
-  conferenceObject: any
+  conferenceObject?: IJitsiConference
   conferenceName: string|undefined
   isJoined: boolean
   users: Users
@@ -41,13 +57,13 @@ type ConferenceActions = {
 }
 
 type UserActions = {
-  calculateVolume: (id:number) => void
+  calculateVolume: (id:ID) => void
   calculateVolumes: (localPos:Point) => void
 }
 
 // IMPLEMENTATIONS *******************************************
 
-export const useConferenceStore = create<ConferenceStore>((set:any,get:any) => {
+export const useConferenceStore = create<ConferenceStore>((set,get) => {
 
   const initialState = {
     conferenceObject:undefined,
@@ -66,16 +82,16 @@ export const useConferenceStore = create<ConferenceStore>((set:any,get:any) => {
     delete newState.users[id]
   })
   const _addAudioTrack = (id:ID, track:Track) => produceAndSet (newState => {
-    if(newState.users[id]) newState.users[id]['audio'] = track
+    if(newState.users[id]) newState.users[id].audio = track
   })
   const _removeAudioTrack = (id:ID):void => produceAndSet (newState => {
-    if(newState.users[id]) newState.users[id]['audio'] = null
+    if(newState.users[id]) newState.users[id].audio = undefined
   })
   const _addVideoTrack = (id:ID, track:Track):void => produceAndSet (newState => {
-    if(newState.users[id]) newState.users[id]['video'] = track
+    if(newState.users[id]) newState.users[id].video = track
   })
   const _removeVideoTrack = (id:ID):void => produceAndSet (newState => {
-    if(newState.users[id]) newState.users[id]['video'] = null
+    if(newState.users[id]) newState.users[id].video = undefined
   })
   const _onPositionReceived = (e:any):void => {
     const pos = JSON.parse(e.value)
@@ -85,15 +101,15 @@ export const useConferenceStore = create<ConferenceStore>((set:any,get:any) => {
     if(newState.users[id]) newState.users[id]['pos'] = pos
   })
 
-  const _onRemoteTrackAdded = (track:any):void => {
+  const _onRemoteTrackAdded = (track:Track):void => {
     if(track.isLocal()) return // also run on your own tracks so exit
     const JitsiMeetJS = useConnectionStore.getState().jsMeet 
-    track.addEventListener(JitsiMeetJS.events.track.LOCAL_TRACK_STOPPED,() => console.log('remote track stopped'))
-    track.addEventListener(JitsiMeetJS.events.track.TRACK_AUDIO_OUTPUT_CHANGED,deviceId =>console.log(`track audio output device was changed to ${deviceId}`))
+    track.addEventListener(JitsiMeetJS?.events.track.LOCAL_TRACK_STOPPED,() => console.log('remote track stopped'))
+    track.addEventListener(JitsiMeetJS?.events.track.TRACK_AUDIO_OUTPUT_CHANGED,deviceId =>console.log(`track audio output device was changed to ${deviceId}`))
     const id = track.getParticipantId() // get user id of track
     track.getType() === "audio" ? _addAudioTrack(id, track) : _addVideoTrack(id, track)
   }
-  const _onRemoteTrackRemoved = (track:any):void => {
+  const _onRemoteTrackRemoved = (track:Track):void => {
     // TODO: Remove track from user Object
     const id = track.getParticipantId() // get user id of track
     track.getType() === 'audio' ? _removeAudioTrack(id) : _removeVideoTrack(id) // do we need that? maybe if user is still there but closes video?

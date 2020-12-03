@@ -14,7 +14,7 @@ export const LocalStoreLogic = () => {
 
   const conference = useConferenceStore(state => state.conferenceObject)
   const { setMyID, setLocalTracks } = useLocalStore()
-  const jsMeet:any = useConnectionStore(store => store.jsMeet)
+  const jsMeet = useConnectionStore(store => store.jsMeet)
   
   useEffect(()=>{
     if(conference?.myUserId()) setMyID(conference.myUserId())

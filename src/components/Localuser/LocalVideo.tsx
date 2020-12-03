@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';import { useConferenceStore } from '../Store/ConferenceStore';
+import styled from 'styled-components';import { Track, useConferenceStore, VideoTrack } from '../Store/ConferenceStore';
 
 const Video = styled.video`
   width: 200px; 
@@ -10,9 +10,9 @@ const Video = styled.video`
   object-fit: cover;
 `
 
-const LocalVideo = ({track}) => {
+const LocalVideo:React.FC<{track:VideoTrack}> = ({track}) => {
   const myRef:any = useRef()
-  const room:any = useConferenceStore(store => store.conferenceObject)
+  const room = useConferenceStore(store => store.conferenceObject)
 
 
   useEffect(()=> {
