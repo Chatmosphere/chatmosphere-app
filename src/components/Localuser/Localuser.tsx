@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import {throttle} from 'lodash'
 import { Name } from '../User/Name';
-import { useConnectionStore } from '../Store/ConnectionStore';
 import { useLocalStore } from '../Store/LocalStore';
 import { useConferenceStore } from '../Store/ConferenceStore';
+import LocalVideo from './LocalVideo';
+import LocalAudio from './LocalAudio';
 
 interface IUserContainer {
   readonly isActive :boolean
@@ -35,15 +36,14 @@ const UserContainer = styled.div<IUserContainer>`
   `
 
 export const Localuser: React.FC = () => {
-  const { jsMeet } = useConnectionStore()
   const conference = useConferenceStore(state => state.conferenceObject)
 
   const calculateVolumes = useConferenceStore(store => store.calculateVolumes)
   const pos = useLocalStore(store => store.localPosition)
-  const { setLocalPosition, localTracks, setLocalTracks } = useLocalStore()
+  const { setLocalPosition, localTracks, myId } = useLocalStore()
 
   const localUserNode = useRef<HTMLDivElement>(null)
-  const [myID, setMyID] = useState()
+  
   const [isActive, setActive] = useState(false)
   const clickDelta = useRef({x:0, y:0})
   
@@ -57,7 +57,7 @@ export const Localuser: React.FC = () => {
   const onDrag = (e) => {
       const xPos = e.clientX - clickDelta.current.x
       const yPos = e.clientY - clickDelta.current.y
-      const newPos = JSON.stringify({id:myID, x:xPos, y:yPos})
+      const newPos = JSON.stringify({id:myId, x:xPos, y:yPos})
       throttledSendPos(newPos)
       setLocalPosition({x:xPos, y:yPos})
       calculateVolumes({x:xPos, y:yPos})
@@ -78,16 +78,6 @@ export const Localuser: React.FC = () => {
     document.addEventListener('pointermove', onDrag)
   }
 
-  useEffect(()=>{
-    if(conference?.myUserId()) setMyID(conference.myUserId())
-  },[conference])
-
-	useEffect(() => {
-			jsMeet
-				?.createLocalTracks({ devices: [ 'audio', 'video' ] }, true)
-				.then(tracks => {setLocalTracks(tracks)})
-				.catch(error => {throw error;});
-	},[ jsMeet, setLocalTracks ])
 
 	return (
 		<UserContainer ref={localUserNode} isActive={isActive} pos={pos} onPointerDown={onDown} className="localUserContainer">
@@ -98,60 +88,4 @@ export const Localuser: React.FC = () => {
       <Name>This is You</Name>
 		</UserContainer>
 	);
-}
-
-const Video = styled.video`
-  width: 200px; 
-  height: 200px;
-  object-position: 50% 50%;
-  display: block;
-  border-radius: 100px;
-  object-fit: cover;
-`
-
-const LocalVideo = ({track}) => {
-  const myRef:any = useRef()
-  const room:any = useConferenceStore(store => store.conferenceObject)
-
-
-  useEffect(()=> {
-    const el = myRef.current
-    if(track?.containers?.length === 0) track.attach(el)
-    return (() => {
-      track.detach(el)
-      // track.dispose()
-    })
-  },[track])
-
-  useEffect(() => {
-    room?.addTrack(track)
-  },[room, track])
-
-  return <Video autoPlay={true} ref={myRef} className={`localTrack videoTrack`} />
-}
-
-
-const LocalAudio = ({track}) => {
-  const myRef:any = useRef()
-  const room:any = useConferenceStore(store => store.conferenceObject)
-  const jsMeet:any = useConnectionStore(store => store.jsMeet)
-
-  const [audioLevel, setAudioLevel] = useState(0)
-
-  useEffect(() => {
-    const el = myRef.current
-    if(track?.containers?.length === 0) track.attach(myRef.current)
-    track.addEventListener(jsMeet.events.track.TRACK_AUDIO_LEVEL_CHANGED, setAudioLevel)
-    return (() => {
-      track.removeEventListener(jsMeet.events.track.TRACK_AUDIO_LEVEL_CHANGED, setAudioLevel)
-      track.detach(el)
-      // track.dispose()
-    })
-  },[track])
-
-  useEffect(() => {
-    room?.addTrack(track)
-  },[room,track])
-
-  return <audio autoPlay={true} muted={true} id='localAudio${id}' />
 }
