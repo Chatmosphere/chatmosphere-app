@@ -13,10 +13,18 @@ declare global {
     JitsiMeetJS: any
   }
 }
-type User = { mute:boolean, volume:number, pos:Point, audio:any, video:any }
+
+export type Track = {
+  track:{id:string}
+  getType: () => 'video'|'audio'
+  dispose: () => void
+}
+type AudioTrack = Track
+type VideoTrack = Track 
+
+export type User = { id:string, mute:boolean, volume:number, pos:Point, audio?:AudioTrack, video?:VideoTrack }
 type Users = { id?:User }
 type Point = {x:number, y:number}
-type Track = any
 type ID = number
 
 type ConferenceStore = {
@@ -39,7 +47,7 @@ type UserActions = {
 
 // IMPLEMENTATIONS *******************************************
 
-export const useConferenceStore = create((set:any,get:any):ConferenceStore => {
+export const useConferenceStore = create<ConferenceStore>((set:any,get:any) => {
 
   const initialState = {
     conferenceObject:undefined,
@@ -48,32 +56,34 @@ export const useConferenceStore = create((set:any,get:any):ConferenceStore => {
     users:{},
   }
 
+  const produceAndSet = (callback:(newState:ConferenceStore)=>void)=>set(state => produce(state, newState => callback(newState)))
+
   // Private Helper Functions *******************************************
-  const _addUser = (id:ID) :void => set(state => produce(state, newState => {
-    newState.users[id] = {mute:false, volume:1, pos:{x:0, y:0}}
-  }))
-  const _removeUser = (id:ID) :void => set(state => produce(state, newState => {
+  const _addUser = (id:ID) :void => produceAndSet (newState => {
+    newState.users[id] = {id:id, mute:false, volume:1, pos:{x:0, y:0}}
+  })
+  const _removeUser = (id:ID) :void => produceAndSet (newState => {
     delete newState.users[id]
-  }))
-  const _addAudioTrack = (id:ID, track:Track) => set(state => produce(state, newState => {
+  })
+  const _addAudioTrack = (id:ID, track:Track) => produceAndSet (newState => {
     if(newState.users[id]) newState.users[id]['audio'] = track
-  }))
-  const _removeAudioTrack = (id:ID):void => set(state => produce(state, newState => {
+  })
+  const _removeAudioTrack = (id:ID):void => produceAndSet (newState => {
     if(newState.users[id]) newState.users[id]['audio'] = null
-  }))
-  const _addVideoTrack = (id:ID, track:Track):void => set(state => produce(state, newState => {
+  })
+  const _addVideoTrack = (id:ID, track:Track):void => produceAndSet (newState => {
     if(newState.users[id]) newState.users[id]['video'] = track
-  }))
-  const _removeVideoTrack = (id:ID):void => set(state => produce(state, newState => {
+  })
+  const _removeVideoTrack = (id:ID):void => produceAndSet (newState => {
     if(newState.users[id]) newState.users[id]['video'] = null
-  }))
+  })
   const _onPositionReceived = (e:any):void => {
     const pos = JSON.parse(e.value)
     _updateUserPosition(pos.id, {x:pos.x, y:pos.y})
   }
-  const _updateUserPosition = (id:ID, pos:Point):void => set(state => produce(state, newState => {
+  const _updateUserPosition = (id:ID, pos:Point):void => produceAndSet (newState => {
     if(newState.users[id]) newState.users[id]['pos'] = pos
-  }))
+  })
 
   const _onRemoteTrackAdded = (track:any):void => {
     if(track.isLocal()) return // also run on your own tracks so exit
@@ -121,18 +131,18 @@ export const useConferenceStore = create((set:any,get:any):ConferenceStore => {
   const leave = () => { 
 
   }
-  const calculateVolume = (id:ID):void => set(state => produce(state, newState => {
-    const localUserPosition:Point = useLocalStore.getState().localPosition //check if this is updated or kept by closure
-    newState.users[id]['volume'] = getVolumeByDistance(localUserPosition, state.users[id]['pos'])
-  }))
-  const calculateVolumes = (localPos:Point) => set(state => produce(state, newState => {
-    const users = state.users
+  const calculateVolume = (id:ID):void => produceAndSet (newState => {
+    const localUserPosition:Point = useLocalStore.getState().myUser.pos //check if this is updated or kept by closure
+    newState.users[id]['volume'] = getVolumeByDistance(localUserPosition, newState.users[id]['pos'])
+  })
+  const calculateVolumes = (localPos:Point) => produceAndSet (newState => {
+    const users = newState.users
     Object.keys(users).map(key => {
       const user = users[key]
       newState.users[key]['volume'] = getVolumeByDistance(localPos, user.pos)
       return null
     })
-  }))
+  })
   // Return Object *******************************************
   return {
     ...initialState,

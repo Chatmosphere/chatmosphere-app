@@ -39,8 +39,11 @@ export const Localuser: React.FC = () => {
   const conference = useConferenceStore(state => state.conferenceObject)
 
   const calculateVolumes = useConferenceStore(store => store.calculateVolumes)
-  const pos = useLocalStore(store => store.localPosition)
-  const { setLocalPosition, localTracks, myId } = useLocalStore()
+  const pos = useLocalStore(store => store.myUser.pos)
+  const myId = useLocalStore(store => store.myUser.id)
+  const audioTrack = useLocalStore(store => store.myUser.audio)
+  const videoTrack = useLocalStore(store => store.myUser.video)
+  const { setLocalPosition} = useLocalStore()
 
   const localUserNode = useRef<HTMLDivElement>(null)
   
@@ -81,10 +84,8 @@ export const Localuser: React.FC = () => {
 
 	return (
 		<UserContainer ref={localUserNode} isActive={isActive} pos={pos} onPointerDown={onDown} className="localUserContainer">
-      {localTracks.map((track:any) => {
-        if(track?.getType() === 'video') return <LocalVideo key={track.track.id} track={track} />
-        if(track.getType() === 'audio') return <LocalAudio key={track.track.id} track={track} />
-      })}
+      {videoTrack && <LocalVideo key={videoTrack.track.id} track={videoTrack} />}
+      {audioTrack && <LocalAudio key={audioTrack.track.id} track={audioTrack} />}
       <Name>This is You</Name>
 		</UserContainer>
 	);
