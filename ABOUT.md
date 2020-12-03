@@ -16,6 +16,8 @@ The idea came up during the first SARS-CoV-2 shutdown, when some of us as member
 
 It's our goal to find interaction patterns that enable informal, unmoderated video calls. It's our hypothesis, that we can prototype these interactions bases on spatialized sound.
 
+## Code of Conduct 
+
 ## Technologies
 
 We're building in the jitsi API and want to develop a plugin, that allows everyone to use our tool.
