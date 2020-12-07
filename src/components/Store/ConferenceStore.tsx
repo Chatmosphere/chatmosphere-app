@@ -101,10 +101,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
   }
   const _updateUserPosition = (id:ID, pos:Point):void => produceAndSet (newState => {
     if(newState.users[id]) newState.users[id]['pos'] = pos
-<<<<<<< HEAD
   })
-=======
-  }))
   const _onTrackMuteChanged = (track:Track):void => {
     if(track.getType() === 'video') return
     const tmpID = track.getParticipantId()
@@ -112,7 +109,6 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
       if(newState.users[tmpID]) newState.users[tmpID]['mute'] = track.isMuted() //check in beginning sucks
     }))
   }
->>>>>>> Added Mute Functionality - not nice but works; refactor components next dude, local user is to clunky :D
 
   const _onRemoteTrackAdded = (track:Track):void => {
     if(track.isLocal()) return // also run on your own tracks so exit

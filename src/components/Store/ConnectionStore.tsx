@@ -15,6 +15,7 @@ type IJitsiEvents = {
     TRACK_ADDED;
     TRACK_REMOVED;
     CONFERENCE_JOINED;
+    TRACK_MUTE_CHANGED;
   };
   connection: {
     CONNECTION_ESTABLISHED;
