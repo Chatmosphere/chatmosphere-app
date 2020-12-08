@@ -16,7 +16,7 @@ function App() {
       <Header>Chatmosphere</Header>
       <JitsiConnection />
       <LocalStoreLogic />
-
+      {/* https://github.com/prc5/react-zoom-pan-pinch#zoomin-prop-elements */}
       <TransformWrapper wheel={{step:50}}>
         <TransformComponent>
           <Room>
