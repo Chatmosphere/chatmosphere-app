@@ -1,12 +1,14 @@
-import * as React from 'react';
-import './App.css';
-import JitsiConnection from './components/JitsiConnection/JitsiConnection';
-import { Footer } from './components/Footer/Footer';
-import { Header } from './components/Header/Header';
-import { Localuser } from './components/Localuser/Localuser';
-import { LocalStoreLogic } from './components/Store/LocalStore';
-import { Settings } from './components/Settings/Settings';
-import { Users } from './components/User/Users';
+import * as React from "react";
+import "./App.css";
+import JitsiConnection from "./components/JitsiConnection/JitsiConnection";
+import { Footer } from "./components/Footer/Footer";
+import { Header } from "./components/Header/Header";
+import { Localuser } from "./components/Localuser/Localuser";
+import { LocalStoreLogic } from "./components/Store/LocalStore";
+import { Settings } from "./components/Settings/Settings";
+import { Users } from "./components/User/Users";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { Room } from "./components/Room/Room";
 
 function App() {
   return (
@@ -14,8 +16,15 @@ function App() {
       <Header>Chatmosphere</Header>
       <JitsiConnection />
       <LocalStoreLogic />
-      <Users />
-      <Localuser />
+
+      <TransformWrapper wheel={{step:50}}>
+        <TransformComponent>
+          <Room>
+            <Users />
+            <Localuser />
+          </Room>
+        </TransformComponent>
+      </TransformWrapper>
       <Settings />
       <Footer />
     </div>
