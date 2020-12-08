@@ -7,6 +7,7 @@ import { useConferenceStore } from '../Store/ConferenceStore';
 import LocalVideo from './LocalVideo';
 import LocalAudio from './LocalAudio';
 import { localTrackOptions } from '../JitsiConnection/options';
+import { MuteIndicator } from './MuteIndicator';
 
 interface IUserContainer {
   readonly isActive :boolean
@@ -51,7 +52,8 @@ export const Localuser: React.FC = () => {
   const myId = useLocalStore(store => store.id)
   const audioTrack = useLocalStore(store => store.audio)
   const videoTrack = useLocalStore(store => store.video)
-  const { setLocalPosition} = useLocalStore()
+  const {setLocalPosition} = useLocalStore()
+  const isMute = useLocalStore(store => store.mute)
 
   const localUserNode = useRef<HTMLDivElement>(null)
   
@@ -95,6 +97,7 @@ export const Localuser: React.FC = () => {
       <AudioRadius></AudioRadius>
       {videoTrack && <LocalVideo key={videoTrack.track.id} track={videoTrack} />}
       {audioTrack && <LocalAudio key={audioTrack.track.id} track={audioTrack} />}
+      {isMute && <MuteIndicator>🤭</MuteIndicator>}
       <Name>This is You</Name>
 		</DynamicUserContainer>
 	);
