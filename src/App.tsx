@@ -16,7 +16,6 @@ function App() {
       <LocalStoreLogic />
       <Users />
       <Localuser />
-      <Settings />
       <Footer />
     </div>
   );
