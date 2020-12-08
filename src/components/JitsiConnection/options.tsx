@@ -34,51 +34,15 @@ export const localTrackOptions = {
   }
 }
 
-const connectionOptions = {
-  // serviceUrl: 'wss://jitsi.chatmosphere.cc/xmpp-websocket',
-  // serviceUrl: '//jitsi.chatmosphere.cc/http-bind',
-  hosts: {
-    domain: "jitsi.chatmosphere.cc",
-    muc: 'conference.jitsi.chatmosphere.cc',
-    // anonymousdomain: ''
-  },
-  bosh: '//jitsi.chatmosphere.cc/http-bind',
+export const getConnectionOptions = ():object => {
 
-  clientNode: 'http://jitsi.org/jitsimeet'
+  let serverConfig:any = {}
+  try{
+    serverConfig = require('./../../serverConfig')
+  }catch(e) {
+    serverConfig = require('./../../serverConfig-example')
+  }
+
+  return serverConfig.connectionOptions
+ 
 }
-
-export const publicOptions = {
-  hosts: {
-     domain: 'meet.jit.si',
-     muc: 'conference.meet.jit.si', 
-     focus: 'focus.meet.jit.si',
-  }, 
-  // externalConnectUrl: 'https://meet.jit.si/http-pre-bind', 
-  // enableP2P: true, 
-  // p2p: { 
-  //    enabled: true, 
-  //    preferH264: true, 
-  //    disableH264: true, 
-  //    useStunTurn: true,
-  // }, 
-  // useStunTurn: true, 
-  bosh: `https://meet.jit.si/http-bind?room=liveroom`,
-  // serviceUrl: `//server.com/http-bind`,
-  // websocket: 'wss://meet.jit.si/xmpp-websocket', 
-  clientNode: 'http://jitsi.org/jitsimeet', 
- }
-
- export const getConnectionOptions = (url:string):object => {
-  return ({
-    hosts: {
-      domain: `${url}`,
-      muc: `conference.${url}`,
-      // focus: `focus.${url}`,
-      // anonymousdomain: ''
-    },
-    // bosh: `//${url}/http-bind`,
-    serviceUrl: `//${url}/http-bind`, //for Public Jitsi it seems we need to pass ?room=conferenceName
-    // clientNode: `https://chatmosphere.cc`
-    clientNode: 'http://jitsi.org/jitsimeet', 
-  })
- }

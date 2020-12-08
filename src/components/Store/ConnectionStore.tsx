@@ -1,6 +1,6 @@
 import { mountStoreDevtool } from "simple-zustand-devtools";
 import create from "zustand";
-import { getConnectionOptions, jitsiInitOptions } from "../connection/options";
+import { getConnectionOptions, jitsiInitOptions } from "../JitsiConnection/options";
 import { IJitsiConference, Track } from "./ConferenceStore";
 
 type IJitsiEvents = {
@@ -55,7 +55,7 @@ type IStore = {
 export const useConnectionStore = create<IStore>((set, get) => {
   
   const initialState = {
-    serverUrl: "jitsi.chatmosphere.cc",
+    serverUrl: "meet.jit.si",
     jsMeet:undefined,
     room:null,
     connection:undefined,
@@ -74,7 +74,7 @@ export const useConnectionStore = create<IStore>((set, get) => {
       jitsiMeet().then((jsMeet) => {
         jsMeet.setLogLevel(jsMeet.logLevels.ERROR);
         jsMeet.init(jitsiInitOptions);
-        const connectionOptions = getConnectionOptions(get().serverUrl)
+        const connectionOptions = getConnectionOptions()
         const tmpConnection = new jsMeet.JitsiConnection(
           null,
           null,

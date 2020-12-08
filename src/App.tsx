@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './App.css';
-import JitsiConnection from './components/connection/JitsiConnection';
+import JitsiConnection from './components/JitsiConnection/JitsiConnection';
 import { Footer } from './components/Footer/Footer';
 import { Header } from './components/Header/Header';
 import { Localuser } from './components/Localuser/Localuser';

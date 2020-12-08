@@ -6,23 +6,12 @@ import { useLocalStore } from '../Store/LocalStore';
 import { useConferenceStore } from '../Store/ConferenceStore';
 import LocalVideo from './LocalVideo';
 import LocalAudio from './LocalAudio';
-import { localTrackOptions } from '../connection/options';
+import { localTrackOptions } from '../JitsiConnection/options';
 
 interface IUserContainer {
   readonly isActive :boolean
   readonly pos: {x:number, y:number}
 }
-
-const UserContainer = styled.div<IUserContainer>`
-  width: 200px;
-  height:200px;
-  position:absolute;
-  border: 4px solid;
-  border-radius: 300px;
-  left: ${props => props.pos.x}px;
-  top: ${props => props.pos.y}px;
-  border-color: ${props => props.isActive ? "#9ec9ff"  : "#5a7aa3"};
-  `
 
 const DynamicUserContainer = styled.div.attrs(
   ({pos,isActive}:IUserContainer) => ({
