@@ -40,7 +40,7 @@ type IJitsiConnection = {
   disconnect: () => void;
 };
 
-type Store = {
+type IStore = {
   serverUrl: string
   jsMeet?: IJsMeet;
   connection?: IJitsiConnection;
@@ -52,7 +52,7 @@ type Store = {
   disconnectServer: () => void;
 };
 
-export const useConnectionStore = create<Store>((set, get) => {
+export const useConnectionStore = create<IStore>((set, get) => {
   
   const initialState = {
     serverUrl: "jitsi.chatmosphere.cc",

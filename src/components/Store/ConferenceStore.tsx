@@ -20,6 +20,9 @@ export type Track = {
   getType: () => 'video'|'audio'
   dispose: () => void
   isLocal: () => boolean
+  isMuted: () => boolean
+  mute: () => void
+  unmute: () => void
   addEventListener: (eventType:string,callback:(...rest)=>void) => boolean
   removeEventListener: (eventType:string,callback:(...rest)=>void) => boolean
   getParticipantId: () => ID
@@ -161,7 +164,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     conference?.leave()
   }
   const calculateVolume = (id:ID):void => produceAndSet (newState => {
-    const localUserPosition:Point = useLocalStore.getState().myUser.pos //check if this is updated or kept by closure
+    const localUserPosition:Point = useLocalStore.getState().pos //check if this is updated or kept by closure
     newState.users[id]['volume'] = getVolumeByDistance(localUserPosition, newState.users[id]['pos'])
   })
   const calculateVolumes = (localPos:Point) => produceAndSet (newState => {

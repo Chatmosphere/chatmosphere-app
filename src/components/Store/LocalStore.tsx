@@ -1,8 +1,6 @@
 import produce from "immer";
-import { ProxyTypeSet } from "immer/dist/internal";
 import React, { useEffect } from "react";
 import create from "zustand";
-import { devtools } from "zustand/middleware";
 import { Track, useConferenceStore, User } from "./ConferenceStore";
 import { useConnectionStore } from "./ConnectionStore";
 
@@ -35,30 +33,65 @@ export const LocalStoreLogic = () => {
 type Point = {x:number, y:number}
 
 type Store = {
-  myUser: User
   setLocalPosition: (newPosition:Point) => void
   setLocalTracks: (tracks:Track[]) => void
+  toggleMute: () => void
   clearLocalTracks: () => void
   setMyID: (id:string) => void
-}
+} & User
 
-export const useLocalStore = create<Store>(devtools((set,get) => {
-  const produceAndSet = (callback:(newState:Store)=>void)=>set(state => produce(state, newState => callback(newState)))
+export const useLocalStore = create<Store>((set,get) => {
 
-  return {
-  myUser:{id:"",mute:false,volume:1,pos:{x:0, y:0}},
-  setLocalPosition: newPosition => produceAndSet(newState=>{newState.myUser.pos=newPosition}),
-  setLocalTracks: tracks => produceAndSet(newState=>{
+  const state = {
+    id:"",
+    mute:false,
+    volume:1,
+    pos:{x:0,y:0},
+    video:undefined,
+    audio:undefined
+  }
+
+  // # Private Functions
+  const _produceAndSet = (callback:(newState:Store)=>void)=>set(state => produce(state, newState => callback(newState)))
+
+  
+  // # Public Functions
+  const setLocalPosition = newPosition => set({pos:newPosition})
+  
+  const toggleMute = () => {
+    const audioTrack = get().audio
+    if(!audioTrack) return
+    if(audioTrack.isMuted()) {
+      audioTrack.unmute()
+      set({mute:false})
+    } else {
+      audioTrack.mute()
+      set({mute:true})
+    }
+  }
+
+  const setLocalTracks =  tracks => _produceAndSet(newState=>{
     const audioTrack = tracks.find(t=>t.getType() === 'audio')
     const videoTrack = tracks.find(t=>t.getType() === 'video')
-    newState.myUser.audio=audioTrack
-    newState.myUser.video=videoTrack
-  }),
-  clearLocalTracks: () => produceAndSet(newState=>{
-    newState.myUser.audio?.dispose()
-    newState.myUser.video?.dispose()
-    newState.myUser.audio=undefined
-    newState.myUser.video=undefined
-  }),
-  setMyID: (id:string) => produceAndSet(newState=>{newState.myUser.id=id}),
-}},"LocalStore"))
+    newState.video = videoTrack
+    newState.audio = audioTrack
+  })
+
+  const clearLocalTracks = () => _produceAndSet(newState=>{
+    newState.audio?.dispose()
+    newState.video?.dispose()
+    newState.audio=undefined
+    newState.video=undefined
+  })
+
+  const setMyID = (id:string) => set({id:id})
+
+  return {
+  ...state,
+  setLocalPosition,
+  setLocalTracks,
+  toggleMute,
+  clearLocalTracks,
+  setMyID,
+}
+})
