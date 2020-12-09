@@ -58,3 +58,7 @@ We're currently funded by the [Prototype Fund](https://prototypefund.de/) in ord
 If you have any questions or issues regarding this project, feel free to contact us anytime and we'll try to answer as quick as life allows us to. [info@chatmosphere.cc](mailto:info@chatmosphere.cc)
 
 ## Funded by
+
+<p>
+<a href="https://www.bmbf.de/en/" rel="nofollow"><img src="https://camo.githubusercontent.com/7c7c9e775fcbaa291e763d52be117c16eba5cce7d8d21db0fac844326d92a956/68747470733a2f2f74696d656c656e732e696f2f6173736574732f696d616765732f626d62662e737667" alt="Logo of the German Ministry for Education and Research" style="max-width:100%;" height="100px"></a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="https://prototypefund.de/en/" rel="nofollow"><img src="https://raw.githubusercontent.com/prototypefund/ptf-ci/master/logos/PrototypeFund-P-Logo.svg" alt="Logo of the Prototype Fund" style="max-width:100%;" height="100px"></a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="https://okfn.de/en/" rel="nofollow"><img src="https://prototypefund.de/wp-content/uploads/2016/07/logo-okfn.svg" alt="Logo of the Open Knowledge Foundation Germany" style="max-width:100%;" height="100px"></a>
+</p>
