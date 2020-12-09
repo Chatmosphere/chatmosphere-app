@@ -26,14 +26,23 @@ We're building in the jitsi API and want to develop a plugin, that allows everyo
 
 ## How you can get started with the project?
 
-Check out our [README](https://github.com/Chatmosphere/reactapp/blob/master/README.md) in order to check it out and participate in this endeavor.
+Check out our [README](README.md) in order to check it out and participate in this endeavor.
 
 ## Licensing
 
-We want everybody to be able to participate in this project. We're using Apache 2.0 for our code and the Beer Ware License for all the designs. Would be awesome to have a drink sometimes. Check out [LICENSE]() for more.
+We want everybody to be able to participate in this project. We're using Apache 2.0 for our code and the Beer Ware License for all designs. We know that it would be nice if design-files itself were open-source files – thats an issue still to be tackled since most design software is not open source. Still you're welcome to use the assets and adjust to your likings. 
 
 SPDX-License-Identifier: [Apache-2.0 OR GPL-2.0-or-later](LICENSE.md)
-<br>SPDX-License-Identifier: Beer Ware License
+<br>
+SPDX-License-Identifier: Beer Ware License for Design Files
+/*
+ * ----------------------------------------------------------------------------
+ * "THE BEER-WARE LICENSE" (Revision 42):
+ * <info@chatmosphere.cc> wrote this file. As long as you retain this notice you
+ * can do whatever you want with this stuff. If we meet some day, and you think
+ * this stuff is worth it, you can buy us a beer in return.
+ * ----------------------------------------------------------------------------
+ */
 
 ## Project status & Where do we want to go with this?
 
