@@ -42,4 +42,3 @@ We're currently funded by the Prototype Fund of the BMBF in order to develop a f
 ## How can i get in touch?
 
 If you have any questions or issues regarding this project, feel free to contact us anytime and we'll try to answer as quick as life allows us to. [info@chatmosphere.cc](mailto:info@chatmosphere.cc)
-
