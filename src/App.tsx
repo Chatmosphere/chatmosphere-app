@@ -17,7 +17,7 @@ function App() {
       <JitsiConnection />
       <LocalStoreLogic />
       {/* https://github.com/prc5/react-zoom-pan-pinch#zoomin-prop-elements */}
-      <TransformWrapper wheel={{step:50}}>
+      <TransformWrapper wheel={{step:50}} scale={2} defaultPositionX={0} defaultPositionY={0} options={{centerContent:false,limitToBounds:false,limitToWrapper:true}}>
         <TransformComponent>
           <Room>
             <Users />

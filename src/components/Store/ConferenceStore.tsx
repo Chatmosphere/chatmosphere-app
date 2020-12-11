@@ -72,7 +72,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
 
   const initialState = {
     conferenceObject:undefined,
-    conferenceName:"conference",
+    conferenceName:"conference1",
     isJoined:false,
     users:{},
   }
