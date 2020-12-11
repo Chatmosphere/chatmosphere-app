@@ -2,12 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import {throttle} from 'lodash'
 import { Name } from '../User/Name';
-import { useLocalStore } from '../Store/LocalStore';
-import { useConferenceStore } from '../Store/ConferenceStore';
+import { useLocalStore } from '../../Store/LocalStore';
+import { useConferenceStore } from '../../Store/ConferenceStore';
 import LocalVideo from './LocalVideo';
 import LocalAudio from './LocalAudio';
 import { localTrackOptions } from '../JitsiConnection/options';
 import { MuteIndicator } from './MuteIndicator';
+import { ReloadHint } from '../ReloadHint/ReloadHint';
 
 interface IUserContainer {
   readonly isActive :boolean
@@ -96,6 +97,7 @@ export const Localuser: React.FC = () => {
 		<DynamicUserContainer ref={localUserNode} isActive={isActive} pos={pos} onPointerDown={onDown} className="localUserContainer">
       <AudioRadius></AudioRadius>
       {videoTrack && <LocalVideo key={videoTrack.track.id} track={videoTrack} />}
+      <ReloadHint />
       {audioTrack && <LocalAudio key={audioTrack.track.id} track={audioTrack} />}
       {isMute && <MuteIndicator>🤭</MuteIndicator>}
       <Name>This is You</Name>

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { useCallback, useEffect, useRef } from "react"
 import styled from "styled-components"
-import { useConferenceStore } from '../Store/ConferenceStore';
+import { useConferenceStore } from '../../Store/ConferenceStore';
 
 
 const Video = styled.video`
-  background: blue;
+  background: none;
   width: 200px;
   height: 200px;
   object-position: 50% 50%;

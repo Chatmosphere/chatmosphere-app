@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useConferenceStore } from '../Store/ConferenceStore';
+import { useConferenceStore } from '../../Store/ConferenceStore';
 import { User } from "./User"
 
 export const Users = () => {

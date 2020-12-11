@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';import { Track, useConferenceStore, VideoTrack } from '../Store/ConferenceStore';
+import styled from 'styled-components';import { Track, useConferenceStore, VideoTrack } from '../../Store/ConferenceStore';
 
 const Video = styled.video`
   width: 200px; 

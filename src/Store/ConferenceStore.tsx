@@ -1,8 +1,8 @@
 import produce from 'immer';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
 import create from 'zustand';
-import { conferenceOptions } from '../JitsiConnection/options';
-import { getVolumeByDistance } from '../../utils/VectorHelpers';
+import { conferenceOptions } from '../components/JitsiConnection/options';
+import { getVolumeByDistance } from '../utils/VectorHelpers';
 import { useConnectionStore } from './ConnectionStore';
 import { useLocalStore } from './LocalStore';
 
