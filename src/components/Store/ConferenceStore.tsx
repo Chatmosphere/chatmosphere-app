@@ -55,9 +55,10 @@ type ConferenceStore = {
 } & ConferenceActions & UserActions
 
 type ConferenceActions = {
-  init: () => void
+  init: (conferenceID:string) => void
   join: () => void
   leave: () => void
+  setConferenceName: (name:string) => boolean
 }
 
 type UserActions = {
@@ -129,10 +130,10 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
   }
 
   // # Public functions *******************************************
-  const init = ():void => {
+  const init = (conferenceID:string):void => {
     const JitsiMeetJS = useConnectionStore.getState().jsMeet 
     const connection = useConnectionStore.getState().connection //either move to ConnectionStore or handle undefined here
-    const conferenceName = get().conferenceName || "conference"
+    const conferenceName = conferenceID.length > 0 ? conferenceID.toLowerCase() : get().conferenceName?.toLowerCase()
     
     if(connection && JitsiMeetJS && conferenceName) {
       const conference = connection.initJitsiConference(conferenceName, conferenceOptions) //TODO before unload close connection
@@ -148,7 +149,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
       conference.addCommandListener("pos", _onPositionReceived)
       // r.on(JitsiMeetJS.events.conference.PARTICIPANT_PROPERTY_CHANGED, (e) => console.log("Property Changed ", e))
       window.addEventListener('beforeunload', leave) //does this help?  
-      window.addEventListener('unload', leave) //does this help?  fdkshafdsk
+      window.addEventListener('unload', leave) //does this help?
       conference.join()
       set({conferenceObject:conference})
     } else {
@@ -163,6 +164,13 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     const conference = get().conferenceObject
     conference?.leave()
   }
+  const setConferenceName = (name) => {
+    if(name.length < 1) return false
+    const lName:string = name.toLowerCase()
+    set({conferenceName:lName})
+    return true
+  }
+
   const calculateVolume = (id:ID):void => produceAndSet (newState => {
     const localUserPosition:Point = useLocalStore.getState().pos //check if this is updated or kept by closure
     newState.users[id]['volume'] = getVolumeByDistance(localUserPosition, newState.users[id]['pos'])
@@ -175,12 +183,14 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
       return null
     })
   })
+
   // Return Object *******************************************
   return {
     ...initialState,
     init,
     join,
     leave,
+    setConferenceName,
     calculateVolume,
     calculateVolumes
   }
