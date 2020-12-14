@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import {throttle} from 'lodash'
 import { Name } from '../User/Name';
@@ -7,6 +7,8 @@ import { useConferenceStore } from '../Store/ConferenceStore';
 import LocalVideo from './LocalVideo';
 import LocalAudio from './LocalAudio';
 import { localTrackOptions } from '../JitsiConnection/options';
+
+const userWidth = 200, userHeight = 200
 
 interface IUserContainer {
   readonly isActive :boolean
@@ -21,8 +23,8 @@ const DynamicUserContainer = styled.div.attrs(
     borderColor: `${isActive ? "#9ec9ff"  : "#5a7aa3"}`
   },
 }))<IUserContainer>` 
-  width: 200px;
-  height:200px;
+  width: ${userWidth}px;
+  height:${userHeight}px;
   position:absolute;
   border: 4px solid;
   border-radius: 300px;
@@ -42,8 +44,12 @@ const AudioRadius = styled.div`
   background: radial-gradient();
   z-index: -100;
 `
+interface ILocaluser{
+  panPos?: {x:number, y:number},
+  panChanged:(callback:(params)=>void)=>void
+}
 
-export const Localuser: React.FC = () => {
+export const Localuser: React.FC<ILocaluser> = (props) => {
   const conference = useConferenceStore(state => state.conferenceObject)
 
   const calculateVolumes = useConferenceStore(store => store.calculateVolumes)
@@ -56,6 +62,7 @@ export const Localuser: React.FC = () => {
   const localUserNode = useRef<HTMLDivElement>(null)
   
   const [isActive, setActive] = useState(false)
+  const [panPos, setPanPos] = useState({x:0,y:0})
   const clickDelta = useRef({x:0, y:0})
   
 
@@ -66,8 +73,17 @@ export const Localuser: React.FC = () => {
   const throttledSendPos = throttle(sendPositionToPeers, 200)
 
   const onDrag = (e) => {
-      const xPos = e.clientX - clickDelta.current.x
-      const yPos = e.clientY - clickDelta.current.y
+    
+    const boundingRect = localUserNode.current&&localUserNode.current.getBoundingClientRect() || {x:0,y:0,width:userWidth}
+
+    // console.log(localUserNode.current&&localUserNode.current.getBoundingClientRect())
+    const scale = boundingRect.width/userWidth
+   /*  clickDelta.current = {x: (clickDelta.current.x - boundingRect.x),
+      y:(clickDelta.current.y - boundingRect.y)} */
+      /* const xPos = (e.clientX/scale - clickDelta.current.x)
+      const yPos = (e.clientY/scale - clickDelta.current.y) */
+      const xPos = (e.clientX/scale - clickDelta.current.x)
+      const yPos = (e.clientY/scale - clickDelta.current.y)
       const newPos = JSON.stringify({id:myId, x:xPos, y:yPos})
       throttledSendPos(newPos)
       setLocalPosition({x:xPos, y:yPos})
@@ -80,15 +96,37 @@ export const Localuser: React.FC = () => {
     document.removeEventListener('pointerup', onUp)
     document.removeEventListener('pointermove', onDrag)
   }
-  const onDown = (e) => {
+  const onDown = /* useCallback( */(e) => {
+    // const transformedWidth = (localUserNode.current&&localUserNode.current.getBoundingClientRect().width) || userWidth
+    // const scale = transformedWidth/userWidth
     e.preventDefault()
     setActive(true)
     const boundingRect = e.currentTarget.getBoundingClientRect()
-    clickDelta.current = {x: e.clientX - boundingRect.x, y:e.clientY - boundingRect.y}
+    console.log("onDown:",panPos)
+    const scale = boundingRect.width/userWidth
+    clickDelta.current = {x:( (e.clientX - boundingRect.x+panPos.x)/scale),
+                          y:((e.clientY - boundingRect.y+panPos.y)/scale)}
+    /* clickDelta.current = {x:clickDelta.current.x+panPos.x/scale,
+      y:clickDelta.current.y+panPos.y/scale} */
     document.addEventListener('pointerup', onUp)
     document.addEventListener('pointermove', onDrag)
-  }
+  }//,[props.panPos])
 
+  /* useEffect(()=>{
+    setPanPos(props.panPos)
+  },[props.panPos])
+ */
+
+  props.panChanged(
+    (params)=>{
+      const boundingRect = localUserNode.current&&localUserNode.current.getBoundingClientRect() || {x:0,y:0,width:userWidth}
+      const scale = boundingRect.width/userWidth
+      console.log("props.panChanged:",params.positionX,params.positionY)
+      setPanPos({x:params.positionX,y:params.positionY})
+      /* clickDelta.current = {x:clickDelta.current.x+params.positionX/scale,
+        y:clickDelta.current.y+params.positionY/scale} */
+    }
+  )
 
 	return (
 		<DynamicUserContainer ref={localUserNode} isActive={isActive} pos={pos} onPointerDown={onDown} className="localUserContainer">

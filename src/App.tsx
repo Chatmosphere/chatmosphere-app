@@ -29,17 +29,40 @@ const transformWrapperOptions: PropsList = {
 };
 
 function App() {
+  const timer = React.useRef<any>()
+  const localHostPanChangeHandler = React.useRef<any>()
+  const panChanged=(callback)=>{
+    localHostPanChangeHandler.current = callback
+  }
+
+  function onPanChange(params){console.log(params)
+    // setPanPos({x:params.positionX,y:params.positionY})
+    // clearTimeout(timer.current)
+    //timer.current = setTimeout(()=>)
+    if(localHostPanChangeHandler.current)
+      localHostPanChangeHandler.current({...params,
+        positionX:Math.min(0,params.positionX),
+        positionY:Math.min(0,params.positionY)})
+  }
+  function onZoomChange(params){console.log(params)
+    // setPanPos({x:params.positionX,y:params.positionY})
+  }
+
   return (
       <div className="App">
         <Header>Chatmosphere</Header>
         <JitsiConnection />
         <LocalStoreLogic />
-    <TransformWrapper {...transformWrapperOptions}>
+    <TransformWrapper {...transformWrapperOptions} 
+    onZoomChange={onPanChange}
+    onPanning={onPanChange}
+      onPinchingStop={onPanChange}
+      >
         {/* https://github.com/prc5/react-zoom-pan-pinch#zoomin-prop-elements */}
-        <TransformComponent >
+        <TransformComponent>
           <Room>
             <Users />
-            <Localuser />
+            <Localuser /* panPos={panPos} */ panChanged={panChanged}/>
           </Room>
         </TransformComponent>
         <Settings />
