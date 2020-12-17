@@ -21,7 +21,7 @@ const Background = styled.div`
 export const Room:React.FC = (props) => {
   return (
     <RoomContainer>
-      <Background />
+      {/* <Background /> */}
       {props.children}
     </RoomContainer>
   )
