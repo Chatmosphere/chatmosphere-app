@@ -3,6 +3,8 @@ import React, { useEffect } from "react";
 import create from "zustand";
 import { Track, useConferenceStore, User } from "./ConferenceStore";
 import { useConnectionStore } from "./ConnectionStore";
+import { throttle } from "lodash"
+import { localTrackOptions } from "../components/JitsiConnection/options";
 
 
 
@@ -11,11 +13,16 @@ import { useConnectionStore } from "./ConnectionStore";
 export const LocalStoreLogic = () => {
 
   const conference = useConferenceStore(state => state.conferenceObject)
-  const { setMyID, setLocalTracks } = useLocalStore()
+  const calculateVolumes = useConferenceStore((store) => store.calculateVolumes)
+  const { setMyID, setLocalTracks, pos,  id : myId } = useLocalStore()
   const jsMeet = useConnectionStore(store => store.jsMeet)
+  // const pos = useLocalStore((store) => store.pos)
   
   useEffect(()=>{
     if(conference?.myUserId()) setMyID(conference.myUserId())
+    
+    //initialize the intial position of this user for other users
+    if(conference)throttledSendPos(pos)
   },[conference])
   
   useEffect(() => {
@@ -26,6 +33,20 @@ export const LocalStoreLogic = () => {
           console.log(error)
         });
   },[ jsMeet, setLocalTracks ])
+
+
+
+  function sendPositionToPeers(pos) {
+    conference?.sendCommand("pos", { value: pos })
+  }
+
+  const throttledSendPos = throttle(sendPositionToPeers, 200)
+
+  useEffect(()=>{
+    const newPos = JSON.stringify({...pos, id: myId})
+    throttledSendPos(newPos)
+    calculateVolumes(pos)
+  },[pos])
   
   return <></>
 }
@@ -46,7 +67,7 @@ export const useLocalStore = create<Store>((set,get) => {
     id:"",
     mute:false,
     volume:1,
-    pos:{x:0,y:0},
+    pos:localTrackOptions.user.initialPosition,
     video:undefined,
     audio:undefined
   }

@@ -1,14 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
+import { localTrackOptions } from '../JitsiConnection/options';
 
 /* fixed size won't work, because when scale is 1 there will be room to pan; but the plugin won't allow it because scale is 1. 
 the fix is to set the size of the react-transform-component and react-transform-element exlusively (see App.css) */
-///@TODO make this hard-coded '10000px' as a variable.
+
+
 const RoomContainer = styled.div`
-  width:6000px;height:6000px;
+  width:${localTrackOptions.room.size.x}px;height:${localTrackOptions.room.size.y}px;
   box-sizing: border-box;
   display:block;
-  // width:100vw;height:100vh;
 `
 
 const Background = styled.div`

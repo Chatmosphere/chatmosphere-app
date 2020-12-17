@@ -4,55 +4,44 @@ import JitsiConnection from "./components/JitsiConnection/JitsiConnection"
 import { Footer } from "./components/Footer/Footer"
 import { Header } from "./components/Header/Header"
 import { Localuser } from "./components/Localuser/Localuser"
-import { LocalStoreLogic } from "./Store/LocalStore"
+import { LocalStoreLogic, useLocalStore } from "./Store/LocalStore"
 import { Settings } from "./components/Settings/Settings"
 import { Users } from "./components/User/Users"
 import { Info } from "./components/common/Info/Info"
 import { PropsList } from "react-zoom-pan-pinch/dist/store/interfaces/propsInterface"
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch"
 import { Room } from "./components/Room/Room"
+import { useEffect } from "react"
+import { useConferenceStore } from "./Store/ConferenceStore"
+import { localTrackOptions, transformWrapperOptions } from "./components/JitsiConnection/options"
 
-const transformWrapperOptions: PropsList = {
-  wheel: { step: 50 },
-  scale: 1,
-  defaultPositionX: 0,
-  defaultPositionY: 0,
-  positionX: 0,
-  positionY: 0,
-  options: {
-    centerContent: false,
-    limitToBounds: true,
-    limitToWrapper: true,
-    minScale: 0.2,
-    // maxPositionX:10000, maxPositionY:10000,
-    // minPositionX:0, minPositionY:0
-  },
-  // scalePadding:{animationTime:10},
-  pan: { velocityEqualToMove: true },
-  pinch: { disabled: true },
-}
+const roomSize = localTrackOptions.room.size
+
 
 function App() {
-  const timer = React.useRef<any>()
+
+  //TODO move this logic to LocalStore.tsx
   const localHostPanChangeHandler = React.useRef<any>()
   const panChanged = (callback) => {
     localHostPanChangeHandler.current = callback
   }
 
   function onPanChange(params) {
-    if (localHostPanChangeHandler.current){
-      const viewport = {x:6000*params.scale,y:6000*params.scale}
-      const panLimit = {x:viewport.x-window.innerWidth,y:viewport.y-window.innerHeight}
+    if (localHostPanChangeHandler.current) {
+      const viewport = {
+        x: roomSize.x * params.scale,
+        y: roomSize.y * params.scale,
+      }
+      const panLimit = {
+        x: viewport.x - window.innerWidth,
+        y: viewport.y - window.innerHeight,
+      }
       localHostPanChangeHandler.current({
         ...params,
-        positionX: Math.max(-panLimit.x,Math.min(0, params.positionX)),
-        positionY: Math.max(-panLimit.y,Math.min(0, params.positionY)),
+        positionX: Math.max(-panLimit.x, Math.min(0, params.positionX)),
+        positionY: Math.max(-panLimit.y, Math.min(0, params.positionY)),
       })
     }
-  }
-  function onZoomChange(params) {
-    console.log(params)
-    // setPanPos({x:params.positionX,y:params.positionY})
   }
 
   return (

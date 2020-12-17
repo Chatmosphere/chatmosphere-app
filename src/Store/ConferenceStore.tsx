@@ -1,7 +1,7 @@
 import produce from 'immer';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
 import create from 'zustand';
-import { conferenceOptions } from '../components/JitsiConnection/options';
+import { conferenceOptions, localTrackOptions } from '../components/JitsiConnection/options';
 import { getVolumeByDistance } from '../utils/VectorHelpers';
 import { useConnectionStore } from './ConnectionStore';
 import { useLocalStore } from './LocalStore';
@@ -81,7 +81,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
 
   // Private Helper Functions *******************************************
   const _addUser = (id:ID) :void => produceAndSet (newState => {
-    newState.users[id] = {id:id, mute:false, volume:1, pos:{x:0, y:0}}
+    newState.users[id] = {id:id, mute:false, volume:1, pos:localTrackOptions.user.initialPosition}
   })
   const _removeUser = (id:ID) :void => produceAndSet (newState => {
     delete newState.users[id]
