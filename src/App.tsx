@@ -40,16 +40,15 @@ function App() {
   }
 
   function onPanChange(params) {
-    console.log(params)
-    // setPanPos({x:params.positionX,y:params.positionY})
-    // clearTimeout(timer.current)
-    //timer.current = setTimeout(()=>)
-    if (localHostPanChangeHandler.current)
+    if (localHostPanChangeHandler.current){
+      const viewport = {x:6000*params.scale,y:6000*params.scale}
+      const panLimit = {x:viewport.x-window.innerWidth,y:viewport.y-window.innerHeight}
       localHostPanChangeHandler.current({
         ...params,
-        positionX: Math.min(0, params.positionX),
-        positionY: Math.min(0, params.positionY),
+        positionX: Math.max(-panLimit.x,Math.min(0, params.positionX)),
+        positionY: Math.max(-panLimit.y,Math.min(0, params.positionY)),
       })
+    }
   }
   function onZoomChange(params) {
     console.log(params)
