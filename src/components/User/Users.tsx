@@ -2,15 +2,15 @@ import * as React from 'react';
 import { useConferenceStore } from '../../Store/ConferenceStore';
 import { User } from "./User"
 
+//TODO check if incorporation of user Object causes rerendering problems
 export const Users = () => {
 
   const {users} = useConferenceStore()
-
   return (
     <>
-    {Object.keys(users).map(id => {
+    {Object.entries(users).map(user => {
       return(
-          <User key={id} id={id}/>
+          <User key={user[0]} user={user[1]} id={user[0]}/>
       )
     })}
     </>

@@ -9,7 +9,7 @@ const Link = styled.a`
 	padding: 10px;
   color: #333;
   &:hover {
-    color:#8823ee
+		color:#8823ee
   }
 `
 
