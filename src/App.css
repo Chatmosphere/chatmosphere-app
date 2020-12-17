@@ -7,11 +7,10 @@
 
 .react-transform-component{
   width: 100vw  !important;
-    height: 100vh !important;
+  height: 100vh !important;
 }
 
 .react-transform-element{
-
-  width: 10000px !important;
-  height: 10000px !important;
+  width: 6000px !important;
+  height: 6000px !important;
 }

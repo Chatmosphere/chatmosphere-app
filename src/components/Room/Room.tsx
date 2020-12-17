@@ -5,7 +5,7 @@ import styled from 'styled-components';
 the fix is to set the size of the react-transform-component and react-transform-element exlusively (see App.css) */
 ///@TODO make this hard-coded '10000px' as a variable.
 const RoomContainer = styled.div`
-  width:10000px;height:10000px;
+  width:6000px;height:6000px;
   box-sizing: border-box;
   display:block;
   // width:100vw;height:100vh;
