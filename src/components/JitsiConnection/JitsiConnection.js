@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { useConnectionStore } from '../Store/ConnectionStore'
-import { useConferenceStore } from '../Store/ConferenceStore'
+import React, { useEffect } from 'react'
+import { useConnectionStore } from '../../Store/ConnectionStore'
+import { useConferenceStore } from '../../Store/ConferenceStore'
 
  /* globals: JitisMeetJS */
 

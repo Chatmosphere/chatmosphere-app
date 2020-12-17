@@ -2,11 +2,13 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import {throttle} from 'lodash'
 import { Name } from '../User/Name';
-import { useLocalStore } from '../Store/LocalStore';
-import { useConferenceStore } from '../Store/ConferenceStore';
+import { useLocalStore } from '../../Store/LocalStore';
+import { useConferenceStore } from '../../Store/ConferenceStore';
 import LocalVideo from './LocalVideo';
 import LocalAudio from './LocalAudio';
 import { localTrackOptions } from '../JitsiConnection/options';
+import { MuteIndicator } from './MuteIndicator';
+import { ReloadHint } from '../ReloadHint/ReloadHint';
 
 const userWidth = 200, userHeight = 200
 
@@ -57,7 +59,8 @@ export const Localuser: React.FC<ILocaluser> = (props) => {
   const myId = useLocalStore(store => store.id)
   const audioTrack = useLocalStore(store => store.audio)
   const videoTrack = useLocalStore(store => store.video)
-  const { setLocalPosition} = useLocalStore()
+  const {setLocalPosition} = useLocalStore()
+  const isMute = useLocalStore(store => store.mute)
 
   const localUserNode = useRef<HTMLDivElement>(null)
   
@@ -132,7 +135,9 @@ export const Localuser: React.FC<ILocaluser> = (props) => {
 		<DynamicUserContainer ref={localUserNode} isActive={isActive} pos={pos} onPointerDown={onDown} className="localUserContainer">
       <AudioRadius></AudioRadius>
       {videoTrack && <LocalVideo key={videoTrack.track.id} track={videoTrack} />}
+      <ReloadHint />
       {audioTrack && <LocalAudio key={audioTrack.track.id} track={audioTrack} />}
+      {isMute && <MuteIndicator>🤭</MuteIndicator>}
       <Name>This is You</Name>
 		</DynamicUserContainer>
 	);

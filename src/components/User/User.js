@@ -1,8 +1,11 @@
 import React, { useCallback, useEffect } from 'react';
-import { useConferenceStore } from '../Store/ConferenceStore';
+import { useConferenceStore } from '../../Store/ConferenceStore';
+import { ReloadHint } from '../ReloadHint/ReloadHint';
 import { AudioTrack } from './AudioTrack';
+import { MuteIndicator } from './MuteIndicator';
 import { Name } from './Name';
 import { VideoTrack } from './VideoTrack';
+
 
 export const User = ({id}) => {
 
@@ -19,10 +22,11 @@ export const User = ({id}) => {
   return(
     <div style={{position:'absolute', left:`${myPos.x}px`, top:`${myPos.y}px`}} className="userContainer" >
       <VideoTrack id={id} />
+      <ReloadHint />
       <AudioTrack id={id} volume={myVolume} />
       <Name>User {id}</Name>
       <div>Volume {Math.round(myVolume * 11)}</div>
-      <div>User is {isMute ? "Mute" : "Unmuted"}</div>
+      {isMute && <MuteIndicator>🤭</MuteIndicator>}
     </div>
   )
 }

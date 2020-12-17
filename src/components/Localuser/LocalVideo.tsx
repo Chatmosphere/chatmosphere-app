@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';import { Track, useConferenceStore, VideoTrack } from '../Store/ConferenceStore';
+import styled from 'styled-components';import { Track, useConferenceStore, VideoTrack } from '../../Store/ConferenceStore';
 
 const Video = styled.video`
   width: 200px; 
@@ -8,6 +8,7 @@ const Video = styled.video`
   display: block;
   border-radius: 100px;
   object-fit: cover;
+  transform: scaleX(-1);
 `
 
 const LocalVideo:React.FC<{track:VideoTrack}> = ({track}) => {
