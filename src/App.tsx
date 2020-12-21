@@ -5,9 +5,10 @@ import { Footer } from './components/Footer/Footer';
 import { Header } from './components/Header/Header';
 import { Localuser } from './components/Localuser/Localuser';
 import { LocalStoreLogic } from './Store/LocalStore';
-import { Settings } from './components/Settings/Settings';
 import { Users } from './components/User/Users';
 import { Info } from './components/common/Info/Info';
+
+console.log("PROCESS IS ", process.env.REACT_APP_SERVER_OPTION)
 
 function App() {
   return (
