@@ -1,8 +1,8 @@
 import produce from 'immer';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
 import create from 'zustand';
-import { conferenceOptions } from '../JitsiConnection/options';
-import { getVolumeByDistance } from '../../utils/VectorHelpers';
+import { conferenceOptions } from '../components/JitsiConnection/options';
+import { getVolumeByDistance } from '../utils/VectorHelpers';
 import { useConnectionStore } from './ConnectionStore';
 import { useLocalStore } from './LocalStore';
 
@@ -133,8 +133,9 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
   const init = (conferenceID:string):void => {
     const JitsiMeetJS = useConnectionStore.getState().jsMeet 
     const connection = useConnectionStore.getState().connection //either move to ConnectionStore or handle undefined here
-    const conferenceName = conferenceID.length > 0 ? conferenceID.toLowerCase() : get().conferenceName?.toLowerCase()
-    
+    // const conferenceName = conferenceID.length > 0 ? conferenceID.toLowerCase() : get().conferenceName?.toLowerCase()
+    const conferenceName = get().conferenceName || "conference" //Hardcode for now, we dont want unlimited conferences on demo server; added env. files in Setting name Branch, will be merged soon
+
     if(connection && JitsiMeetJS && conferenceName) {
       const conference = connection.initJitsiConference(conferenceName, conferenceOptions) //TODO before unload close connection
       conference.on(JitsiMeetJS.events.conference.USER_JOINED, _addUser)

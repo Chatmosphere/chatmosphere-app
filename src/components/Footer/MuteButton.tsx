@@ -1,17 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
-import { useLocalStore } from '../Store/LocalStore';
+import { useLocalStore } from '../../Store/LocalStore';
+import { Button } from '../common/Buttons/Button';
+import {FaMicrophoneSlash, FaMicrophone} from 'react-icons/fa'
 
-interface IButton {
-  readonly mute:boolean
-}
-
-const Button = styled.button<IButton>`
-  padding: 5px;
-  font-size: 1rem;
-  font-weight: bold;
-  color: ${props => props.mute ? 'red' : '#333'};
-`
 
 export const MuteButton = () => {
 
@@ -21,7 +12,9 @@ export const MuteButton = () => {
     toggleMute()
   }
 
-  return (
-  <Button mute={mute} onClick={handleClick}>{mute && "😜 - Unmute" || "🤭 - Mute"}</Button>
-  )
+  if(mute) {
+    return <Button danger onClick={handleClick}><FaMicrophoneSlash/> Unmute</Button>
+  } else {
+    return <Button onClick={handleClick}><FaMicrophone/> Mute</Button>
+  }
 }

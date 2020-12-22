@@ -1,13 +1,15 @@
-import * as React from 'react';
-import './App.css';
-import JitsiConnection from './components/JitsiConnection/JitsiConnection';
-import { Footer } from './components/Footer/Footer';
-import { Header } from './components/Header/Header';
-import { Localuser } from './components/Localuser/Localuser';
-import { LocalStoreLogic } from './components/Store/LocalStore';
-import { Users } from './components/User/Users';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { Welcome } from './screens/Home/Home';
+import * as React from 'react'
+import './App.css'
+import JitsiConnection from './components/JitsiConnection/JitsiConnection'
+import { Footer } from './components/Footer/Footer'
+import { Header } from './components/Header/Header'
+import { Localuser } from './components/Localuser/Localuser'
+
+import { LocalStoreLogic } from './Store/LocalStore'
+import { Users } from './components/User/Users'
+import { Info } from './components/common/Info/Info'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { Welcome } from './screens/Home/Home'
 
 function App() {
 	return (
@@ -18,8 +20,12 @@ function App() {
 					<Localuser />
 				</Route>
 
-        <Route path="/session/:id">
+				<Route path="/session/:id">
 					<div className="App">
+						<Info>
+							Welcome to our Prototype<br />
+							Please use <b>Safari</b> or <b>Chrome</b> for now for a stable Experience
+						</Info>
 						<Header>Chatmosphere</Header>
 						<JitsiConnection />
 						<LocalStoreLogic />
@@ -27,7 +33,7 @@ function App() {
 						<Localuser />
 						<Footer />
 					</div>
-        </Route>
+				</Route>
 
 				<Route path="/">
 					<Header>Chatmosphere</Header>
@@ -35,7 +41,37 @@ function App() {
 				</Route>
 			</Switch>
 		</Router>
-	);
+	)
 }
 
-export default App;
+export default App
+
+// import { Welcome } from './screens/Home/Home';
+
+// function App() {
+// 	return (
+// 		<Router>
+// 			<Switch>
+// 				<Route path="/enter">
+// 					<Header>Chatmosphere</Header>
+// 					<Localuser />
+// 				</Route>
+
+//         <Route path="/session/:id">
+// 					<div className="App">
+// 						<Header>Chatmosphere</Header>
+// 						<JitsiConnection />
+// 						<LocalStoreLogic />
+// 						<Users />
+// 						<Localuser />
+// 						<Footer />
+// 					</div>
+//         </Route>
+
+// 				<Route path="/">
+// 					<Header>Chatmosphere</Header>
+// 					<Welcome />
+// 				</Route>
+// 			</Switch>
+// 		</Router>
+// 	);

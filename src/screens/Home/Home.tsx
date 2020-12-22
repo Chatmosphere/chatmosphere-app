@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useConferenceStore } from '../../components/Store/ConferenceStore';
+import { useConferenceStore } from './../../Store/ConferenceStore';
 import {useHistory} from 'react-router-dom'
 
 export const Welcome = () => {
