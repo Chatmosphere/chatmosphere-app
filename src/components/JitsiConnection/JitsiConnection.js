@@ -7,12 +7,13 @@ import {useParams} from 'react-router-dom'
 
  //no reload?
 const JitsiConnection = () => {
-  const {connected, initJitsiMeet, jsMeet} = useConnectionStore()
+  const {connected, initJitsiMeet, connectServer, jsMeet} = useConnectionStore()
   const initConference = useConferenceStore(state => state.init)
   const {id} = useParams() //get Id from url, should error check here I guess
 
   useEffect(() => {
     initJitsiMeet()
+    connectServer()
   },[initJitsiMeet])
 
   useEffect(() => {

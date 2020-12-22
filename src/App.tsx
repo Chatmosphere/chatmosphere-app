@@ -10,14 +10,14 @@ import { Users } from './components/User/Users'
 import { Info } from './components/common/Info/Info'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { Welcome } from './screens/Home/Home'
+import { Enter } from './screens/Enter/Enter'
 
 function App() {
 	return (
 		<Router>
 			<Switch>
 				<Route path="/enter">
-					<Header>Chatmosphere</Header>
-					<Localuser />
+					<Enter />
 				</Route>
 
 				<Route path="/session/:id">

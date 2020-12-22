@@ -6,7 +6,16 @@ export const conferenceOptions = {
   openBridgeChannel: false //what is this doing?
 }
 
-export const jitsiInitOptions = {
+export interface IJitsiInitOptions {
+  disableAudioLevels?:boolean,
+  disableSimulcast?:boolean,
+  useIPv6?:boolean,
+  enableWindowOnErrorHandler?:boolean,
+  disableThirdPartyRequests?:boolean,
+  enableAnalyticsLogging?:boolean
+}
+
+export const jitsiInitOptions:IJitsiInitOptions = {
   disableAudioLevels: false,
   // disableSimulcast: false,
   // // useIPv6:true, // can be off
