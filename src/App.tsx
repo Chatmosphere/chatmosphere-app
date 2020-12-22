@@ -45,33 +45,3 @@ function App() {
 }
 
 export default App
-
-// import { Welcome } from './screens/Home/Home';
-
-// function App() {
-// 	return (
-// 		<Router>
-// 			<Switch>
-// 				<Route path="/enter">
-// 					<Header>Chatmosphere</Header>
-// 					<Localuser />
-// 				</Route>
-
-//         <Route path="/session/:id">
-// 					<div className="App">
-// 						<Header>Chatmosphere</Header>
-// 						<JitsiConnection />
-// 						<LocalStoreLogic />
-// 						<Users />
-// 						<Localuser />
-// 						<Footer />
-// 					</div>
-//         </Route>
-
-// 				<Route path="/">
-// 					<Header>Chatmosphere</Header>
-// 					<Welcome />
-// 				</Route>
-// 			</Switch>
-// 		</Router>
-// 	);

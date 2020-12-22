@@ -1,14 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import {throttle} from 'lodash'
-import { Name } from '../User/Name';
 import { useLocalStore } from '../../Store/LocalStore';
 import { useConferenceStore } from '../../Store/ConferenceStore';
 import LocalVideo from './LocalVideo';
 import LocalAudio from './LocalAudio';
-import { localTrackOptions } from '../JitsiConnection/options';
 import { MuteIndicator } from './MuteIndicator';
 import { ReloadHint } from '../ReloadHint/ReloadHint';
+import { NameContainer } from './NameContainer';
 
 interface IUserContainer {
   readonly isActive :boolean
@@ -48,19 +47,18 @@ const AudioRadius = styled.div`
 export const Localuser: React.FC = () => {
   const conference = useConferenceStore(state => state.conferenceObject)
 
-  const calculateVolumes = useConferenceStore(store => store.calculateVolumes)
+  const calculateVolumes = useConferenceStore(useCallback(store => store.calculateVolumes, []))
   const pos = useLocalStore(store => store.pos)
   const myId = useLocalStore(store => store.id)
   const audioTrack = useLocalStore(store => store.audio)
   const videoTrack = useLocalStore(store => store.video)
-  const {setLocalPosition} = useLocalStore()
+  const setLocalPosition = useLocalStore(useCallback(store => store.setLocalPosition,[]))
   const isMute = useLocalStore(store => store.mute)
 
   const localUserNode = useRef<HTMLDivElement>(null)
   
   const [isActive, setActive] = useState(false)
   const clickDelta = useRef({x:0, y:0})
-  
 
   function sendPositionToPeers(pos) {
     conference?.sendCommand("pos", {value:pos})
@@ -92,7 +90,6 @@ export const Localuser: React.FC = () => {
     document.addEventListener('pointermove', onDrag)
   }
 
-
 	return (
 		<DynamicUserContainer ref={localUserNode} isActive={isActive} pos={pos} onPointerDown={onDown} className="localUserContainer">
       <AudioRadius></AudioRadius>
@@ -100,7 +97,7 @@ export const Localuser: React.FC = () => {
       <ReloadHint />
       {audioTrack && <LocalAudio key={audioTrack.track.id} track={audioTrack} />}
       {isMute && <MuteIndicator>🤭</MuteIndicator>}
-      <Name>This is You</Name>
+      <NameContainer />
 		</DynamicUserContainer>
 	);
 }

@@ -1,7 +1,7 @@
 {
   "homepage": "https://chatmosphere.cc/build",
   "name": "react-app",
-  "version": "0.4.0",
+  "version": "0.4.3",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.6",
@@ -12,6 +12,7 @@
     "@types/react": "^16.9.56",
     "@types/react-dom": "^16.9.9",
     "@types/styled-components": "^5.1.4",
+    "env-cmd": "^10.1.0",
     "immer": "^7.0.15",
     "lodash": "^4.17.20",
     "react": "^17.0.1",
@@ -28,6 +29,7 @@
   "scripts": {
     "start": "HTTPS=true SSL_CRT_FILE=./.cert/cert.pem SSL_KEY_FILE=./.cert/key.pem react-scripts start",
     "build": "react-scripts build",
+    "build:demo": "env-cmd -f .env.demo react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
