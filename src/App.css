@@ -3,6 +3,7 @@
   position: fixed;
   width: 100%;
   height: 100%;
+  cursor: default;
 }
 
 .react-transform-component{
@@ -12,4 +13,8 @@
 }
 .react-transform-element{
   background-color: #fefefe;
+  cursor:grab;
+}
+.react-transform-element:active{
+  cursor:grabbing;
 }

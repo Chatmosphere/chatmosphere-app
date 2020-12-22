@@ -28,6 +28,10 @@ const DynamicUserContainer = styled.div.attrs(
   position: absolute;
   border: 4px solid;
   border-radius: 300px;
+  cursor: default;
+  &:active {
+    cursor: default;
+  }
 `
 
 interface ILocaluser {
