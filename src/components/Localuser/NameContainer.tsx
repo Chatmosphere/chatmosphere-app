@@ -5,7 +5,7 @@ import {InputField} from './../common/Input/InputField'
 
 export const NameContainer = () => {
 
-  const [name, setName] = React.useState("Fellow Person");
+  const [name, setName] = React.useState("Friendly Sphere");
   const [isActive, setActive] = React.useState(false);
   const setDisplayName = useConferenceStore(store => store.setDisplayName)
   const onClick = useCallback(() => {
