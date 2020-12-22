@@ -1,6 +1,6 @@
 import { mountStoreDevtool } from "simple-zustand-devtools";
 import create from "zustand";
-import { getConnectionOptions, jitsiInitOptions } from "../components/JitsiConnection/options";
+import { getConnectionOptions, jitsiInitOptions } from "../components/JitsiConnection/jitsiOptions";
 import { IJitsiConference, Track } from "./ConferenceStore";
 
 type IJitsiEvents = {

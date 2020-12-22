@@ -8,4 +8,8 @@
 .react-transform-component{
   width: 100vw  !important;
   height: 100vh !important;
+  background-color: #efefef;
+}
+.react-transform-element{
+  background-color: #fefefe;
 }
