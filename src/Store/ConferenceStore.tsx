@@ -2,7 +2,6 @@ import produce from 'immer';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
 import create from 'zustand';
 import { conferenceOptions } from '../components/JitsiConnection/jitsiOptions';
-import { panOptions } from '../components/PanHandler/panOptions';
 import { getVolumeByDistance } from '../utils/VectorHelpers';
 import { useConnectionStore } from './ConnectionStore';
 import { useLocalStore } from './LocalStore';
@@ -33,7 +32,7 @@ export type Track = {
 export type AudioTrack = Track
 export type VideoTrack = Track 
 
-export type User = { id:ID, mute:boolean, volume:number, pos:Point, audio?:AudioTrack, video?:VideoTrack }
+export type User = { id:ID, user?:any, mute:boolean, volume:number, pos:Point, audio?:AudioTrack, video?:VideoTrack }
 type Users = { [id:string]:User }
 type Point = {x:number, y:number}
 type ID = string
@@ -43,6 +42,7 @@ export type IJitsiConference={
   addCommandListener: (command:string,callback:(e:any)=>void) => boolean
   sendCommand: (command:string,payload:any) => boolean
   join:()=>void
+  setDisplayName:(name:string)=>void
   addTrack:(track:Track)=>void
   myUserId:()=>ID
   leave:()=>void
@@ -62,6 +62,7 @@ type ConferenceActions = {
 }
 
 type UserActions = {
+  setDisplayName:(name:string)=>void
   calculateVolume: (id:ID) => void
   calculateVolumes: (localPos:Point) => void
 }
@@ -81,8 +82,8 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
   const produceAndSet = (callback:(newState:ConferenceStore)=>void)=>set(state => produce(state, newState => callback(newState)))
 
   // Private Helper Functions *******************************************
-  const _addUser = (id:ID) :void => produceAndSet (newState => {
-    newState.users[id] = {id:id, mute:false, volume:1, pos:panOptions.user.initialPosition}
+  const _addUser = (id:ID, user?:any) :void => produceAndSet (newState => {
+    newState.users[id] = {id:id, user:user, mute:false, volume:1, pos:{x:0, y:0}}
   })
   const _removeUser = (id:ID) :void => produceAndSet (newState => {
     delete newState.users[id]
@@ -133,7 +134,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
   const init = ():void => {
     const JitsiMeetJS = useConnectionStore.getState().jsMeet 
     const connection = useConnectionStore.getState().connection //either move to ConnectionStore or handle undefined here
-    const conferenceName = get().conferenceName || "conference"
+    const conferenceName = process.env.REACT_APP_CONFERENCE_NAME || get().conferenceName || "conference"
     
     if(connection && JitsiMeetJS && conferenceName) {
       const conference = connection.initJitsiConference(conferenceName, conferenceOptions) //TODO before unload close connection
@@ -164,6 +165,11 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     const conference = get().conferenceObject
     conference?.leave()
   }
+  const setDisplayName = (name) => {
+    console.count("setDisplayName in Store Calld")
+    const conference = get().conferenceObject
+    conference?.setDisplayName(name)
+  }
   const calculateVolume = (id:ID):void => produceAndSet (newState => {
     const localUserPosition:Point = useLocalStore.getState().pos //check if this is updated or kept by closure
     newState.users[id]['volume'] = getVolumeByDistance(localUserPosition, newState.users[id]['pos'])
@@ -182,6 +188,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     init,
     join,
     leave,
+    setDisplayName,
     calculateVolume,
     calculateVolumes
   }

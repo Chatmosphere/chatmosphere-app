@@ -32,10 +32,10 @@ export const Footer = () => {
       {/* <Button><FaVideo/>Video</Button> */}
 		</FooterContainer>
     <IconBox>
-      <IconLink url="https://github.com/Chatmosphere/react-app">
+      <IconLink target="_blank" url="https://github.com/Chatmosphere/react-app">
         <FaGithub />
       </IconLink>
-      <IconLink url="https://twitter.com/chatmosphereCC">
+      <IconLink target="_blank" url="https://twitter.com/chatmosphereCC">
         <FaTwitterSquare />
       </IconLink>
       {/* <IconLink url="">

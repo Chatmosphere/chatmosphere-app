@@ -10,6 +10,8 @@ import { Info } from './components/common/Info/Info'
 import { Room } from './components/Room/Room'
 import { PanHandler } from './components/PanHandler/PanHandler'
 
+console.log("PROCESS IS ", process.env.REACT_APP_SERVER_OPTION)
+
 function App() {
 	return (
 		<div className="App">

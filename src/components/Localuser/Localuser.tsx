@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
-import { Name } from "../User/Name"
 import { useLocalStore } from "../../Store/LocalStore"
 import LocalVideo from "./LocalVideo"
 import LocalAudio from "./LocalAudio"
@@ -8,6 +7,7 @@ import { MuteIndicator } from "./MuteIndicator"
 import { ReloadHint } from "../ReloadHint/ReloadHint"
 import { panOptions } from "../PanHandler/panOptions"
 import { AudioRadius } from "./AudioRadius"
+import { NameContainer } from "./NameContainer"
 
 interface IUserContainer {
   readonly isActive: boolean
@@ -96,7 +96,7 @@ export const Localuser: React.FC<ILocaluser> = (props) => {
         <LocalAudio key={audioTrack.track.id} track={audioTrack} />
       )}
       {isMute && <MuteIndicator>🤭</MuteIndicator>}
-      <Name>This is You</Name>
-    </DynamicUserContainer>
-  )
+      <NameContainer />
+		</DynamicUserContainer>
+	);
 }

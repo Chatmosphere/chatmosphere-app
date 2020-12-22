@@ -38,10 +38,12 @@ export const LocalStoreLogic = () => {
   const throttledSendPos = throttle(sendPositionToPeers, 200)
 
   useEffect(()=>{
-    const newPos = JSON.stringify({...pos, id: myId})
-    throttledSendPos(newPos)
-    calculateVolumes(pos)
-  },[pos])
+    if(myId) {
+      const newPos = JSON.stringify({...pos, id: myId})
+      throttledSendPos(newPos)
+      calculateVolumes(pos)
+    }
+  },[pos, myId])
   
   return <></>
 }
