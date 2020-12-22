@@ -73,12 +73,15 @@ export const useConnectionStore = create<IStore>((set, get) => {
   var jitsiMeetPromise
   // # Public Functions
   const initJitsiMeet = async () => {
+    const jsMeet = get().jsMeet
+    if(jsMeet)return jsMeet
     // not sure if most elegant but now returns jitsi object and we can initialize conference nicely after server
     jitsiMeetPromise = new Promise((res, rej) => {
       const jitsiMeet = async () => window.JitsiMeetJS
       jitsiMeet().then((jsMeet) => {
         jsMeet.setLogLevel(jsMeet.logLevels.ERROR)
 
+        //without init you can not create local tracks
         jsMeet.init(jitsiInitOptions)
         set({ jsMeet: jsMeet })
         // get().connectServer()

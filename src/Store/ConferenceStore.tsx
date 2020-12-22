@@ -138,6 +138,8 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     // const conferenceName = conferenceID.length > 0 ? conferenceID.toLowerCase() : get().conferenceName?.toLowerCase()
     const conferenceName = process.env.REACT_APP_CONFERENCE_NAME || get().conferenceName || "conference" //Hardcode for now, we dont want unlimited conferences on demo server;
     
+    //const conferenceName = process.env.CHATMOSPHERE_RESERVED_CONFERENCE_NAME
+    
     if(connection && JitsiMeetJS && conferenceName) {
       const conference = connection.initJitsiConference(conferenceName, conferenceOptions) //TODO before unload close connection
       conference.on(JitsiMeetJS.events.conference.USER_JOINED, _addUser)

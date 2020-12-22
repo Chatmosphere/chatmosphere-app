@@ -18,8 +18,10 @@ export const Welcome = () => {
 	const onSubmit = (e) => {
 		e.preventDefault()
 		if(sessionName.length > 0) {
-			// setConferenceName(sessionName) //that actually should happen in call
-			history.push(`/session/${sessionName}`)
+			//set the conference name to use it in enter screen
+			//it won't join to conference yet until enter.tsx creates a connection
+			setConferenceName(sessionName) 
+			history.push(`/enter`)
 		}
 	}
 

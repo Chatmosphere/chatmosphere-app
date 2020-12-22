@@ -2,9 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 import { IconLink } from '../common/Buttons/IconLink'
 import { MuteButton } from './MuteButton'
-import { FaGithub, FaTwitterSquare, FaVideo, FaMicrophone, FaCommentDots } from 'react-icons/fa'
+import {FaPhone, FaGithub, FaTwitterSquare, FaVideo, FaMicrophone, FaCommentDots } from 'react-icons/fa'
 import {MdCallEnd} from 'react-icons/md'
 import { Button } from '../common/Buttons/Button'
+import { useConferenceStore } from '../../Store/ConferenceStore'
+import { useConnectionStore } from '../../Store/ConnectionStore'
+import {useHistory} from 'react-router-dom'
+
 
 const FooterContainer = styled.div`
 	position: fixed;
@@ -23,12 +27,27 @@ const IconBox = styled.div`
   bottom:20px;
 `
 
-export const Footer = () => {
+interface IFooter{
+  mute?:boolean,
+  endCall?:boolean
+}
+
+export const Footer:React.FC<IFooter> = ({mute,endCall}) => {
+  const leave = useConferenceStore(state => state.leave)
+  const disconnectServer = useConnectionStore(state => state.disconnectServer)
+  const history = useHistory()
+
+  const endCallClick = ()=>{
+    leave()
+    disconnectServer()
+    history.push(`/enter`)
+  }
+
 	return (
   <>
 		<FooterContainer>
-			<MuteButton></MuteButton>
-      {/* <Button danger><MdCallEnd/>End Call</Button> */}
+			{mute && <MuteButton></MuteButton>}
+      {endCall && <Button danger onClick={endCallClick}><MdCallEnd/>End Call</Button>}
       {/* <Button><FaVideo/>Video</Button> */}
 		</FooterContainer>
     <IconBox>

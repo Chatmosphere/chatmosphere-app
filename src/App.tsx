@@ -31,7 +31,7 @@ function App() {
 						<LocalStoreLogic />
 						<Users />
 						<Localuser />
-						<Footer />
+						<Footer mute endCall />
 					</div>
 				</Route>
 
