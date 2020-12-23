@@ -21,7 +21,7 @@ export const Enter = () => {
 
 	const onStartCall = (e) => {
     e.preventDefault()
-    
+    //perhaps it is better to create a connection and then forward to "session/" page?
 		history.push(`/session/${conferenceName}`)
   }
   

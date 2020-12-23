@@ -54,7 +54,7 @@ type IStore = {
   initJitsiMeet: () => any
   setConnected: () => void
   setDisconnected: () => void
-  connectServer: () => void
+  connectServer: (conferenceName:string) => void
   disconnectServer: () => void
 }
 
@@ -71,6 +71,7 @@ export const useConnectionStore = create<IStore>((set, get) => {
   const _setConnected = () => set({ connected: true }) //actually this should initiate a new conference object without joining it
   const _setDisconnected = () => set({ connected: false })
   var jitsiMeetPromise
+
   // # Public Functions
   const initJitsiMeet = async () => {
     const jsMeet = get().jsMeet
@@ -91,7 +92,7 @@ export const useConnectionStore = create<IStore>((set, get) => {
     // const result = await promise
     return await jitsiMeetPromise
   }
-  const connectServer = () => {
+  const connectServer = (conferenceName:string) => {
     //Since jsMeet object is async (Promise), we should use also Promise to create a connection and connect. Because this is depandent to jsMeet object
     //But this function should be called only once if there is a current connection object.
     const connection = get().connection
@@ -101,7 +102,8 @@ export const useConnectionStore = create<IStore>((set, get) => {
       return
     }
     jitsiMeetPromise.then((jsMeet) => {
-      const connectionOptions = getConnectionOptions()
+      const connectionOptions = getConnectionOptions(conferenceName)
+      console.log("connectionOptions:",connectionOptions)
       const tmpConnection = new jsMeet.JitsiConnection(
         null,
         null,

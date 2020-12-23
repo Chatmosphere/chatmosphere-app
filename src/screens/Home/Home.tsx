@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useConferenceStore } from './../../Store/ConferenceStore';
 import {useHistory} from 'react-router-dom'
+import { conferenceName } from '../../components/JitsiConnection/options';
 
 export const Welcome = () => {
 
-	const [sessionName, setName] = useState<string>('conference')
+	const [sessionName, setName] = useState<string>(conferenceName)
 	const setConferenceName = useConferenceStore(state => state.setConferenceName)
 	const history = useHistory()
-
 
 	const handleChange = (e) => {
 		setName(e.target.value)

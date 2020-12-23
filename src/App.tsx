@@ -21,6 +21,7 @@ function App() {
 				</Route>
 
 				<Route path="/session/:id">
+					{/* TODO: redirect to "/enter" if this the first time the user in this conference */}
 					<div className="App">
 						<Info>
 							Welcome to our Prototype<br />

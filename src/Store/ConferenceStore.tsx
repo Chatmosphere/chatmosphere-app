@@ -68,7 +68,6 @@ type UserActions = {
   calculateVolumes: (localPos:Point) => void
 }
 
-
 // # IMPLEMENTATIONS *******************************************
 
 export const useConferenceStore = create<ConferenceStore>((set,get) => {
@@ -136,9 +135,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     const JitsiMeetJS = useConnectionStore.getState().jsMeet 
     const connection = useConnectionStore.getState().connection //either move to ConnectionStore or handle undefined here
     // const conferenceName = conferenceID.length > 0 ? conferenceID.toLowerCase() : get().conferenceName?.toLowerCase()
-    const conferenceName = process.env.REACT_APP_CONFERENCE_NAME || get().conferenceName || "conference" //Hardcode for now, we dont want unlimited conferences on demo server;
-    
-    //const conferenceName = process.env.CHATMOSPHERE_RESERVED_CONFERENCE_NAME
+    const conferenceName = get().conferenceName || process.env.REACT_APP_CONFERENCE_NAME 
     
     if(connection && JitsiMeetJS && conferenceName) {
       const conference = connection.initJitsiConference(conferenceName, conferenceOptions) //TODO before unload close connection
