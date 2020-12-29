@@ -23,6 +23,17 @@ const IconBox = styled.div`
   bottom:20px;
 `
 
+const FeedbackLink = styled.a`
+  font-weight: bold;
+  font-size: .9rem;
+  padding: 3px 8px;
+  margin-left: 2px;
+  color: #333;
+  &:hover {
+    color: #8823ee;
+  }
+`
+
 export const Footer = () => {
 	return (
   <>
@@ -38,9 +49,9 @@ export const Footer = () => {
       <IconLink target="_blank" url="https://twitter.com/chatmosphereCC">
         <FaTwitterSquare />
       </IconLink>
-      {/* <IconLink url="">
-        <FaCommentDots />
-      </IconLink> */}
+      <FeedbackLink target="_blank" href="https://chatmosphere.cc/feedback">
+        Feedback
+      </FeedbackLink>
     </IconBox>
   </>
 	)
