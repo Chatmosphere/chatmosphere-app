@@ -15,7 +15,7 @@ const Video = styled.video`
   transform: scaleX(-1);
 `
 
-export const VideoTrack = ({id}) => {
+export const VideoTrack:React.FC<{id:number}> = React.memo(({id}) => {
 
   const videoTrack = useConferenceStore(useCallback(store => store.users[id].video, [id]))
   const myRef:any = useRef()
@@ -38,5 +38,5 @@ export const VideoTrack = ({id}) => {
   return (
     <Video autoPlay={true} ref={myRef} className={`remoteTrack videoTrack ${id}video`} id={`${id}video`} />
   )
-}
+})
 

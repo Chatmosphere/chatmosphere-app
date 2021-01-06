@@ -1,7 +1,7 @@
 import produce from 'immer';
 import { mountStoreDevtool } from 'simple-zustand-devtools';
 import create from 'zustand';
-import { conferenceOptions } from '../components/JitsiConnection/options';
+import { conferenceOptions } from '../components/JitsiConnection/jitsiOptions';
 import { getVolumeByDistance } from '../utils/VectorHelpers';
 import { useConnectionStore } from './ConnectionStore';
 import { useLocalStore } from './LocalStore';
@@ -74,7 +74,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
 
   const initialState = {
     conferenceObject:undefined,
-    conferenceName:"conference",
+    conferenceName:"conference1",
     isJoined:false,
     users:{},
   }

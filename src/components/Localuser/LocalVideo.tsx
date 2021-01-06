@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';import { Track, useConferenceStore, VideoTrack } from '../../Store/ConferenceStore';
+import React, { memo, useEffect, useRef } from 'react';
+import styled from 'styled-components';
+import { useConferenceStore, VideoTrack } from '../../Store/ConferenceStore';
 
 const Video = styled.video`
   width: 200px; 
@@ -11,7 +12,7 @@ const Video = styled.video`
   transform: scaleX(-1);
 `
 
-const LocalVideo:React.FC<{track:VideoTrack}> = ({track}) => {
+const LocalVideo:React.FC<{track:VideoTrack}> = memo(({track}) => {
   const myRef:any = useRef()
   const room = useConferenceStore(store => store.conferenceObject)
 
@@ -30,6 +31,6 @@ const LocalVideo:React.FC<{track:VideoTrack}> = ({track}) => {
   },[room, track])
 
   return <Video autoPlay={true} ref={myRef} className={`localTrack videoTrack`} />
-}
+})
 
 export default LocalVideo

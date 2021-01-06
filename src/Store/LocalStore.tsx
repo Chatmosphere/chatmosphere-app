@@ -1,36 +1,17 @@
 import produce from "immer";
-import React, { useEffect } from "react";
 import create from "zustand";
-import { Track, useConferenceStore, User } from "./ConferenceStore";
-import { useConnectionStore } from "./ConnectionStore";
+import { Track, User } from "./ConferenceStore";
+import { panOptions, transformWrapperOptions } from "../components/PanHandler/panOptions";
 
-
-
-///LocalStore has dependency on ConferenceStore.
-///This component provides the communication from ConferenceStore to LocalStore.
-export const LocalStoreLogic = () => {
-
-  const conference = useConferenceStore(state => state.conferenceObject)
-  const { setMyID, setLocalTracks } = useLocalStore()
-  const jsMeet = useConnectionStore(store => store.jsMeet)
-  
-  useEffect(()=>{
-    if(conference?.myUserId()) setMyID(conference.myUserId())
-  },[conference])
-  
-  useEffect(() => {
-      jsMeet
-        ?.createLocalTracks({ devices: [ 'audio', 'video' ] }, true)
-        .then(tracks => {setLocalTracks(tracks)})
-        .catch(error => {
-          console.log(error)
-        });
-  },[ jsMeet, setLocalTracks ])
-  
-  return <></>
-}
 
 type Point = {x:number, y:number}
+//Feels like ZoomPan doesnt belong to LocalStore; maybe state of panHandler or own store?
+type ZoomPan = {
+  pos:Point
+  pan:Point 
+  scale:number
+  onPanChange: (params:any) => void
+} 
 
 type Store = {
   setLocalPosition: (newPosition:Point) => void
@@ -38,7 +19,7 @@ type Store = {
   toggleMute: () => void
   clearLocalTracks: () => void
   setMyID: (id:string) => void
-} & User
+} & User & ZoomPan
 
 export const useLocalStore = create<Store>((set,get) => {
 
@@ -46,9 +27,11 @@ export const useLocalStore = create<Store>((set,get) => {
     id:"",
     mute:false,
     volume:1,
-    pos:{x:0,y:0},
     video:undefined,
-    audio:undefined
+    audio:undefined,
+    pos:panOptions.user.initialPosition,
+    pan: {x:transformWrapperOptions.defaultPositionX || 0,y: transformWrapperOptions.defaultPositionY || 0},
+    scale:1,
   }
 
   // # Private Functions
@@ -86,6 +69,22 @@ export const useLocalStore = create<Store>((set,get) => {
 
   const setMyID = (id:string) => set({id:id})
 
+  const onPanChange = ({scale,positionX, positionY}) => {
+    const viewport = {
+      x: panOptions.room.size.x * scale,
+      y: panOptions.room.size.y * scale,
+    }
+    const panLimit = {
+      x: viewport.x - window.innerWidth,
+      y: viewport.y - window.innerHeight,
+    }
+    const panPosition = {
+      x: Math.max(-panLimit.x, Math.min(0, positionX)),
+      y: Math.max(-panLimit.y, Math.min(0, positionY)),
+    }
+    set({scale:scale, pan:panPosition})
+  }
+
   return {
   ...state,
   setLocalPosition,
@@ -93,5 +92,6 @@ export const useLocalStore = create<Store>((set,get) => {
   toggleMute,
   clearLocalTracks,
   setMyID,
+  onPanChange
 }
 })
