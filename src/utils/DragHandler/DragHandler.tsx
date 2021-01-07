@@ -6,6 +6,7 @@ export interface DragProps {
   children:any
   currentScale:number
   pan:Point
+  callback: (Point)=>void
 }
 
 interface Point {
@@ -22,7 +23,7 @@ const DragElement = styled.div`
 `
 
 
-const DragHandler = ({initPos={x:0,y:0}, children, currentScale = 1, pan}:DragProps) => {
+const DragHandler = ({initPos={x:0,y:0}, children, callback=(pos)=>null, currentScale = 1, pan}:DragProps) => {
   pan = pan || {x:0,y:0}
   const clickDelta:any = useRef()
   const element:any = useRef()
@@ -32,6 +33,7 @@ const DragHandler = ({initPos={x:0,y:0}, children, currentScale = 1, pan}:DragPr
       const xPos = e.clientX / currentScale - clickDelta.current.x - element.current.parentElement.getBoundingClientRect().left
       const yPos = e.clientY / currentScale - clickDelta.current.y - element.current.parentElement.getBoundingClientRect().top
       element?.current?.setAttribute('style', `left:${xPos}px; top:${yPos}px`)
+      callback({x:xPos, y:yPos})
     }
   }
 
