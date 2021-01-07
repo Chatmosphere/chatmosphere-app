@@ -5,10 +5,10 @@ import styled from 'styled-components';
 
 
 const TestUser = styled.div`
-  width: 200px;
-  height: 200px;
+  width: 100px;
+  height: 100px;
   border-radius: 100px;
-  background-color: blue;
+  background-color: #00ffbb;
 `
 const DragFrame = styled.div`
   width: 600px;
@@ -26,6 +26,6 @@ export const Default = Template.bind({})
 
 Default.args = {
   initPos: {
-    x:0,y:0
+    x:200,y:0
   }
 }
