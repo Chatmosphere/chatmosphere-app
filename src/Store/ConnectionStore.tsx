@@ -20,6 +20,7 @@ type IJitsiEvents = {
     TRACK_REMOVED
     CONFERENCE_JOINED
     TRACK_MUTE_CHANGED
+    CONFERENCE_ERROR
   }
   connection: {
     CONNECTION_ESTABLISHED
@@ -52,6 +53,7 @@ type IJitsiConnection = {
   ) => IJitsiConference
   connect: () => void
   disconnect: () => void
+  xmpp:any
 }
 
 type IStore = {
@@ -59,6 +61,7 @@ type IStore = {
   jsMeet?: IJsMeet
   connection?: IJitsiConnection
   connected: boolean
+  error:any
   initJitsiMeet: () => any
   setConnected: () => void
   setDisconnected: () => void
@@ -73,10 +76,11 @@ export const useConnectionStore = create<IStore>((set, get) => {
     room: null,
     connection: undefined,
     connected: false,
+    error:""
   }
 
   // # Private Functions
-  const _setConnected = () => set({ connected: true }) //actually this should initiate a new conference object without joining it
+  const _setConnected = () => set({ connected: true, error:undefined }) //actually this should initiate a new conference object without joining it
   const _setDisconnected = () => set({ connected: false })
   var jitsiMeetPromise
 
@@ -123,7 +127,11 @@ export const useConnectionStore = create<IStore>((set, get) => {
       )
       tmpConnection.addEventListener(
         jsMeet.events.connection.CONNECTION_FAILED,
-        () => console.log("failed"),
+        (e) => {
+          console.log("tmpConnection:",tmpConnection.xmpp.lastErrorMsg)
+          // console.log("tmpConnection:",get().connection)
+          set({ connection: undefined, error:tmpConnection.xmpp.lastErrorMsg })
+        },
       )
       tmpConnection.addEventListener(
         jsMeet.events.connection.CONNECTION_DISCONNECTED,
@@ -133,7 +141,8 @@ export const useConnectionStore = create<IStore>((set, get) => {
       // The above TODO is valid, but a connection to public jitsi server requires the connectionOptions, because the conference name is passed through the url.
       // Therefore, for now; connection object is created and connected; disconnect will disconnect and destroy the connection object.
       tmpConnection.connect()
-      set({ connection: tmpConnection })
+      set({ connection: tmpConnection, error:undefined })
+      
     })
   }
 

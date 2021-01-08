@@ -14,6 +14,7 @@ import styled from 'styled-components'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { Welcome } from './screens/Home/Home'
 import { Enter } from './screens/Enter/Enter'
+import { ErrorHandler } from './components/common/Info/ErrorHandler'
 
 
 const AppContainer = styled.div`
@@ -29,6 +30,7 @@ function App() {
 		<Router>
 			<Switch>
 				<Route path="/enter">
+					<ErrorHandler />
 					<Enter />
 				</Route>
 
