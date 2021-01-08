@@ -6,8 +6,8 @@ import { Header } from "../../components/Header/Header"
 import { Localuser } from "../../components/Localuser/Localuser"
 import { useConferenceStore } from "../../Store/ConferenceStore"
 import { useConnectionStore } from "../../Store/ConnectionStore"
-import { LocalStoreLogic } from "../../Store/LocalStore"
 import {useHistory} from 'react-router-dom'
+import { LocalStoreLogic } from "../../Store/LocalStoreLogic"
 
 export const Enter = () => {
   const { initJitsiMeet,connectServer } = useConnectionStore()

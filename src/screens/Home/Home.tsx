@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { useConferenceStore } from './../../Store/ConferenceStore';
 import {useHistory} from 'react-router-dom'
 import { conferenceName } from '../../components/JitsiConnection/options';
+import { useConnectionStore } from '../../Store/ConnectionStore';
 
 export const Welcome = () => {
 
 	const [sessionName, setName] = useState<string>(conferenceName)
+	const { initJitsiMeet } = useConnectionStore()
 	const setConferenceName = useConferenceStore(state => state.setConferenceName)
 	const history = useHistory()
 
@@ -21,7 +23,9 @@ export const Welcome = () => {
 			//set the conference name to use it in enter screen
 			//it won't join to conference yet until enter.tsx creates a connection
 			setConferenceName(sessionName) 
-			history.push(`/enter`)
+			initJitsiMeet()
+			// history.push(`/enter`)
+			history.push(`/session/${sessionName}`)
 		}
 	}
 

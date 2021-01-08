@@ -27,12 +27,20 @@ type IJitsiEvents = {
     CONNECTION_DISCONNECTED
   }
 }
+
+type deviceType = "audio" | "video"
+
+type IMediaDevices = {
+  isDevicePermissionGranted: (type?: deviceType) => Promise<boolean>
+}
+
 type IJsMeet = {
   init: (options: IJitsiInitOptions) => void
   addTrack: (track: Track) => void
   events: IJitsiEvents
+  mediaDevices: IMediaDevices
   createLocalTracks: (
-    options: { devices: ("audio" | "video")[] },
+    options: { devices: deviceType[] },
     notSure: boolean,
   ) => Promise<Track[]>
   JitsiConnection: any
@@ -54,7 +62,7 @@ type IStore = {
   initJitsiMeet: () => any
   setConnected: () => void
   setDisconnected: () => void
-  connectServer: (conferenceName:string) => void
+  connectServer: (conferenceName: string) => void
   disconnectServer: () => void
 }
 
@@ -75,7 +83,7 @@ export const useConnectionStore = create<IStore>((set, get) => {
   // # Public Functions
   const initJitsiMeet = async () => {
     const jsMeet = get().jsMeet
-    if(jsMeet)return jsMeet
+    if (jsMeet) return jsMeet
     // not sure if most elegant but now returns jitsi object and we can initialize conference nicely after server
     jitsiMeetPromise = new Promise((res, rej) => {
       const jitsiMeet = async () => window.JitsiMeetJS
@@ -92,7 +100,7 @@ export const useConnectionStore = create<IStore>((set, get) => {
     // const result = await promise
     return await jitsiMeetPromise
   }
-  const connectServer = (conferenceName:string) => {
+  const connectServer = (conferenceName: string) => {
     //Since jsMeet object is async (Promise), we should use also Promise to create a connection and connect. Because this is depandent to jsMeet object
     //But this function should be called only once if there is a current connection object.
     const connection = get().connection
@@ -103,7 +111,7 @@ export const useConnectionStore = create<IStore>((set, get) => {
     }
     jitsiMeetPromise.then((jsMeet) => {
       const connectionOptions = getConnectionOptions(conferenceName)
-      console.log("connectionOptions:",connectionOptions)
+      console.log("connectionOptions:", connectionOptions)
       const tmpConnection = new jsMeet.JitsiConnection(
         null,
         null,
