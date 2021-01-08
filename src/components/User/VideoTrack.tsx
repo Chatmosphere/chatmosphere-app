@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useCallback, useEffect, useRef } from "react"
 import styled from "styled-components"
 import { useConferenceStore } from '../../Store/ConferenceStore';
+import { useLocalStore } from '../../Store/LocalStore';
 
 
 const Video = styled.video`
@@ -20,6 +21,8 @@ export const VideoTrack:React.FC<{id:number}> = React.memo(({id}) => {
   const videoTrack = useConferenceStore(useCallback(store => store.users[id].video, [id]))
   const myRef:any = useRef()
 
+  const localVideoTrack = useLocalStore((store) => store.video)
+
   useEffect(() => {
     const currentElement = myRef.current
     videoTrack?.attach(currentElement)
@@ -28,6 +31,16 @@ export const VideoTrack:React.FC<{id:number}> = React.memo(({id}) => {
       videoTrack?.dispose()
     })
   },[videoTrack])
+
+
+  //For some reason; when camera permission is not granted yet, not only the local video track, but also the remote video tracks aren't rendered.
+  //The solution is to reattach the remote tracks once local track is available.
+  useEffect(() => {
+    const currentElement = myRef.current
+    videoTrack?.detach(currentElement)
+    videoTrack?.attach(currentElement)
+  },[localVideoTrack])
+
 
    //Fix if Video not shown - reattaching works quite well
    const onVideoClicked = (e) => {
