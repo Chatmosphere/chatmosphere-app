@@ -13,7 +13,7 @@ const TestUser = styled.div`
 const DragFrame = styled.div`
   width: 600px;
   height: 300px;
-  position: relative;
+  /* position: relative; */
 `
 
 const defaults = {
@@ -31,6 +31,7 @@ Default.args = {
   initPos: {
     x:0,y:0
   },
+  panOffset: {x:0, y:0}
 }
 
 export default defaults

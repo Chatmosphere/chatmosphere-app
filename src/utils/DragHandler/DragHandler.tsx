@@ -18,13 +18,14 @@ const DragElement = styled.div`
   position: absolute;
 `
 
-
 const DragHandler = ({initPos={x:0,y:0}, children, callback=(pos)=>null, currentScale = 1, panOffset}:DragProps) => {
   panOffset = panOffset || {x:0,y:0}
   const clickDelta:any = useRef()
   const element:any = useRef()
 
   const onDrag = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
     if(element.current !== undefined) {
       const xPos = (e.clientX) / currentScale - clickDelta.current.x
       const yPos = (e.clientY) / currentScale - clickDelta.current.y
@@ -33,9 +34,10 @@ const DragHandler = ({initPos={x:0,y:0}, children, callback=(pos)=>null, current
     }
   }
 
-  const onUp = () => {
-    document.removeEventListener("pointerup", onUp)
-    document.removeEventListener("pointermove", onDrag)
+  const onUp = (e) => {
+    e.preventDefault()
+    document.removeEventListener("mouseup", onUp)
+    document.removeEventListener("mousemove", onDrag)
   }
 
   const onDown = (e) => {
@@ -46,8 +48,8 @@ const DragHandler = ({initPos={x:0,y:0}, children, callback=(pos)=>null, current
       y: (e.clientY - boundingRect.y + panOffset.y) / currentScale,
     }
     debugger
-    document.addEventListener("pointerup", onUp)
-    document.addEventListener("pointermove", onDrag)
+    document.addEventListener("mouseup", onUp)
+    document.addEventListener("mousemove", onDrag)
   }
 
   useEffect(() => {
@@ -55,7 +57,7 @@ const DragHandler = ({initPos={x:0,y:0}, children, callback=(pos)=>null, current
   },[])
 
   return (
-    <DragElement ref={element} onPointerDown={onDown} id="DragElement">
+    <DragElement ref={element} onMouseDown={onDown} id="DragElement">
       {children}
     </DragElement>
   )

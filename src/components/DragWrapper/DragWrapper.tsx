@@ -8,17 +8,17 @@ const Element = styled.div`
 `
 
 
-export const DragWrapper = ({children}) => {
+export const DragWrapper = ({children, initPos={x:0,y:0}, scale=1, callback=(pos):any=>null}) => {
 
   const ref:any = useRef()
-  const {onDown, position} = useDrag()
+  const {onDown, position} = useDrag({initPos, scale ,callback})
 
   useEffect(() => {
     ref?.current?.setAttribute('style', `left:${position.x}px; top:${position.y}px`)
-  },[position])
+  },[position, scale])
 
   return (
-    <Element onMouseDown={onDown} ref={ref} id="dragWrapper">
+    <Element onPointerDown={onDown} ref={ref} id="dragWrapper">
       {children}
     </Element>
   )

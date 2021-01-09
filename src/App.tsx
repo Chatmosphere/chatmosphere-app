@@ -9,6 +9,7 @@ import { Info } from './components/common/Info/Info'
 import { Room } from './components/Room/Room'
 import { PanHandler } from './components/PanHandler/PanHandler'
 import styled from 'styled-components'
+import { LocalUserContainer } from './components/Localuser/LocalUserContainer'
 
 const AppContainer = styled.div`
 	text-align: center;
@@ -32,7 +33,7 @@ function App() {
 			<PanHandler>
 				<Room>
 					<Users />
-					<Localuser />
+					<LocalUserContainer />
 				</Room>
 			</PanHandler>
 			<Footer />
