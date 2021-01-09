@@ -47,7 +47,6 @@ const DragWrapper = ({initPos={x:0,y:0}, children, callback=(pos)=>null, current
       x: (e.clientX - boundingRect.x + panOffset.x) / currentScale,
       y: (e.clientY - boundingRect.y + panOffset.y) / currentScale,
     }
-    debugger
     document.addEventListener("mouseup", onUp)
     document.addEventListener("mousemove", onDrag)
   }
