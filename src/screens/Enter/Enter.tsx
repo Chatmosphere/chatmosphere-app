@@ -6,7 +6,7 @@ import { Header } from "../../components/Header/Header"
 import { Localuser } from "../../components/Localuser/Localuser"
 import { useConferenceStore } from "../../Store/ConferenceStore"
 import { useConnectionStore } from "../../Store/ConnectionStore"
-import { LocalStoreLogic } from "../../Store/LocalStore"
+import { LocalStoreLogic } from "../../Store/LocalStoreLogic"
 import {useHistory} from 'react-router-dom'
 
 export const Enter = () => {
