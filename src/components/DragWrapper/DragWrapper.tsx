@@ -1,26 +1,66 @@
 import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import { useDrag } from '../../utils/hooks/useDrag'
 
+export interface DragProps {
+  initPos:Point
+  children:any
+  currentScale:number
+  panOffset:Point
+  callback: (Point)=>void
+}
 
-const Element = styled.div`
-  position:absolute;
+interface Point {
+  x:number,
+  y:number
+}
+ 
+const DragElement = styled.div`
+  position: absolute;
 `
 
+const DragWrapper = ({initPos={x:0,y:0}, children, callback=(pos)=>null, currentScale = 1, panOffset}:DragProps) => {
+  panOffset = panOffset || {x:0,y:0}
+  const clickDelta:any = useRef()
+  const element:any = useRef()
 
-export const DragWrapper = ({children, initPos={x:0,y:0}, scale=1, callback=(pos):any=>null}) => {
+  const onDrag = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if(element.current !== undefined) {
+      const xPos = (e.clientX) / currentScale - clickDelta.current.x
+      const yPos = (e.clientY) / currentScale - clickDelta.current.y
+      element?.current?.setAttribute('style', `left:${xPos}px; top:${yPos}px`)
+      callback({x:xPos, y:yPos})
+    }
+  }
 
-  const ref:any = useRef()
-  const {onDown, position} = useDrag({initPos, scale ,callback})
+  const onUp = (e) => {
+    e.preventDefault()
+    document.removeEventListener("mouseup", onUp)
+    document.removeEventListener("mousemove", onDrag)
+  }
+
+  const onDown = (e) => {
+    e.preventDefault()
+    const boundingRect = e.currentTarget.getBoundingClientRect()
+    clickDelta.current = {
+      x: (e.clientX - boundingRect.x + panOffset.x) / currentScale,
+      y: (e.clientY - boundingRect.y + panOffset.y) / currentScale,
+    }
+    debugger
+    document.addEventListener("mouseup", onUp)
+    document.addEventListener("mousemove", onDrag)
+  }
 
   useEffect(() => {
-    ref?.current?.setAttribute('style', `left:${position.x}px; top:${position.y}px`)
-  },[position, scale])
+    element?.current?.setAttribute('style', `left:${initPos.x}px; top:${initPos.y}px`)
+  },[])
 
   return (
-    <Element onPointerDown={onDown} ref={ref} id="dragWrapper">
+    <DragElement ref={element} onMouseDown={onDown} id="DragElement">
       {children}
-    </Element>
+    </DragElement>
   )
 }
 
+export default DragWrapper

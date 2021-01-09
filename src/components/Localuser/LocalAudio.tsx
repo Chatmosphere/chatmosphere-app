@@ -18,13 +18,13 @@ const LocalAudio:React.FC<{track:AudioTrack}> = ({track}) => {
       track.detach(el)
       // track.dispose()
     })
-  },[track])
+  },[track,jsMeet])
 
   useEffect(() => {
     room?.addTrack(track)
   },[room,track])
 
-  return <audio autoPlay={true} muted={true} id='localAudio${id}' />
+  return <audio autoPlay={true} muted={true} id='localAudio' />
 }
 
 export default LocalAudio

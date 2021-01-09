@@ -29,6 +29,8 @@ export const transformWrapperOptions: PropsList = {
     // minPositionX:0, minPositionY:0
   },
   // scalePadding:{animationTime:10},
-  pan: { velocityEqualToMove: true },
+  pan: { 
+    velocityEqualToMove: true,
+  },
   pinch: { disabled: true },
 }
