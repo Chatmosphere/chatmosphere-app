@@ -5,6 +5,13 @@ import { useConnectionStore } from "./ConnectionStore"
 import { useLocalStore } from "./LocalStore"
 import { throttle } from "lodash"
 
+
+const sendPositionToPeers = (pos, conferenceObject) => {
+  conferenceObject?.sendCommand("pos", { value: pos })
+}
+//throttle mustnt be rerendered or it wont work
+const throttledSendPos = throttle(sendPositionToPeers, 200)
+
 ///LocalStore has dependency on ConferenceStore.
 ///This component provides the communication from ConferenceStore to LocalStore.
 export const LocalStoreLogic = () => {
@@ -19,7 +26,7 @@ export const LocalStoreLogic = () => {
     if(conference?.myUserId()) setMyID(conference.myUserId())
     
     //initialize the intial position of this user for other users
-    if(conference)throttledSendPos(pos)
+    if(conference) throttledSendPos(pos, conference)
   },[conference])
   
   useEffect(() => {
@@ -31,16 +38,10 @@ export const LocalStoreLogic = () => {
         });
   },[ jsMeet, setLocalTracks ])
 
-  function sendPositionToPeers(pos) {
-    conference?.sendCommand("pos", { value: pos })
-  }
-
-  const throttledSendPos = throttle(sendPositionToPeers, 200)
-
   useEffect(()=>{
     if(myId) {
       const newPos = JSON.stringify({...pos, id: myId})
-      throttledSendPos(newPos)
+      throttledSendPos(newPos, conference)
       calculateVolumes(pos)
     }
   },[pos, myId])

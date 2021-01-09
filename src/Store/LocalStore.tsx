@@ -1,7 +1,7 @@
 import produce from "immer";
 import create from "zustand";
 import { Track, User } from "./ConferenceStore";
-import { panOptions, transformWrapperOptions } from "../components/PanHandler/panOptions";
+import { panOptions, transformWrapperOptions } from "../components/PanWrapper/panOptions";
 
 
 type Point = {x:number, y:number}

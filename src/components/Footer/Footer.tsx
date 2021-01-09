@@ -57,8 +57,8 @@ export const Footer:React.FC<IFooter> = ({mute,endCall}) => {
 	return (
   <>
 		<FooterContainer>
-			{mute && <MuteButton></MuteButton>}
-      {endCall && <Button danger onClick={endCallClick}><MdCallEnd/>End Call</Button>}
+			<MuteButton></MuteButton>
+      <Button danger onClick={endCallClick}><MdCallEnd/>End Call</Button>
       {/* <Button><FaVideo/>Video</Button> */}
 		</FooterContainer>
     <IconBox>
