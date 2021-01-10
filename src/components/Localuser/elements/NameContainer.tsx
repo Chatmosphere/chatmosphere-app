@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import { useConferenceStore } from "../../../Store/ConferenceStore";
+import { useConferenceStore } from "./../../../store/ConferenceStore";
 import { NameTag } from "../../NameTag/NameTag";
 import {InputField} from '../../common/Input/InputField'
 

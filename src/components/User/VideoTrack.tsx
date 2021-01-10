@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useCallback, useEffect, useRef } from "react"
 import styled from "styled-components"
-import { useConferenceStore } from '../../Store/ConferenceStore';
-import { useLocalStore } from '../../Store/LocalStore';
+import { useConferenceStore } from './../../store/ConferenceStore';
+import { useLocalStore } from './../../store/LocalStore';
 
 
 const Video = styled.video`

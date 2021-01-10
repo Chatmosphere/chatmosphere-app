@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLocalStore } from '../../Store/LocalStore'
+import { useLocalStore } from './../../store/LocalStore'
 import DragWrapper from '../DragWrapper/DragWrapper'
 import { Localuser } from './Localuser'
 

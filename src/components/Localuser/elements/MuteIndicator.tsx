@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useLocalStore } from '../../../Store/LocalStore';
+import { useLocalStore } from './../../../store/LocalStore';
 
 
 const Indicator = styled.div`

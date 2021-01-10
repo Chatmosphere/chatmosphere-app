@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useConnectionStore } from '../../Store/ConnectionStore';
+import { useConnectionStore } from './../../store/ConnectionStore';
 
 const SettingsButton: HTMLButtonElement | any = styled.button``;
 

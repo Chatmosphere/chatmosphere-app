@@ -1,6 +1,6 @@
 import React, { useRef } from "react"
 import styled from "styled-components"
-import { useLocalStore } from "../../Store/LocalStore"
+import { useLocalStore } from "./../../store/LocalStore"
 import LocalVideo from "./LocalVideo"
 import LocalAudio from "./LocalAudio"
 import { MuteIndicator } from "./elements/MuteIndicator"

@@ -1,6 +1,6 @@
 import React from "react"
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch"
-import { useLocalStore } from "../../Store/LocalStore"
+import { useLocalStore } from "./../../store/LocalStore"
 import { transformWrapperOptions} from './panOptions'
 
 export const PanWrapper = ({children}) => {

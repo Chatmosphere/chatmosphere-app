@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { useConferenceStore, VideoTrack } from '../../Store/ConferenceStore';
+import { useConferenceStore, VideoTrack } from './../../store/ConferenceStore';
 
 const Video = styled.video`
   width: 200px; 

@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { ThemeProvider } from 'styled-components'
-import { lightTheme } from './Theme/theme'
-import { GlobalStyles } from './Theme/GlobalStyles/GlobalStyles'
+import { lightTheme } from './theme/theme'
+import { GlobalStyles } from './theme/GlobalStyles/GlobalStyles'
 
 ReactDOM.render(
 	<React.StrictMode>
