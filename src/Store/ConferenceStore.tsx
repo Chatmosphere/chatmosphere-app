@@ -166,7 +166,6 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     conference?.leave()
   }
   const setDisplayName = (name) => {
-    console.count("setDisplayName in Store Calld")
     const conference = get().conferenceObject
     conference?.setDisplayName(name)
   }

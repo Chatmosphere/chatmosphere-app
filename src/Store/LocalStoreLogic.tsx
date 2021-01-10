@@ -18,16 +18,16 @@ export const LocalStoreLogic = () => {
 
   const conference = useConferenceStore(state => state.conferenceObject)
   const calculateVolumes = useConferenceStore((store) => store.calculateVolumes)
-  const { setMyID, setLocalTracks, pos,  id : myId } = useLocalStore()
+  const { setMyID, setLocalTracks, id : myId } = useLocalStore()
   const jsMeet = useConnectionStore(store => store.jsMeet)
-  // const pos = useLocalStore((store) => store.pos)
+  const pos = useLocalStore((store) => store.pos)
   
   useEffect(()=>{
     if(conference?.myUserId()) setMyID(conference.myUserId())
     
     //initialize the intial position of this user for other users
-    if(conference) throttledSendPos(pos, conference)
-  },[conference])
+    // if(conference) throttledSendPos(pos, conference)
+  },[conference, setMyID])
   
   useEffect(() => {
       jsMeet
@@ -44,7 +44,7 @@ export const LocalStoreLogic = () => {
       throttledSendPos(newPos, conference)
       calculateVolumes(pos)
     }
-  },[pos, myId])
+  },[pos, myId, conference, calculateVolumes])
   
   return <></>
 }
