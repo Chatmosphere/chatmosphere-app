@@ -30,7 +30,7 @@ export const Enter = () => {
       <Header>Chatmosphere</Header>
 
       <LocalStoreLogic />
-      <Localuser />
+      {/* <Localuser /> */}
       {/* temporary for testing only */}
       <Button onClick={onStartCall}><FaPhone/>Sart Call</Button>
     </>

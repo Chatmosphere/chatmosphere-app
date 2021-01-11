@@ -2,14 +2,13 @@ import * as React from 'react'
 import JitsiConnection from './components/JitsiConnection/JitsiConnection'
 import { Footer } from './components/Footer/Footer'
 import { Header } from './components/Header/Header'
-import { Localuser } from './components/Localuser/Localuser'
-
 import { LocalStoreLogic } from './Store/LocalStoreLogic'
 import { Users } from './components/User/Users'
 import { Info } from './components/common/Info/Info'
 import { Room } from './components/Room/Room'
-import { PanHandler } from './components/PanHandler/PanHandler'
+import { PanWrapper } from './components/PanWrapper/PanWrapper'
 import styled from 'styled-components'
+import { LocalUserContainer } from './components/Localuser/LocalUserContainer'
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { Welcome } from './screens/Home/Home'
@@ -43,12 +42,12 @@ function App() {
 			<Header>Chatmosphere</Header>
 			<JitsiConnection />
 			<LocalStoreLogic />
-			<PanHandler>
+			<PanWrapper>
 				<Room>
 					<Users />
-					<Localuser />
+					<LocalUserContainer />
 				</Room>
-			</PanHandler>
+			</PanWrapper>
 			<Footer />
 		</AppContainer>
 				</Route>
