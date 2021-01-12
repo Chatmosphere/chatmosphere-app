@@ -6,6 +6,10 @@ import { transformWrapperOptions} from './panOptions'
 export const PanWrapper = ({children}) => {
 
   const onPanChange = useLocalStore(store => store.onPanChange)
+  //@Caution there is a difference between the line above and the following line:
+  //const {onPanChange} = useLocalStore()
+  //The later one will rerender the conponent on any state chage,
+  console.log("PanWrapper:",transformWrapperOptions)
 
   return (
     <TransformWrapper 

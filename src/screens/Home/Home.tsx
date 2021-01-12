@@ -23,9 +23,9 @@ export const Welcome = () => {
 			//set the conference name to use it in enter screen
 			//it won't join to conference yet until enter.tsx creates a connection
 			setConferenceName(sessionName) 
-			initJitsiMeet()
-			// history.push(`/enter`)
-			history.push(`/session/${sessionName}`)
+			// initJitsiMeet()
+			history.push(`/enter/${sessionName}`)
+			// history.push(`/session/${sessionName}`)
 		}
 	}
 

@@ -135,8 +135,8 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     const JitsiMeetJS = useConnectionStore.getState().jsMeet 
     const connection = useConnectionStore.getState().connection //either move to ConnectionStore or handle undefined here
     // const conferenceName = conferenceID.length > 0 ? conferenceID.toLowerCase() : get().conferenceName?.toLowerCase()
-    const conferenceName = get().conferenceName || process.env.REACT_APP_CONFERENCE_NAME 
-    
+    const conferenceName = conferenceID || get().conferenceName || process.env.REACT_APP_CONFERENCE_NAME 
+    console.log("init:",connection ,JitsiMeetJS , conferenceName,useConnectionStore.getState().connected,conferenceID)
     if(connection && JitsiMeetJS && conferenceName) {
       const conference = connection.initJitsiConference(conferenceName, conferenceOptions) //TODO before unload close connection
       conference.on(JitsiMeetJS.events.conference.USER_JOINED, _addUser)

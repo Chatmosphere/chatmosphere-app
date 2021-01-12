@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 import { useEffect } from "react"
 import { useConferenceStore } from "./ConferenceStore"
 import { useConnectionStore } from "./ConnectionStore"
@@ -15,39 +15,33 @@ const throttledSendPos = throttle(sendPositionToPeers, 200)
 ///LocalStore has dependency on ConferenceStore.
 ///This component provides the communication from ConferenceStore to LocalStore.
 export const LocalStoreLogic = () => {
-  const conference = useConferenceStore((state) => state.conferenceObject)
+
+  const conference = useConferenceStore(state => state.conferenceObject)
   const calculateVolumes = useConferenceStore((store) => store.calculateVolumes)
-  const { setMyID, setLocalTracks, pos, id: myId } = useLocalStore()
-  const jsMeet = useConnectionStore((store) => store.jsMeet)
+  const { setMyID, setLocalTracks, pos,  id : myId } = useLocalStore()
+  const {initJitsiMeet,jsMeet} = useConnectionStore()
   // const pos = useLocalStore((store) => store.pos)
 
-  useEffect(() => {
-    if (conference?.myUserId()) setMyID(conference.myUserId())
 
+  useEffect(() => {
+    initJitsiMeet()
+  }, [initJitsiMeet])
+  
+  useEffect(()=>{
+    if(conference?.myUserId()) setMyID(conference.myUserId())
+    
     //initialize the intial position of this user for other users
     if(conference) throttledSendPos(pos, conference)
   },[conference])
   
   useEffect(() => {
-    if (jsMeet) {
-      const createPromise = jsMeet.createLocalTracks(
-        { devices: ["audio", "video"] },
-        true,
-      )
-      createPromise
-        .then((tracks) => {
-          console.log("createPromise:", tracks)
-          const permissionPromise = jsMeet.mediaDevices.isDevicePermissionGranted()
-          permissionPromise.then((granted) => {
-            console.log("permissionPromise:", granted)
-          })
-          setLocalTracks(tracks)
-        })
-        .catch((error) => {
+      jsMeet
+        ?.createLocalTracks({ devices: [ 'audio', 'video' ] }, true)
+        .then(tracks => {setLocalTracks(tracks)})
+        .catch(error => {
           console.log(error)
-        })
-    }
-  }, [jsMeet, setLocalTracks])
+        });
+  },[ jsMeet, setLocalTracks ])
 
   function sendPositionToPeers(pos) {
     conference?.sendCommand("pos", { value: pos })
@@ -55,13 +49,13 @@ export const LocalStoreLogic = () => {
 
   const throttledSendPos = throttle(sendPositionToPeers, 200)
 
-  useEffect(() => {
-    if (myId) {
-      const newPos = JSON.stringify({ ...pos, id: myId })
+  useEffect(()=>{
+    if(myId) {
+      const newPos = JSON.stringify({...pos, id: myId})
       throttledSendPos(newPos)
       calculateVolumes(pos)
     }
-  }, [pos, myId])
-
+  },[pos, myId])
+  
   return <></>
 }

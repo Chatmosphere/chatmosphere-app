@@ -1,6 +1,6 @@
-import React, { useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import styled from "styled-components"
-import { useLocalStore } from "../../Store/LocalStore"
+import { Point, useLocalStore } from "../../Store/LocalStore"
 import LocalVideo from "./LocalVideo"
 import LocalAudio from "./LocalAudio"
 import { MuteIndicator } from "./elements/MuteIndicator"
@@ -8,6 +8,7 @@ import { ReloadHint } from "../ReloadHint/ReloadHint"
 import { panOptions } from "./../PanWrapper/panOptions"
 import { AudioRadius } from "./elements/AudioRadius"
 import { NameContainer } from "./elements/NameContainer"
+import { pseudoRandomBytes } from "crypto"
 
 const Container = styled.div`
   width: ${panOptions.user.size.x}px;
@@ -23,7 +24,9 @@ const Container = styled.div`
 
 interface ILocaluser {
   // panChanged: (callback: (params) => void) => void
+  
 }
+
 
 export const Localuser: React.FC<ILocaluser> = () => {
 
