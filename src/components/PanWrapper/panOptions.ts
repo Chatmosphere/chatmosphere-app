@@ -13,7 +13,7 @@ export const panOptions = {
 
 export const transformWrapperOptions: PropsList = {
   wheel: { step: 50 },
-  scale: 1.01,
+  scale: 1.0,
   //center the window, considering the size of the user view
   defaultPositionX: -panOptions.user.initialPosition.x+(window.innerWidth-panOptions.user.size.x)/2,
   defaultPositionY: -panOptions.user.initialPosition.y+(window.innerHeight-panOptions.user.size.y)/2,

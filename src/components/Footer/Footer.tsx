@@ -3,13 +3,12 @@ import styled from 'styled-components'
 import { IconLink } from '../common/Buttons/IconLink'
 import { MuteButton } from './MuteButton'
 import { FaGithub, FaTwitterSquare, FaVideo, FaMicrophone, FaCommentDots } from 'react-icons/fa'
-import {MdCallEnd} from 'react-icons/md'
-import { Button } from '../common/Buttons/Button'
 
 const FooterContainer = styled.div`
 	position: fixed;
 	bottom: 20px;
 	left: 50%;
+  transform: translateX(-50%);
 `
 
 const IconBox = styled.div`
