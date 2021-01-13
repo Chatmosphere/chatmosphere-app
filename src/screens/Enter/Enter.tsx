@@ -16,35 +16,17 @@ import { PanWrapper } from "../../components/PanWrapper/PanWrapper"
 import { LocalUserContainer } from "../../components/Localuser/LocalUserContainer"
 
 export const Enter = () => {
-  const { initJitsiMeet, jsMeet } = useConnectionStore()
-  const history = useHistory()
-  const { setLocalPosition, onPanChange } = useLocalStore()
-
-  useEffect(() => {
-    initJitsiMeet()
-  }, [])
-
-  /* 
-  useEffect(()=>{
-    //the inital position for the local user might differ for the parent screen.
-    //if given override the inital position
-    
-      setLocalPosition({x:window.innerWidth/2,y:window.innerHeight/2})
-      onPanChange({scale:1,positionX:0, positionY:0})
-    
-  },[jsMeet]) */
 
   return (
     <>
       <Header>Chatmosphere</Header>
-
-      <LocalStoreLogic />
-      <PanWrapper>
-        <Room>
-          <LocalUserContainer />
-        </Room>
-      </PanWrapper>
-      <Footer startCall />
+        <LocalStoreLogic />
+        <PanWrapper>
+          <Room>
+            <LocalUserContainer />
+          </Room>
+        </PanWrapper>
+        <Footer startCall />
     </>
   )
 }

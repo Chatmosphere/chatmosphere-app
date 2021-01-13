@@ -36,6 +36,7 @@ function App() {
               </Room>
             </PanWrapper>
             <Footer startCall />
+			<Enter />
           </AppContainer>
         </Route>
 

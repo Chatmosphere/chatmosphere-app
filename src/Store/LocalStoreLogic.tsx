@@ -43,12 +43,6 @@ export const LocalStoreLogic = () => {
         });
   },[ jsMeet, setLocalTracks ])
 
-  function sendPositionToPeers(pos) {
-    conference?.sendCommand("pos", { value: pos })
-  }
-
-  const throttledSendPos = throttle(sendPositionToPeers, 200)
-
   useEffect(()=>{
     if(myId) {
       const newPos = JSON.stringify({...pos, id: myId})

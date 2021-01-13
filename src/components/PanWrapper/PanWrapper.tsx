@@ -1,15 +1,17 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch"
 import { useLocalStore } from "../../Store/LocalStore"
-import { transformWrapperOptions} from './panOptions'
+import { panOptions, transformWrapperOptions} from './panOptions'
 
 export const PanWrapper = ({children}) => {
 
   const onPanChange = useLocalStore(store => store.onPanChange)
-  //@Caution there is a difference between the line above and the following line:
-  //const {onPanChange} = useLocalStore()
-  //The later one will rerender the conponent on any state chage,
-  console.log("PanWrapper:",transformWrapperOptions)
+  const setLocalPosition = useLocalStore(store => store.setLocalPosition)
+  
+  useEffect(() => {
+    onPanChange({scale:transformWrapperOptions.scale,positionX:transformWrapperOptions.defaultPositionX,positionY:transformWrapperOptions.defaultPositionY})
+    setLocalPosition(panOptions.user.initialPosition)
+  },[])
 
   return (
     <TransformWrapper 
