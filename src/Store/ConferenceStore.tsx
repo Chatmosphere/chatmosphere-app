@@ -43,7 +43,7 @@ export type IJitsiConference={
   sendCommand: (command:string,payload:any) => boolean
   join:()=>void
   setDisplayName:(name:string)=>void
-  addTrack:(track:Track)=>void
+  addTrack:(track:Track)=>Promise<any>
   myUserId:()=>ID
   leave:()=>void
 }

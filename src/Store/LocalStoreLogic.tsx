@@ -6,7 +6,7 @@ import { useLocalStore } from "./LocalStore"
 import { throttle } from "lodash"
 
 
-const sendPositionToPeers = (pos, conferenceObject) => {
+const sendPositionToPeers = (pos:string, conferenceObject) => {
   conferenceObject?.sendCommand("pos", { value: pos })
 }
 //throttle mustnt be rerendered or it wont work
@@ -31,7 +31,7 @@ export const LocalStoreLogic = () => {
     if(conference?.myUserId()) setMyID(conference.myUserId())
     
     //initialize the intial position of this user for other users
-    if(conference) throttledSendPos(pos, conference)
+    if(conference) throttledSendPos(JSON.stringify(pos), conference)
   },[conference])
   
   useEffect(() => {
