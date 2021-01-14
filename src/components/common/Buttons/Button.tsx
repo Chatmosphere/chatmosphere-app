@@ -6,6 +6,7 @@ interface IButton {
 }
 
 export const Button = styled.button<IButton>`
+  font-family: 'Roboto';
   font-size: 1rem;
   display: flex;
 	flex-direction: row;

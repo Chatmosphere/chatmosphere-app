@@ -2,27 +2,33 @@
 // and what kind of things can be stored in them  
 export interface Theme {
   background: string
+  dimmedBackground: string
   fontColor: string
+  font: string
   linkColor: string
   hoverColor: string
   radius: string
+  colors?: {}
 }
 
-const theme = {
-  radius: "3px"
+const generalTheme = {
+  radius: "3px",
+  font: 'Roboto',
 }
 
-export const lightTheme:Theme = {
-  ...theme,
-  background: "#fefefe",
+export const warm:Theme = {
+  ...generalTheme,
+  background: "#FFFCF6",
+  dimmedBackground: "#efefef",
   linkColor: "",
   hoverColor: "",
   fontColor: "#222222"
 }
 
 export const darkTheme:Theme = {
-  ...theme,
+  ...generalTheme,
   background: "#fefefe",
+  dimmedBackground: "#FFFCF6",
   linkColor: "",
   hoverColor: "",
   fontColor: "#222222"
