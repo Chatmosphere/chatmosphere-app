@@ -4,7 +4,7 @@ import { Track, User } from "./ConferenceStore";
 import { panOptions, transformWrapperOptions } from "../components/PanWrapper/panOptions";
 
 
-type Point = {x:number, y:number}
+export type Point = {x:number, y:number}
 //Feels like ZoomPan doesnt belong to LocalStore; maybe state of panHandler or own store?
 type ZoomPan = {
   pos:Point
@@ -29,6 +29,7 @@ export const useLocalStore = create<Store>((set,get) => {
     volume:1,
     video:undefined,
     audio:undefined,
+    // pos:{x:0,y:0},
     pos:panOptions.user.initialPosition,
     pan: {x:transformWrapperOptions.defaultPositionX || 0,y: transformWrapperOptions.defaultPositionY || 0},
     scale:1,

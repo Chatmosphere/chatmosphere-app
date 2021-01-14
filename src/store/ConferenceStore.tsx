@@ -43,7 +43,7 @@ export type IJitsiConference={
   sendCommand: (command:string,payload:any) => boolean
   join:()=>void
   setDisplayName:(name:string)=>void
-  addTrack:(track:Track)=>void
+  addTrack:(track:Track)=>Promise<any>
   myUserId:()=>ID
   leave:()=>void
 }
@@ -56,9 +56,10 @@ type ConferenceStore = {
 } & ConferenceActions & UserActions
 
 type ConferenceActions = {
-  init: () => void
+  init: (conferenceID:string) => void
   join: () => void
   leave: () => void
+  setConferenceName: (name:string) => boolean
 }
 
 type UserActions = {
@@ -66,7 +67,6 @@ type UserActions = {
   calculateVolume: (id:ID) => void
   calculateVolumes: (localPos:Point) => void
 }
-
 
 // # IMPLEMENTATIONS *******************************************
 
@@ -131,11 +131,12 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
   }
 
   // # Public functions *******************************************
-  const init = ():void => {
+  const init = (conferenceID:string):void => {
     const JitsiMeetJS = useConnectionStore.getState().jsMeet 
     const connection = useConnectionStore.getState().connection //either move to ConnectionStore or handle undefined here
-    const conferenceName = process.env.REACT_APP_CONFERENCE_NAME || get().conferenceName || "conference"
-    
+    // const conferenceName = conferenceID.length > 0 ? conferenceID.toLowerCase() : get().conferenceName?.toLowerCase()
+    const conferenceName = conferenceID || get().conferenceName || process.env.REACT_APP_CONFERENCE_NAME 
+    console.log("init:",connection ,JitsiMeetJS , conferenceName,useConnectionStore.getState().connected,conferenceID)
     if(connection && JitsiMeetJS && conferenceName) {
       const conference = connection.initJitsiConference(conferenceName, conferenceOptions) //TODO before unload close connection
       conference.on(JitsiMeetJS.events.conference.USER_JOINED, _addUser)
@@ -150,7 +151,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
       conference.addCommandListener("pos", _onPositionReceived)
       // r.on(JitsiMeetJS.events.conference.PARTICIPANT_PROPERTY_CHANGED, (e) => console.log("Property Changed ", e))
       window.addEventListener('beforeunload', leave) //does this help?  
-      window.addEventListener('unload', leave) //does this help?  fdkshafdsk
+      window.addEventListener('unload', leave) //does this help?
       conference.join()
       set({conferenceObject:conference})
     } else {
@@ -165,6 +166,13 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     const conference = get().conferenceObject
     conference?.leave()
   }
+  const setConferenceName = (name) => {
+    if(name.length < 1) return false
+    const lName:string = name.toLowerCase()
+    set({conferenceName:lName})
+    return true
+  }
+
   const setDisplayName = (name) => {
     const conference = get().conferenceObject
     conference?.setDisplayName(name)
@@ -181,12 +189,14 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
       return null
     })
   })
+
   // Return Object *******************************************
   return {
     ...initialState,
     init,
     join,
     leave,
+    setConferenceName,
     setDisplayName,
     calculateVolume,
     calculateVolumes

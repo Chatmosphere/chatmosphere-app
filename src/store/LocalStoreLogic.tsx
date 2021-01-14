@@ -6,7 +6,7 @@ import { useLocalStore } from "./LocalStore"
 import { throttle } from "lodash"
 
 
-const sendPositionToPeers = (pos, conferenceObject) => {
+const sendPositionToPeers = (pos:string, conferenceObject) => {
   conferenceObject?.sendCommand("pos", { value: pos })
 }
 //throttle mustnt be rerendered or it wont work
@@ -18,9 +18,18 @@ export const LocalStoreLogic = () => {
 
   const conference = useConferenceStore(state => state.conferenceObject)
   const calculateVolumes = useConferenceStore((store) => store.calculateVolumes)
-  const { setMyID, setLocalTracks, id : myId } = useLocalStore()
+  const id = useLocalStore(store => store.id)
+  const pos = useLocalStore(store => store.pos)
+  const setLocalTracks = useLocalStore(store => store.setLocalTracks)
+  const setMyID = useLocalStore(store => store.setMyID)
+  const initJitsiMeet = useConnectionStore(store => store.initJitsiMeet)
   const jsMeet = useConnectionStore(store => store.jsMeet)
-  const pos = useLocalStore((store) => store.pos)
+  // const pos = useLocalStore((store) => store.pos)
+
+
+  useEffect(() => {
+    initJitsiMeet()
+  }, [initJitsiMeet])
   
   useEffect(()=>{
     if(conference?.myUserId()) setMyID(conference.myUserId())
@@ -39,12 +48,12 @@ export const LocalStoreLogic = () => {
   },[ jsMeet, setLocalTracks ])
 
   useEffect(()=>{
-    if(myId) {
-      const newPos = JSON.stringify({...pos, id: myId})
+    if(id) {
+      const newPos = JSON.stringify({...pos, id: id})
       throttledSendPos(newPos, conference)
       calculateVolumes(pos)
     }
-  },[pos, myId, conference, calculateVolumes])
+  },[pos, id, conference, calculateVolumes])
   
   return <></>
 }

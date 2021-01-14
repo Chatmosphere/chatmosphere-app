@@ -22,6 +22,7 @@ const LocalAudio:React.FC<{track:AudioTrack}> = ({track}) => {
 
   useEffect(() => {
     room?.addTrack(track)
+      .catch(error => {});//the track might have been added already, handle the promise error
   },[room,track])
 
   return <audio autoPlay={true} muted={true} id='localAudio' />

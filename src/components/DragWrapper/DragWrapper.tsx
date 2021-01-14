@@ -53,7 +53,7 @@ const DragWrapper = ({initPos={x:0,y:0}, children, callback=(pos)=>null, current
 
   useEffect(() => {
     element?.current?.setAttribute('style', `left:${initPos.x}px; top:${initPos.y}px`)
-  },[])
+  },[element?.current])
 
   return (
     <DragElement ref={element} onMouseDown={onDown} id="DragElement">

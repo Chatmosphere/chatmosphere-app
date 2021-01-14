@@ -1,6 +1,6 @@
 import React, { useRef } from "react"
 import styled from "styled-components"
-import { useLocalStore } from "./../../store/LocalStore"
+import { useLocalStore } from "../../store/LocalStore"
 import LocalVideo from "./LocalVideo"
 import LocalAudio from "./LocalAudio"
 import { MuteIndicator } from "./elements/MuteIndicator"
@@ -23,7 +23,9 @@ const Container = styled.div`
 
 interface ILocaluser {
   // panChanged: (callback: (params) => void) => void
+  
 }
+
 
 export const Localuser: React.FC<ILocaluser> = () => {
 
