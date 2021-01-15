@@ -9,6 +9,7 @@ import { LocalUserContainer } from "../../components/Localuser/LocalUserContaine
 import {useParams} from 'react-router-dom'
 import { useConferenceStore } from "../../store/ConferenceStore"
 import { useEffect } from "react"
+import { ErrorHandler } from "../../components/common/Info/ErrorHandler"
 
 export const Enter = () => {
   const {id} = useParams() //get Id from url, should error check here I guess
@@ -21,6 +22,7 @@ export const Enter = () => {
   return (
     <>
       <Header>Chatmosphere</Header>
+        <ErrorHandler />
         <LocalStoreLogic />
         <PanWrapper>
           <Room>

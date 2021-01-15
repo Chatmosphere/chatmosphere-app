@@ -117,6 +117,12 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     }))
   }
 
+  const _onConferenceError = (e) => {
+    const connection = useConnectionStore.getState().connection
+    // console.log("tmpConnection:",get().connection)
+    set({ conferenceObject: undefined, error:connection?.xmpp.lastErrorMsg })
+  }
+
   const _onRemoteTrackAdded = (track:Track):void => {
     if(track.isLocal()) return // also run on your own tracks so exit
     const JitsiMeetJS = useConnectionStore.getState().jsMeet 
@@ -156,7 +162,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
       window.addEventListener('beforeunload', leave) //does this help?  
       window.addEventListener('unload', leave) //does this help?
       conference.join()
-      set({conferenceObject:conference})
+      set({conferenceObject:conference,error:undefined})
     } else {
       throw new Error('Jitsi Server connection has not been initialized or failed :( - did you call initJitsiMeet on ConnectionStore yet?')
     }

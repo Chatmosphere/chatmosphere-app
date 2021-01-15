@@ -1,4 +1,5 @@
 import React from 'react';
+import { ErrorHandler } from '../../components/common/Info/ErrorHandler';
 import { Info } from '../../components/common/Info/Info';
 import { Footer } from '../../components/Footer/Footer';
 import { Header } from '../../components/Header/Header';
@@ -17,6 +18,7 @@ export const Session = () => {
         <br />
         Please use <b>Safari</b> or <b>Chrome</b> for now for a stable Experience
       </Info>
+      <ErrorHandler />
       <Header>Chatmosphere</Header>
       <JitsiConnection />
       <LocalStoreLogic />
