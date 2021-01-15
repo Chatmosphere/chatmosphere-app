@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { useConferenceStore } from './../../store/ConferenceStore';
+import { useConferenceStore } from '../../store/ConferenceStore';
 import {useHistory} from 'react-router-dom'
 import { conferenceName } from '../../components/JitsiConnection/options';
 import { useConnectionStore } from '../../store/ConnectionStore';
 
-export const Welcome = () => {
+export const Home = () => {
 
 	const [sessionName, setName] = useState<string>(conferenceName)
 	const { initJitsiMeet } = useConnectionStore()
@@ -30,7 +30,7 @@ export const Welcome = () => {
 	}
 
 	return (
-		<div>
+		<>
 			<h1>Welcome to Chatmosphere 👋</h1>
 			<h3>The Open Source Videochat for Cozy Talks</h3>
 			<form onSubmit={onSubmit}>
@@ -40,6 +40,6 @@ export const Welcome = () => {
 				</label>
 				<input type="submit" value="Join" />
 			</form>
-		</div>
+		</>
 	);
 };

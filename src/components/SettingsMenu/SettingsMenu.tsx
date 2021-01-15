@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useConnectionStore } from './../../store/ConnectionStore';
+import { useConnectionStore } from '../../store/ConnectionStore';
 
 const SettingsButton: HTMLButtonElement | any = styled.button``;
 
@@ -22,7 +22,7 @@ const ModalBox = styled.div`
 `;
 
 
-export const Settings = () => {
+export const SettingsMenu = () => {
   const [ open, setOpen ] = useState(false);
   const serverName = useConnectionStore(store=>store.serverUrl)
 	const [inputValue, setInputValue] = useState(serverName)
