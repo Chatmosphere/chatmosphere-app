@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useConnectionStore } from '../../Store/ConnectionStore';
-import { AudioTrack, useConferenceStore } from '../../Store/ConferenceStore';
+import { useConnectionStore } from './../../store/ConnectionStore';
+import { AudioTrack, useConferenceStore } from './../../store/ConferenceStore';
 
 const LocalAudio:React.FC<{track:AudioTrack}> = ({track}) => {
   const myRef:any = useRef()
@@ -18,13 +18,14 @@ const LocalAudio:React.FC<{track:AudioTrack}> = ({track}) => {
       track.detach(el)
       // track.dispose()
     })
-  },[track])
+  },[track,jsMeet])
 
   useEffect(() => {
     room?.addTrack(track)
+      .catch(error => {});//the track might have been added already, handle the promise error
   },[room,track])
 
-  return <audio autoPlay={true} muted={true} id='localAudio${id}' />
+  return <audio autoPlay={true} muted={true} id='localAudio' />
 }
 
 export default LocalAudio

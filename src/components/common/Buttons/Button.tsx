@@ -6,11 +6,15 @@ interface IButton {
 }
 
 export const Button = styled.button<IButton>`
+  font-family: 'Roboto';
   font-size: 1rem;
-	display: flex;
+  display: flex;
 	flex-direction: row;
-	align-items: flex-start;
-	padding: 10px;
+	align-items: center;
+  justify-content: center;
+	height: 50px;
+  width: 190px;
+  border-radius: 5px;
   color: ${props => props.danger ? "#FFF" : "#333" };
   border: none;
   box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);

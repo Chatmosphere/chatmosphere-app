@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { useConferenceStore } from '../../Store/ConferenceStore';
+import { useConferenceStore } from './../../store/ConferenceStore';
 
 export const AudioTrack = ({id, volume}) => {
   const audioTrack = useConferenceStore(useCallback(store => store.users[id]['audio'], [id]))

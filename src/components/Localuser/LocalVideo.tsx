@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { useConferenceStore, VideoTrack } from '../../Store/ConferenceStore';
+import { useConferenceStore, VideoTrack } from './../../store/ConferenceStore';
 
 const Video = styled.video`
   width: 200px; 
@@ -28,6 +28,7 @@ const LocalVideo:React.FC<{track:VideoTrack}> = memo(({track}) => {
 
   useEffect(() => {
     room?.addTrack(track)
+      .catch(error => {});//the track might have been added already, handle the promise error
   },[room, track])
 
   return <Video autoPlay={true} ref={myRef} className={`localTrack videoTrack`} />
