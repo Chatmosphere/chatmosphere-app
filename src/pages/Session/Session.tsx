@@ -15,11 +15,11 @@ import { LocalStoreLogic } from '../../store/LocalStoreLogic'
 export const Session = () => {
 	return (
 		<React.Fragment>
-			<Info>
+			{/* <Info>
 				Welcome to our Prototype
 				<br />
 				Please use <b>Safari</b> or <b>Chrome</b> for now for a stable Experience
-			</Info>
+			</Info> */}
 			<Header>Chatmosphere</Header>
 			<JitsiConnection />
 			<LocalStoreLogic />
@@ -32,7 +32,7 @@ export const Session = () => {
 				</Room>
 			</PanWrapper>
 			<Footer>
-				<JoinButton joined={true} />
+				{/* <JoinButton joined={true} /> */}
 				<MuteButton />
 			</Footer>
 		</React.Fragment>

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useConnectionStore } from './../../store/ConnectionStore'
 import { useConferenceStore } from './../../store/ConferenceStore'
 import {useParams} from 'react-router-dom'
+import { conferenceName } from './options'
 
  /* globals: JitisMeetJS */
 
@@ -20,7 +21,8 @@ const JitsiConnection = () => {
   const initJitsiMeet = useConnectionStore(getInitJitsi)
   const connected = useConnectionStore(getConnection)
   const initConference = useConferenceStore(getInitConference)
-  const {id} = useParams() //get Id from url, should error check here I guess
+  // const {id} = useParams() //get Id from url, should error check here I guess
+  const id = conferenceName
 
   useEffect(() => {
     //jitsi might have been initialized in enter.tsx.

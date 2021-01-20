@@ -21,30 +21,30 @@ export const GlobalStyles = createGlobalStyle<{theme:Theme}>`
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
-    src: local(''),
+    src: local('Roboto'),
         url(${RobotoWoff_400}) format('woff2'), /* Super Modern Browsers */
         url(${RobotoWoff2_400}) format('woff'), /* Modern Browsers */
-        url(${RobotoTTF_400}) format('truetype'), /* Safari, Android, iOS */
+        url(${RobotoTTF_400}) format('truetype'); /* Safari, Android, iOS */
   }
   /* roboto-500 - latin */
   @font-face {
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 500;
-    src: local(''),
+    src: local('Roboto'),
         url(${RobotoWoff_500}) format('woff2'), /* Super Modern Browsers */
         url(${RobotoWoff2_500}) format('woff'), /* Modern Browsers */
-        url(${RobotoTTF_500}) format('truetype'), /* Safari, Android, iOS */
+        url(${RobotoTTF_500}) format('truetype'); /* Safari, Android, iOS */
   }
   /* roboto-700 - latin */
   @font-face {
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 700;
-    src: local(''),
+    src: local('Roboto'),
         url(${RobotoWoff_700}) format('woff2'), /* Super Modern Browsers */
         url(${RobotoWoff2_700}) format('woff'), /* Modern Browsers */
-        url(${RobotoTTF_700}) format('truetype'), /* Safari, Android, iOS */
+        url(${RobotoTTF_700}) format('truetype'); /* Safari, Android, iOS */
   }
 
 

@@ -6,7 +6,7 @@ interface IButton {
 }
 
 export const Button = styled.button<IButton>`
-  font-family: 'Roboto';
+  font-family: ${props => props.theme.font};
   font-size: 1rem;
   display: flex;
 	flex-direction: row;
