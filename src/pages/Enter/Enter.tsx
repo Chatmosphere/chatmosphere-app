@@ -10,8 +10,18 @@ import { Localuser } from "../../components/Localuser/Localuser"
 import { JoinButton } from "../../components/Footer/JoinButton/JoinButton"
 import { MuteButton } from "../../components/Footer/MuteButton/MuteButton"
 
-export const Enter = () => {
+import {useParams} from 'react-router-dom'
+import { useConferenceStore } from "../../store/ConferenceStore"
 
+
+export const Enter = () => {
+  const {id} = useParams() //get Id from url, should error check here I guess
+  const setConferenceName = useConferenceStore(state => state.setConferenceName)
+
+  React.useEffect(() => {
+    setConferenceName(id)
+  },[id])
+  
   return (
     <>
       <Header>Chatmosphere</Header>

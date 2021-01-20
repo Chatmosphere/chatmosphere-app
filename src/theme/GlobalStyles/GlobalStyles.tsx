@@ -70,6 +70,7 @@ export const GlobalStyles = createGlobalStyle<{theme:Theme}>`
   .react-transform-element{
     background-color: ${(props) => props.theme.background};
     cursor:grab;
+    display:inline-flex;
   }
   .react-transform-element:active{
     cursor:grabbing;
