@@ -23,11 +23,11 @@ const Container = styled.div`
 
 interface ILocaluser {
   // panChanged: (callback: (params) => void) => void
-  
+  audioRadius?: boolean
 }
 
 
-export const Localuser: React.FC<ILocaluser> = () => {
+export const Localuser: React.FC<ILocaluser> = ({audioRadius = false}) => {
 
   const audioTrack = useLocalStore((store) => store.audio)
   const videoTrack = useLocalStore((store) => store.video)
@@ -39,7 +39,7 @@ export const Localuser: React.FC<ILocaluser> = () => {
     <Container
       ref={localUserNode}
     >
-      <AudioRadius></AudioRadius>
+      {audioRadius && <AudioRadius></AudioRadius>}
       {videoTrack && (
         <LocalVideo key={videoTrack.track.id} track={videoTrack} />
       )}

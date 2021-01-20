@@ -1,45 +1,52 @@
-import React, { useState } from 'react';
-import { useConferenceStore } from '../../store/ConferenceStore';
-import {useHistory} from 'react-router-dom'
-import { conferenceName } from '../../components/JitsiConnection/options';
-import { useConnectionStore } from '../../store/ConnectionStore';
+import React from 'react'
+import styled from 'styled-components'
+import { NameInputContainer } from './elements/NameInputContainer'
+import { ReactComponent as Wave } from './../../assets/wave.svg'
+import { Footer } from '../../components/Footer/Footer'
+
+const BigHead = styled.h1`
+	font-size: 2.5rem;
+	color: ${(props) => props.theme.colors.primary.dark};
+	margin: 0;
+`
+const BigHeadContainer = styled.div`
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+`
+
+const CenterContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 100%;
+`
+
+const SubHead = styled.h3`
+	font-size: 1.25rem;
+	margin:0;
+	color: ${(props) => props.theme.colors.grey.dark};
+`
+
+const FormContainer = styled.div`
+	margin-top: 40px;
+`
 
 export const Home = () => {
-
-	const [sessionName, setName] = useState<string>(conferenceName)
-	const { initJitsiMeet } = useConnectionStore()
-	const setConferenceName = useConferenceStore(state => state.setConferenceName)
-	const history = useHistory()
-
-	const handleChange = (e) => {
-		setName(e.target.value)
-	}
-
-	
-
-	const onSubmit = (e) => {
-		e.preventDefault()
-		if(sessionName.length > 0) {
-			//set the conference name to use it in enter screen
-			//it won't join to conference yet until enter.tsx creates a connection
-			setConferenceName(sessionName) 
-			// initJitsiMeet()
-			history.push(`/enter/${sessionName}`)
-			// history.push(`/session/${sessionName}`)
-		}
-	}
-
 	return (
-		<>
-			<h1>Welcome to Chatmosphere 👋</h1>
-			<h3>The Open Source Videochat for Cozy Talks</h3>
-			<form onSubmit={onSubmit}>
-				<label>
-					Set Session Name
-					<input type="text" placeholder={sessionName} onChange={handleChange} id="sessionName" />
-				</label>
-				<input type="submit" value="Join" />
-			</form>
-		</>
-	);
-};
+		<React.Fragment>
+			<CenterContainer>
+			<BigHeadContainer>
+				<Wave />
+				<BigHead>Welcome to Chatmosphere</BigHead>
+			</BigHeadContainer>
+			<SubHead>The Open Source Videochat for Cozy Talks</SubHead>
+			<FormContainer>
+				<NameInputContainer />
+			</FormContainer>
+			</CenterContainer>
+			<Footer />
+		</React.Fragment>
+	)
+}

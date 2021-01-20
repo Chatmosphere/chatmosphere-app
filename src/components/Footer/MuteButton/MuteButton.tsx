@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button } from '../common/Buttons/Button';
+import { Button } from './../../common/Buttons/Button';
 import {FaMicrophoneSlash, FaMicrophone} from 'react-icons/fa'
-import { useLocalStore } from '../../store/LocalStore';
+import { useLocalStore } from './../../../store/LocalStore';
 
 
 export const MuteButton = () => {
