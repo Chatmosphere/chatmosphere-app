@@ -8,9 +8,13 @@ export const NameContainer = () => {
   const [name, setName] = React.useState("Friendly Sphere");
   const [isActive, setActive] = React.useState(false);
   const setDisplayName = useConferenceStore(store => store.setDisplayName)
+  const displayName = useConferenceStore(store => store.displayName)
   const onClick = useCallback(() => {
     setActive(true);
   },[]);
+  useEffect(()=>{
+    setName(displayName)
+  },[])
   const onChange = (e) => {
     setName(e.target.value);
   };

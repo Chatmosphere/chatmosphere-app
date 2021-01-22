@@ -53,6 +53,7 @@ type ConferenceStore = {
   conferenceName: string|undefined
   isJoined: boolean
   users: Users
+  displayName:string
 } & ConferenceActions & UserActions
 
 type ConferenceActions = {
@@ -77,6 +78,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     conferenceName:"conference1",
     isJoined:false,
     users:{},
+    displayName:"Friendly Sphere",
   }
 
   const produceAndSet = (callback:(newState:ConferenceStore)=>void)=>set(state => produce(state, newState => callback(newState)))
@@ -130,6 +132,12 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     track.dispose()
   }
 
+  const _onConferenceJoined = () => {
+    set({isJoined:true})//only Local User -> could be in LocalStore
+    const conference = get().conferenceObject
+    conference?.setDisplayName(get().displayName)
+  } 
+
   // # Public functions *******************************************
   const init = (conferenceID:string):void => {
     const JitsiMeetJS = useConnectionStore.getState().jsMeet 
@@ -144,7 +152,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
       conference.on(JitsiMeetJS.events.conference.USER_LEFT, _removeUser)
       conference.on(JitsiMeetJS.events.conference.TRACK_ADDED, _onRemoteTrackAdded)
       conference.on(JitsiMeetJS.events.conference.TRACK_REMOVED, _onRemoteTrackRemoved)
-      conference.on(JitsiMeetJS.events.conference.CONFERENCE_JOINED, () => set({isJoined:true})) //only Local User -> could be in LocalStore
+      conference.on(JitsiMeetJS.events.conference.CONFERENCE_JOINED, _onConferenceJoined)
       conference.on(JitsiMeetJS.events.conference.TRACK_MUTE_CHANGED, _onTrackMuteChanged);
       //conference.on(JitsiMeetJS.events.conference.DISPLAY_NAME_CHANGED, onUserNameChanged);
       // conference.on(JitsiMeetJS.events.conference.TRACK_AUDIO_LEVEL_CHANGED, on_remote_track_audio_level_changed);
@@ -175,6 +183,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
   }
 
   const setDisplayName = (name) => {
+    set({displayName:name})
     const conference = get().conferenceObject
     conference?.setDisplayName(name)
   }
