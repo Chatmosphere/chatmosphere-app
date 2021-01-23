@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface IButton {
-  readonly danger?:boolean
+  type?: any
+  danger?: boolean
 }
 
 export const Button = styled.button<IButton>`
@@ -13,21 +14,35 @@ export const Button = styled.button<IButton>`
 	align-items: center;
   justify-content: center;
 	height: 50px;
-  width: 190px;
+  width: 165px;
   border-radius: 5px;
-  color: ${props => props.danger ? "#FFF" : "#333" };
-  border: none;
-  box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.25);
-  background-color: ${props => props.danger ? "#d34545" : "#F4F4F4"};
+  color: ${props =>
+    props.type == "secondary" && "#00187C" ||
+    props.type == "danger" && "#FFFCF6" ||
+    props.type == "primary" && "#FFFCF6"};
+  border: ${props =>
+    props.type == "secondary" && "1px solid #00187C" ||
+    props.type == "danger" && "2px #00187C" ||
+    "#00187C"};
+  background-color: ${props =>
+    props.type == "secondary" && "#FFFCF6" ||
+    props.type == "danger" && "#BE332F" ||
+    "#093DAC"};
   font-weight: normal;
   & svg {
     margin-right: 5px;
   }
   &:hover {
-    background-color: ${props => props.danger ? "#be3e3e" : "#e3e3e3"};
+    background-color: ${props =>
+    props.type == "secondary" && "#D9DBEB" ||
+    props.type == "danger" && "#BE332F" ||
+    "#093DAC"};
   }
   &:active {
-    background-color: ${props => props.danger ? "#9e3434" : "#cbcbcb"};
+    background-color: ${props =>
+    props.type == "secondary" && "#ACB2E2" ||
+    props.type == "danger" && "#680303" ||
+    "#00187C"};
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
   }
   &:focus {

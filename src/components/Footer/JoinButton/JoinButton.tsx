@@ -26,7 +26,7 @@ export const JoinButton = ({ joined = false }) => {
 
 	if (joined) {
 		return (
-			<Button danger onClick={onEndCall}>
+			<Button type="primary" onClick={onEndCall}>
 				<MdCallEnd />
 				End Call
 			</Button>

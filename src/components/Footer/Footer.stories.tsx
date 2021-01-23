@@ -13,8 +13,8 @@ export default {
 
 export const CallControls = () => (
 	<Footer>
-		<Button danger onClick={()=>null}><FaMicrophoneSlash/> Unmute</Button>
-		<Button danger onClick={()=>null}><MdCallEnd />End Call</Button>
+		<Button onClick={()=>null}><FaMicrophoneSlash/> Unmute</Button>
+		<Button onClick={()=>null}><MdCallEnd />End Call</Button>
 		<VideoButton callback={() => null} />
 	</Footer>
 )

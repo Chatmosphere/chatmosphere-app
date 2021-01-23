@@ -13,8 +13,8 @@ export const MuteButton = () => {
   }
 
   if(mute) {
-    return <Button danger onClick={handleClick}><FaMicrophoneSlash/> Unmute</Button>
+    return <Button type="danger" onClick={handleClick}><FaMicrophoneSlash/> Unmute</Button>
   } else {
-    return <Button onClick={handleClick}><FaMicrophone/> Mute</Button>
+    return <Button type="secondary" onClick={handleClick}><FaMicrophone/> Mute</Button>
   }
 }
