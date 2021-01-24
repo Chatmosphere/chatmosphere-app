@@ -15,24 +15,25 @@ const AppContainer = styled.div`
 	cursor: default;
 `
 
+
 function App() {
 	return (
 		<AppContainer>
 		<Router>
 			<Switch>
-				{/* <Route path="/enter/:id">
+				<Route path="/enter/:id">
 						<Enter />
-				</Route> */}
+				</Route>
 
-				<Route path="/">
+				<Route path="/session/:id">
 					{/* TODO: redirect to "/enter" if this the first time the user in this conference */}
 						<Session />
 				</Route>
 
-				{/* <Route path="/">
+				<Route path="/">
 						<Header>Chatmosphere</Header>
 						<Home />
-				</Route> */}
+				</Route>
 			</Switch>
 		</Router>
 		</AppContainer>

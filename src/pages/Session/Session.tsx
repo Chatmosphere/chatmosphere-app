@@ -32,7 +32,7 @@ export const Session = () => {
 				</Room>
 			</PanWrapper>
 			<Footer>
-				{/* <JoinButton joined={true} /> */}
+				<JoinButton joined={true} />
 				<MuteButton />
 			</Footer>
 		</React.Fragment>

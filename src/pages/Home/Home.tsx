@@ -3,12 +3,9 @@ import styled from 'styled-components'
 import { NameInputContainer } from './elements/NameInputContainer'
 import { ReactComponent as Wave } from './../../assets/wave.svg'
 import { Footer } from '../../components/Footer/Footer'
+import {BigHeadline} from './../../components/common/BigHeadline'
+import { SubHeadline } from '../../components/common/SubHeadline'
 
-const BigHead = styled.h1`
-	font-size: 2.5rem;
-	color: ${(props) => props.theme.colors.primary.dark};
-	margin: 0;
-`
 const BigHeadContainer = styled.div`
 	display: flex;
 	flex-direction: row;
@@ -23,12 +20,6 @@ const CenterContainer = styled.div`
 	height: 100%;
 `
 
-const SubHead = styled.h3`
-	font-size: 1.25rem;
-	margin:0;
-	color: ${(props) => props.theme.colors.grey.dark};
-`
-
 const FormContainer = styled.div`
 	margin-top: 40px;
 `
@@ -39,9 +30,9 @@ export const Home = () => {
 			<CenterContainer>
 			<BigHeadContainer>
 				<Wave />
-				<BigHead>Welcome to Chatmosphere</BigHead>
+				<BigHeadline>Welcome to Chatmosphere</BigHeadline>
 			</BigHeadContainer>
-			<SubHead>The Open Source Videochat for Cozy Talks</SubHead>
+			<SubHeadline>The Open Source Videochat for Cozy Talks</SubHeadline>
 			<FormContainer>
 				<NameInputContainer />
 			</FormContainer>

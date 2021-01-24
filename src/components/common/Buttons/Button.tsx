@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 interface IButton {
   type?: any
@@ -7,7 +7,6 @@ interface IButton {
 }
 
 export const Button = styled.button<IButton>`
-  font-family: ${props => props.theme.font};
   font-size: 1rem;
   display: flex;
 	flex-direction: row;
@@ -16,35 +15,51 @@ export const Button = styled.button<IButton>`
 	height: 50px;
   width: 165px;
   border-radius: 5px;
-  color: ${props =>
-    props.type == "secondary" && "#00187C" ||
-    props.type == "danger" && "#FFFCF6" ||
-    props.type == "primary" && "#FFFCF6"};
-  border: ${props =>
-    props.type == "secondary" && "1px solid #00187C" ||
-    props.type == "danger" && "2px #00187C" ||
-    "#00187C"};
-  background-color: ${props =>
-    props.type == "secondary" && "#FFFCF6" ||
-    props.type == "danger" && "#BE332F" ||
-    "#093DAC"};
+  color: #FFFCF6;
+  border: 1px solid #00187C;
+  background-color: #093DAC;
   font-weight: normal;
+
+  ${props => props.type === "secondary" && css`
+    color: #00187C;
+    border: 1px solid #00187C;
+    background-color: #FFFCF6;
+  `}
+
+  ${props => props.type === "danger" && css`
+    color: #FFFCF6;
+    border: 2px #00187C;
+    background-color: #BE332F;
+  `}
+
   & svg {
     margin-right: 5px;
   }
+
   &:hover {
-    background-color: ${props =>
-    props.type == "secondary" && "#D9DBEB" ||
-    props.type == "danger" && "#BE332F" ||
-    "#093DAC"};
+    background-color: #093DAC;
+
+    ${props => props.type === "secondary" && css`
+      background-color: #D9DBEB;
+    `}
+
+    ${props => props.type === "danger" && css`
+      background-color: #BE332F;
+    `}
+  
   }
   &:active {
-    background-color: ${props =>
-    props.type == "secondary" && "#ACB2E2" ||
-    props.type == "danger" && "#680303" ||
-    "#00187C"};
-    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
+    background-color: #093DAC;
+
+    ${props => props.type === "secondary" && css`
+      background-color: #D9DBEB;
+    `}
+
+    ${props => props.type === "danger" && css`
+      background-color: #BE332F;
+    `}
   }
+  
   &:focus {
     outline: none;
   }

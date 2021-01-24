@@ -45,17 +45,10 @@ export const localTrackOptions = {
 
 export const getConnectionOptions = (conferenceName?: string): object => {
   let serverConfig: any = {}
-
-  //The environment variable REACT_APP_CHATMOSPHERE_RESERVED_CONFERENCE_NAME is reserved for Chatmosphere. Using it might create side effects
-  if (conferenceName && conferenceName !== process.env.REACT_APP_CHATMOSPHERE_RESERVED_CONFERENCE_NAME) {
-    //Idea: We set default to our default session - if they change to something else -> Public Jitsi is used;
+  try {
+    serverConfig = require("./../../serverConfig")
+  } catch (e) {
     serverConfig = require("./../../serverConfig-example")
-  } else {
-    try {
-      serverConfig = require("./../../serverConfig")
-    } catch (e) {
-      serverConfig = require("./../../serverConfig-example")
-    }
   }
   return serverConfig.connectionOptions
 }

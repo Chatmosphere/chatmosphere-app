@@ -2,7 +2,6 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 const Form = styled.form`
-  font: ${props => props.theme.bodyCopy};
   width: 340px;
   margin: auto;
   text-align: left;
@@ -16,32 +15,36 @@ const Fieldset = styled.fieldset`
 `
 
 const Label = styled.label`
-  font: ${props => props.theme.smallCopy};
-  color: ${props => props.theme.colors.darkGray};
+  font-size: ${props => props.theme.fontSize.small};
+  color: ${props => props.theme.base['2']};
 `
 
 const InputField = styled.input`
 	height: 50px;
-	background: #eff0f2;
-  color: ${props => props.theme.colors.primary.dark};
-  font: ${props => props.theme.bodyCopy};
-	border: 1px solid #093dac;
+	background: ${props => props.theme.base['4']};
+  color: ${props => props.theme.primary['1']};
+	border: 1px solid ${props => props.theme.primary['1']};
+  font-size: 1rem;
 	box-sizing: border-box;
 	border-radius: 5px 0 0 5px;
   padding-left: 20px;
   width: 100%;
-    &:focus {
-      outline: none;
-    }
+  &:focus {
+    outline: none;
+    font-size:1rem;
+  }
+  &::placeholder {
+    font-size: 1rem;
+  }
 `
 
 const JoinButton = styled.input`
   height: 50px;
-  background: #093DAC;
+  background: ${props => props.theme.primary['2']};
   border-radius: 0 5px 5px 0;
   width: 111px;
-  color: white;
-  font-weight: bold;
+  color: ${props => props.theme.base['6']};
+  font-size: 1rem;
   border: none;
 `
 

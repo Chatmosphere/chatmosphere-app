@@ -21,8 +21,8 @@ const JitsiConnection = () => {
   const initJitsiMeet = useConnectionStore(getInitJitsi)
   const connected = useConnectionStore(getConnection)
   const initConference = useConferenceStore(getInitConference)
-  // const {id} = useParams() //get Id from url, should error check here I guess
-  const id = conferenceName
+  const {id} = useParams() //get Id from url, should error check here I guess
+  // const id = conferenceName
 
   useEffect(() => {
     //jitsi might have been initialized in enter.tsx.

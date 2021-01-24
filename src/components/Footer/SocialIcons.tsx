@@ -15,7 +15,7 @@ const ContainerBox = styled.div`
 
 const FeedbackLink = styled.a`
 	font-weight: bold;
-	font-size: 0.9rem;
+	font-size: 0.875rem;
 	padding: 3px 8px;
 	margin-left: 2px;
 	color: #333;

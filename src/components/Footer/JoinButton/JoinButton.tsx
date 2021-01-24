@@ -15,7 +15,7 @@ export const JoinButton = ({ joined = false }) => {
 	const onEndCall = () => {
 		leave()
 		disconnectServer()
-		history.push(`/enter/${conferenceName}`)
+		history.push(`/`)
 	}
 
 	const onStartCall = (e) => {
