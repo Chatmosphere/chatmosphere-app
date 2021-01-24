@@ -11,7 +11,7 @@ export const VideoButton = ({ callback = () => null }) => {
 	}
 
 	return (
-		<Button onClick={onClick}>
+		<Button type="secondary" onClick={onClick}>
 			<FaVideo />Video
 		</Button>
 	)
