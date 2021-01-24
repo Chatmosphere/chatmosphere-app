@@ -15,15 +15,15 @@ export const Button = styled.button<IButton>`
 	height: 50px;
   width: 165px;
   border-radius: 5px;
-  color: #FFFCF6;
+  color: #00187C;
   border: 1px solid #00187C;
-  background-color: #093DAC;
+  background-color: #FFFCF6;
   font-weight: normal;
 
-  ${props => props.type === "secondary" && css`
-    color: #00187C;
-    border: 1px solid #00187C;
-    background-color: #FFFCF6;
+  ${props => props.type === "primary" && css`
+    color: #FFFCF6;
+    border: 1px solid #093DAC;
+    background-color: #093DAC;
   `}
 
   ${props => props.type === "danger" && css`
@@ -37,26 +37,28 @@ export const Button = styled.button<IButton>`
   }
 
   &:hover {
-    background-color: #093DAC;
+    background-color: #D9DBEB;
 
-    ${props => props.type === "secondary" && css`
-      background-color: #D9DBEB;
+    ${props => props.type === "primary" && css`
+    border: 1px solid #00187C;
+    background-color: #5767DF;
     `}
 
     ${props => props.type === "danger" && css`
-      background-color: #BE332F;
+    border: 1px solid #680303;
+    background-color: #F76659;
     `}
   
   }
   &:active {
-    background-color: #093DAC;
+      background-color: #ACB2E2;
 
-    ${props => props.type === "secondary" && css`
-      background-color: #D9DBEB;
+    ${props => props.type === "primary" && css`
+      background-color: #00187C;
     `}
 
     ${props => props.type === "danger" && css`
-      background-color: #BE332F;
+      background-color: #680303;
     `}
   }
   
