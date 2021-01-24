@@ -26,14 +26,14 @@ export const JoinButton = ({ joined = false }) => {
 
 	if (joined) {
 		return (
-			<Button type="primary" onClick={onEndCall}>
+			<Button type="danger" onClick={onEndCall}>
 				<MdCallEnd />
-				End Call
+				Leave Call
 			</Button>
 		)
 	} else {
 		return (
-			<Button onClick={onStartCall}>
+			<Button type="primary" onClick={onStartCall}>
 				<FaPhone />
 				Join
 			</Button>
