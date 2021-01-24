@@ -1,5 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { Info } from '../../../components/common/Info/Info'
 
 const Form = styled.form`
   width: 340px;
@@ -36,6 +37,9 @@ const InputField = styled.input`
   &::placeholder {
     font-size: 1rem;
   }
+  &:disabled {
+    background-color: ${props => props.theme.base["3"]};
+  }
 `
 
 const JoinButton = styled.input`
@@ -48,6 +52,10 @@ const JoinButton = styled.input`
   border: none;
 `
 
+const InfoBubble = styled(Info)`
+
+`
+
 export const NameInputForm = ({ defaultSessionName, onSubmit, handleChange }) => {
 	return (
 		<Form onSubmit={onSubmit}>
@@ -58,10 +66,12 @@ export const NameInputForm = ({ defaultSessionName, onSubmit, handleChange }) =>
 					type="text"
           placeholder={defaultSessionName}
 					onChange={handleChange}
-					id="sessionName"
+          id="sessionName"
+          disabled={process.env.REACT_APP_DEMO_SESSION ? true : false}
 				/>
 				<JoinButton name="joinButton" type="submit" value="Join" />
 			</Fieldset>
+        {process.env.REACT_APP_DEMO_SESSION && <InfoBubble>Only Demo Session Available</InfoBubble>}
 		</Form>
 	)
 }

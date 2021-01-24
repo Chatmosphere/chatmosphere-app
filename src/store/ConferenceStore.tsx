@@ -74,7 +74,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
 
   const initialState = {
     conferenceObject:undefined,
-    conferenceName:"conference1",
+    conferenceName: process.env.REACT_APP_DEMO_SESSION || "chatmosphere",
     isJoined:false,
     users:{},
   }
@@ -135,7 +135,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     const JitsiMeetJS = useConnectionStore.getState().jsMeet 
     const connection = useConnectionStore.getState().connection //either move to ConnectionStore or handle undefined here
     // const conferenceName = conferenceID.length > 0 ? conferenceID.toLowerCase() : get().conferenceName?.toLowerCase()
-    const conferenceName = conferenceID || get().conferenceName || process.env.REACT_APP_CONFERENCE_NAME 
+    const conferenceName = process.env.REACT_APP_DEMO_SESSION || conferenceID || get().conferenceName
     set({conferenceName:conferenceName})
     console.log("init:",connection ,JitsiMeetJS , conferenceName,useConnectionStore.getState().connected,conferenceID)
     if(connection && JitsiMeetJS && conferenceName) {

@@ -4,7 +4,7 @@ import {
   getConnectionOptions,
   IJitsiInitOptions,
   jitsiInitOptions,
-} from "../components/JitsiConnection/options"
+} from "./../components/JitsiConnection/jitsiOptions"
 import { IJitsiConference, Track } from "./ConferenceStore"
 
 type IJitsiEvents = {
@@ -109,7 +109,7 @@ export const useConnectionStore = create<IStore>((set, get) => {
       return
     }
     jitsiMeetPromise.then((jsMeet) => {
-      const connectionOptions = getConnectionOptions(conferenceName)
+      const connectionOptions = getConnectionOptions()
       const tmpConnection = new jsMeet.JitsiConnection(
         null,
         null,
