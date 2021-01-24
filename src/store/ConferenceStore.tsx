@@ -89,7 +89,11 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     delete newState.users[id]
   })
   const _addAudioTrack = (id:ID, track:Track) => produceAndSet (newState => {
-    if(newState.users[id]) newState.users[id].audio = track
+    if(newState.users[id]) 
+    {
+      newState.users[id].audio = track
+      newState.users[id]['mute'] = track.isMuted()
+    }
   })
   const _removeAudioTrack = (id:ID):void => produceAndSet (newState => {
     if(newState.users[id]) newState.users[id].audio = undefined
