@@ -66,7 +66,7 @@ export const Enter = () => {
 			<Footer>
 				<MuteButton />
 				<JoinButton />
-				<VideoButton />
+				{/* <VideoButton /> */}
 			</Footer>
 		</React.Fragment>
 	)
