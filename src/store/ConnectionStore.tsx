@@ -149,5 +149,9 @@ export const useConnectionStore = create<IStore>((set, get) => {
 })
 
 if (process.env.NODE_ENV === "development") {
-  mountStoreDevtool("useConnectionStore", useConnectionStore)
+  let root = document.createElement('div');
+  root.id = 'simple-zustand-devtools2';
+  document.body.appendChild(root);
+
+  mountStoreDevtool("ConnectionStore", useConnectionStore, root)
 }
