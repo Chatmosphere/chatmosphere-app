@@ -24,3 +24,4 @@ yarn-error.log*
 .cert
 serverConfig.ts
 .env
+.eslintcache
