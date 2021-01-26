@@ -1,12 +1,11 @@
 import * as React from 'react'
-import { Header } from '../../components/Header/Header'
 import { LocalStoreLogic } from '../../store/LocalStoreLogic'
 import { Room } from '../../components/Room/Room'
 import { ReactComponent as Wave } from './../../assets/wave.svg'
 
 import { Footer } from '../../components/Footer/Footer'
 import { PanWrapper } from '../../components/PanWrapper/PanWrapper'
-import { UserDragContainer } from '../../components/Localuser/LocalUserContainer'
+import { UserDragContainer } from './../../components/Localuser/LocalUserContainer'
 import { Localuser } from '../../components/Localuser/Localuser'
 import { JoinButton } from '../../components/Footer/JoinButton/JoinButton'
 import { MuteButton } from '../../components/Footer/MuteButton/MuteButton'
@@ -17,6 +16,7 @@ import styled from 'styled-components'
 import { BigHeadline } from '../../components/common/BigHeadline'
 import { SubHeadline } from '../../components/common/SubHeadline'
 import { VideoButton } from '../../components/Footer/VideoButton/VideoButton'
+import { ErrorHandler } from '../../components/common/Info/ErrorHandler'
 
 const BigHeadContainer = styled.div`
 	display: flex;
@@ -56,6 +56,7 @@ export const Enter = () => {
 					</UserDragContainer>
 				</Room>
 			</PanWrapper>
+			<ErrorHandler />
 			<CenterContainer id="centerContainer">
 				<BigHeadContainer>
 					<Wave />

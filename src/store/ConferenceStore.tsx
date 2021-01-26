@@ -53,6 +53,7 @@ type ConferenceStore = {
   conferenceName: string|undefined
   isJoined: boolean
   users: Users
+  error:any
 } & ConferenceActions & UserActions
 
 type ConferenceActions = {
@@ -77,6 +78,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     conferenceName: process.env.REACT_APP_DEMO_SESSION || "chatmosphere",
     isJoined:false,
     users:{},
+    error:undefined,
   }
 
   const produceAndSet = (callback:(newState:ConferenceStore)=>void)=>set(state => produce(state, newState => callback(newState)))
@@ -119,6 +121,12 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     }))
   }
 
+  const _onConferenceError = (e) => {
+    const connection = useConnectionStore.getState().connection
+    // console.log("tmpConnection:",get().connection)
+    set({ conferenceObject: undefined, error:connection?.xmpp.lastErrorMsg })
+  }
+
   const _onRemoteTrackAdded = (track:Track):void => {
     if(track.isLocal()) return // also run on your own tracks so exit
     const JitsiMeetJS = useConnectionStore.getState().jsMeet 
@@ -150,6 +158,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
       conference.on(JitsiMeetJS.events.conference.TRACK_REMOVED, _onRemoteTrackRemoved)
       conference.on(JitsiMeetJS.events.conference.CONFERENCE_JOINED, () => set({isJoined:true})) //only Local User -> could be in LocalStore
       conference.on(JitsiMeetJS.events.conference.TRACK_MUTE_CHANGED, _onTrackMuteChanged);
+      conference.on(JitsiMeetJS.events.conference.CONFERENCE_ERROR, _onConferenceError);
       //conference.on(JitsiMeetJS.events.conference.DISPLAY_NAME_CHANGED, onUserNameChanged);
       // conference.on(JitsiMeetJS.events.conference.TRACK_AUDIO_LEVEL_CHANGED, on_remote_track_audio_level_changed);
       //conference.on(JitsiMeetJS.events.conference.PHONE_NUMBER_CHANGED, onPhoneNumberChanged);
@@ -158,7 +167,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
       window.addEventListener('beforeunload', leave) //does this help?  
       window.addEventListener('unload', leave) //does this help?
       conference.join()
-      set({conferenceObject:conference})
+      set({conferenceObject:conference,error:undefined})
     } else {
       throw new Error('Jitsi Server connection has not been initialized or failed :( - did you call initJitsiMeet on ConnectionStore yet?')
     }

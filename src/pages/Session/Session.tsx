@@ -1,4 +1,5 @@
 import React from 'react'
+import { ErrorHandler } from '../../components/common/Info/ErrorHandler'
 import { Info } from '../../components/common/Info/Info'
 import { Footer } from '../../components/Footer/Footer'
 import { JoinButton } from '../../components/Footer/JoinButton/JoinButton'
@@ -15,6 +16,7 @@ import { LocalStoreLogic } from '../../store/LocalStoreLogic'
 export const Session = () => {
 	return (
 		<React.Fragment>
+			<ErrorHandler />
 			{/* <Info>
 				Welcome to our Prototype
 				<br />
