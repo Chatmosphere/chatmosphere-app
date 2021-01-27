@@ -4,7 +4,7 @@ import {
   getConnectionOptions,
   IJitsiInitOptions,
   jitsiInitOptions,
-} from "../components/JitsiConnection/options"
+} from "./../components/JitsiConnection/jitsiOptions"
 import { IJitsiConference, Track } from "./ConferenceStore"
 
 type IJitsiEvents = {
@@ -20,6 +20,7 @@ type IJitsiEvents = {
     TRACK_REMOVED
     CONFERENCE_JOINED
     TRACK_MUTE_CHANGED
+    CONFERENCE_ERROR
   }
   connection: {
     CONNECTION_ESTABLISHED
@@ -52,6 +53,7 @@ type IJitsiConnection = {
   ) => IJitsiConference
   connect: () => void
   disconnect: () => void
+  xmpp:any
 }
 
 type IStore = {
@@ -59,6 +61,7 @@ type IStore = {
   jsMeet?: IJsMeet
   connection?: IJitsiConnection
   connected: boolean
+  error:any
   initJitsiMeet: () => any
   setConnected: () => void
   setDisconnected: () => void
@@ -73,10 +76,11 @@ export const useConnectionStore = create<IStore>((set, get) => {
     room: null,
     connection: undefined,
     connected: false,
+    error:""
   }
 
   // # Private Functions
-  const _setConnected = () => set({ connected: true }) //actually this should initiate a new conference object without joining it
+  const _setConnected = () => set({ connected: true, error:undefined }) //actually this should initiate a new conference object without joining it
   const _setDisconnected = () => set({ connected: false })
   var jitsiMeetPromise
 
@@ -109,7 +113,7 @@ export const useConnectionStore = create<IStore>((set, get) => {
       return
     }
     jitsiMeetPromise.then((jsMeet) => {
-      const connectionOptions = getConnectionOptions(conferenceName)
+      const connectionOptions = getConnectionOptions()
       const tmpConnection = new jsMeet.JitsiConnection(
         null,
         null,
@@ -121,7 +125,11 @@ export const useConnectionStore = create<IStore>((set, get) => {
       )
       tmpConnection.addEventListener(
         jsMeet.events.connection.CONNECTION_FAILED,
-        () => console.log("failed"),
+        (e) => {
+          console.log("tmpConnection:",tmpConnection.xmpp.lastErrorMsg)
+          // console.log("tmpConnection:",get().connection)
+          set({ connection: undefined, error:tmpConnection.xmpp.lastErrorMsg })
+        },
       )
       tmpConnection.addEventListener(
         jsMeet.events.connection.CONNECTION_DISCONNECTED,
@@ -131,7 +139,8 @@ export const useConnectionStore = create<IStore>((set, get) => {
       // The above TODO is valid, but a connection to public jitsi server requires the connectionOptions, because the conference name is passed through the url.
       // Therefore, for now; connection object is created and connected; disconnect will disconnect and destroy the connection object.
       tmpConnection.connect()
-      set({ connection: tmpConnection })
+      set({ connection: tmpConnection, error:undefined })
+      
     })
   }
 
@@ -149,5 +158,9 @@ export const useConnectionStore = create<IStore>((set, get) => {
 })
 
 if (process.env.NODE_ENV === "development") {
-  mountStoreDevtool("useConnectionStore", useConnectionStore)
+  let root = document.createElement('div');
+  root.id = 'simple-zustand-devtools2';
+  document.body.appendChild(root);
+
+  mountStoreDevtool("ConnectionStore", useConnectionStore, root)
 }

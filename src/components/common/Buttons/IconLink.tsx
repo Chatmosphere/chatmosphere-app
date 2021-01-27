@@ -14,5 +14,5 @@ const Link = styled.a`
 `
 
 export const IconLink = (props) => {
-	return <Link href={props.url}>{props.children}</Link>
+	return <Link target="_blank" href={props.url}>{props.children}</Link>
 }

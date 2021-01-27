@@ -1,11 +1,20 @@
 import * as React from 'react';
 import styled from "styled-components";
+import kissingCat from './../../assets/kissingCat.svg'
+import loveCat from './../../assets/loveCat.svg'
 
 const StyledHeader = styled.a`
   &:before {
-    content: "😽 ";
+    content: url(${kissingCat});
     margin-right: 5px;
   }
+  &:after {
+    display:none;
+    content: url(${loveCat});
+  }
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   position: fixed;
   margin: 10px 0;
   right: 50px;
@@ -13,13 +22,15 @@ const StyledHeader = styled.a`
   padding: 10px;
   border-radius: 5px; 
   z-index: 10000;
-  font-weight: bold;
+  font-weight: 500;
+  font-size: 1.25rem;
   text-decoration: none;
   color:#000;
+  height: 40px;
   &:hover {
     color: #8823ee;
     &:before {
-      content: "😻 ";
+      content: url(${loveCat});
       margin-right: 5px;
     }
   }

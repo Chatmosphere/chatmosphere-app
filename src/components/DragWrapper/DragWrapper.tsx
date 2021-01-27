@@ -29,7 +29,8 @@ const DragWrapper = ({initPos={x:0,y:0}, children, callback=(pos)=>null, current
     if(element.current !== undefined) {
       const xPos = (e.clientX) / currentScale - clickDelta.current.x
       const yPos = (e.clientY) / currentScale - clickDelta.current.y
-      element?.current?.setAttribute('style', `left:${xPos}px; top:${yPos}px`)
+      // element?.current?.setAttribute('style', `left:${xPos}px; top:${yPos}px`)
+      element?.current?.setAttribute('style', `transform:translate(${xPos}px, ${yPos}px);`)
       callback({x:xPos, y:yPos})
     }
   }
@@ -52,8 +53,11 @@ const DragWrapper = ({initPos={x:0,y:0}, children, callback=(pos)=>null, current
   }
 
   useEffect(() => {
-    element?.current?.setAttribute('style', `left:${initPos.x}px; top:${initPos.y}px`)
-  },[element?.current])
+    // element?.current?.setAttribute('style', `left:${initPos.x}px; top:${initPos.y}px`)
+    element?.current?.setAttribute('style', `transform:translate(${initPos.x}px, ${initPos.y}px);`)
+    // this is by purpose & needed to set the pos once only initially
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
 
   return (
     <DragElement ref={element} onMouseDown={onDown} id="DragElement">

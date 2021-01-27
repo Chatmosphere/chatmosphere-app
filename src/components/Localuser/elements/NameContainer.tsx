@@ -5,7 +5,7 @@ import {InputField} from '../../common/Input/InputField'
 
 export const NameContainer = () => {
 
-  const [name, setName] = React.useState("Friendly Sphere");
+  const [name, setName] = React.useState("Enter Your Name");
   const [isActive, setActive] = React.useState(false);
   const setDisplayName = useConferenceStore(store => store.setDisplayName)
   const displayName = useConferenceStore(store => store.displayName)

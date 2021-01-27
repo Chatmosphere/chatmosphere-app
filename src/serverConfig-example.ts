@@ -17,8 +17,8 @@ export const connectionOptions = {
   //    disableH264: true, 
   //    useStunTurn: true,
   // }, 
-  // useStunTurn: true, 
-  bosh: `https://meet.jit.si/http-bind?room=chatmosphere1234`,
+  // useStunTurn: true,
+  bosh: `https://meet.jit.si/http-bind?room=chatmosphere1234`, // ! if you make your own please omit the "?room=chatmosphere1234" part
   // serviceUrl: `//server.com/http-bind`,
   // websocket: 'wss://meet.jit.si/xmpp-websocket', 
   clientNode: 'http://jitsi.org/jitsimeet', 

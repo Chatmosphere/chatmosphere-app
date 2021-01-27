@@ -1,9 +1,8 @@
 import React from 'react'
 import { useLocalStore } from './../../store/LocalStore'
 import DragWrapper from '../DragWrapper/DragWrapper'
-import { Localuser } from './Localuser'
 
-export const LocalUserContainer = () => {
+export const UserDragContainer = ({children}) => {
 
   const pos = useLocalStore(store => store.pos)
   const zoomTransformPan = useLocalStore(store => store.pan)
@@ -12,7 +11,7 @@ export const LocalUserContainer = () => {
 
   return (
     <DragWrapper initPos={pos} currentScale={zoomTransformScale} panOffset={zoomTransformPan} callback={setLocalPosition}>
-      <Localuser />
+      {children}
     </DragWrapper>
   )
 } 

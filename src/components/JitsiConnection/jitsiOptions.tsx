@@ -2,13 +2,24 @@
 
 import { PropsList } from "react-zoom-pan-pinch/dist/store/interfaces/propsInterface"
 
-export const conferenceName = "conference1" //introduce Zustand
+export interface IJitsiInitOptions {
+  disableAudioLevels?: boolean
+  disableSimulcast?: boolean
+  useIPv6?: boolean
+  enableWindowOnErrorHandler?: boolean
+  disableThirdPartyRequests?: boolean
+  enableAnalyticsLogging?: boolean
+}
+
+// -------------------------
+
+export const conferenceName = process.env.REACT_APP_DEMO_SESSION || "chatmosphere"
 
 export const conferenceOptions = {
   openBridgeChannel: false, //what is this doing?
 }
 
-export const jitsiInitOptions = {
+export const jitsiInitOptions:IJitsiInitOptions = {
   disableAudioLevels: false,
   // disableSimulcast: false,
   // // useIPv6:true, // can be off

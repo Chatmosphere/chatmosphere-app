@@ -23,24 +23,16 @@ export const VideoTrack:React.FC<{id:number}> = React.memo(({id}) => {
 
   const localVideoTrack = useLocalStore((store) => store.video)
 
+  //For some reason; when camera permission is not granted yet, not only the local video track, but also the remote video tracks aren't rendered.
+  //The solution is to reattach the remote tracks once local track is available.
   useEffect(() => {
     const currentElement = myRef.current
     videoTrack?.attach(currentElement)
     return(() => {
       videoTrack?.detach(currentElement)
-      videoTrack?.dispose()
+      // videoTrack?.dispose() // is this causing trouble? 
     })
-  },[videoTrack])
-
-
-  //For some reason; when camera permission is not granted yet, not only the local video track, but also the remote video tracks aren't rendered.
-  //The solution is to reattach the remote tracks once local track is available.
-  useEffect(() => {
-    const currentElement = myRef.current
-    videoTrack?.detach(currentElement)
-    videoTrack?.attach(currentElement)
-  },[localVideoTrack])
-
+  },[videoTrack, localVideoTrack])
 
    //Fix if Video not shown - reattaching works quite well
    const onVideoClicked = (e) => {

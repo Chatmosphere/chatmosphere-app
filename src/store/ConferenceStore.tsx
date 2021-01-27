@@ -54,6 +54,7 @@ type ConferenceStore = {
   isJoined: boolean
   users: Users
   displayName:string
+  error:any
 } & ConferenceActions & UserActions
 
 type ConferenceActions = {
@@ -75,10 +76,11 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
 
   const initialState = {
     conferenceObject:undefined,
-    conferenceName:"conference1",
+    conferenceName: process.env.REACT_APP_DEMO_SESSION || "chatmosphere",
     isJoined:false,
     users:{},
     displayName:"Friendly Sphere",
+    error:undefined,
   }
 
   const produceAndSet = (callback:(newState:ConferenceStore)=>void)=>set(state => produce(state, newState => callback(newState)))
@@ -91,7 +93,11 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     delete newState.users[id]
   })
   const _addAudioTrack = (id:ID, track:Track) => produceAndSet (newState => {
-    if(newState.users[id]) newState.users[id].audio = track
+    if(newState.users[id]) 
+    {
+      newState.users[id].audio = track
+      newState.users[id]['mute'] = track.isMuted()
+    }
   })
   const _removeAudioTrack = (id:ID):void => produceAndSet (newState => {
     if(newState.users[id]) newState.users[id].audio = undefined
@@ -115,6 +121,12 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     set(state => produce(state, newState => {
       if(newState.users[tmpID]) newState.users[tmpID]['mute'] = track.isMuted() //check in beginning sucks
     }))
+  }
+
+  const _onConferenceError = (e) => {
+    const connection = useConnectionStore.getState().connection
+    // console.log("tmpConnection:",get().connection)
+    set({ conferenceObject: undefined, error:connection?.xmpp.lastErrorMsg })
   }
 
   const _onRemoteTrackAdded = (track:Track):void => {
@@ -143,7 +155,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     const JitsiMeetJS = useConnectionStore.getState().jsMeet 
     const connection = useConnectionStore.getState().connection //either move to ConnectionStore or handle undefined here
     // const conferenceName = conferenceID.length > 0 ? conferenceID.toLowerCase() : get().conferenceName?.toLowerCase()
-    const conferenceName = conferenceID || get().conferenceName || process.env.REACT_APP_CONFERENCE_NAME 
+    const conferenceName = process.env.REACT_APP_DEMO_SESSION || conferenceID || get().conferenceName
     set({conferenceName:conferenceName})
     console.log("init:",connection ,JitsiMeetJS , conferenceName,useConnectionStore.getState().connected,conferenceID)
     if(connection && JitsiMeetJS && conferenceName) {
@@ -154,6 +166,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
       conference.on(JitsiMeetJS.events.conference.TRACK_REMOVED, _onRemoteTrackRemoved)
       conference.on(JitsiMeetJS.events.conference.CONFERENCE_JOINED, _onConferenceJoined)
       conference.on(JitsiMeetJS.events.conference.TRACK_MUTE_CHANGED, _onTrackMuteChanged);
+      conference.on(JitsiMeetJS.events.conference.CONFERENCE_ERROR, _onConferenceError);
       //conference.on(JitsiMeetJS.events.conference.DISPLAY_NAME_CHANGED, onUserNameChanged);
       // conference.on(JitsiMeetJS.events.conference.TRACK_AUDIO_LEVEL_CHANGED, on_remote_track_audio_level_changed);
       //conference.on(JitsiMeetJS.events.conference.PHONE_NUMBER_CHANGED, onPhoneNumberChanged);
@@ -162,7 +175,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
       window.addEventListener('beforeunload', leave) //does this help?  
       window.addEventListener('unload', leave) //does this help?
       conference.join()
-      set({conferenceObject:conference})
+      set({conferenceObject:conference,error:undefined})
     } else {
       throw new Error('Jitsi Server connection has not been initialized or failed :( - did you call initJitsiMeet on ConnectionStore yet?')
     }

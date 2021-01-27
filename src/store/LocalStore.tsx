@@ -2,6 +2,7 @@ import produce from "immer";
 import create from "zustand";
 import { Track, User } from "./ConferenceStore";
 import { panOptions, transformWrapperOptions } from "../components/PanWrapper/panOptions";
+import { mountStoreDevtool } from "simple-zustand-devtools";
 
 
 export type Point = {x:number, y:number}
@@ -29,7 +30,6 @@ export const useLocalStore = create<Store>((set,get) => {
     volume:1,
     video:undefined,
     audio:undefined,
-    // pos:{x:0,y:0},
     pos:panOptions.user.initialPosition,
     pan: {x:transformWrapperOptions.defaultPositionX || 0,y: transformWrapperOptions.defaultPositionY || 0},
     scale:1,
@@ -62,8 +62,8 @@ export const useLocalStore = create<Store>((set,get) => {
   })
 
   const clearLocalTracks = () => _produceAndSet(newState=>{
-    newState.audio?.dispose()
-    newState.video?.dispose()
+    // newState.audio?.dispose() //these throw errors on reconnection - some event handlers still leftover
+    // newState.video?.dispose()
     newState.audio=undefined
     newState.video=undefined
   })
@@ -96,3 +96,12 @@ export const useLocalStore = create<Store>((set,get) => {
   onPanChange
 }
 })
+
+
+if (process.env.NODE_ENV === "development") {
+  let root = document.createElement('div');
+  root.id = 'simple-zustand-devtools3';
+  document.body.appendChild(root);
+
+  mountStoreDevtool("LocalStore", useLocalStore, root)
+}
