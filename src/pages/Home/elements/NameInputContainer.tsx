@@ -20,7 +20,7 @@ export const NameInputContainer = () => {
 			//set the conference name to use it in enter screen
 			//it won't join to conference yet until enter.tsx creates a connection
 			setConferenceName(sessionName) 
-			history.push(`/enter/${sessionName}`)
+			history.push(`/session/${sessionName}`)
 		}
 	}
 
