@@ -27,8 +27,8 @@ const DragWrapper = ({initPos={x:0,y:0}, children, callback=(pos)=>null, current
     e.preventDefault()
     e.stopPropagation()
     if(element.current !== undefined) {
-      const xPos = (e.clientX) / currentScale - clickDelta.current.x
-      const yPos = (e.clientY) / currentScale - clickDelta.current.y
+      const xPos = Math.trunc((e.clientX) / currentScale - clickDelta.current.x)
+      const yPos = Math.trunc((e.clientY) / currentScale - clickDelta.current.y)
       // element?.current?.setAttribute('style', `left:${xPos}px; top:${yPos}px`)
       element?.current?.setAttribute('style', `transform:translate(${xPos}px, ${yPos}px);`)
       callback({x:xPos, y:yPos})
@@ -45,8 +45,8 @@ const DragWrapper = ({initPos={x:0,y:0}, children, callback=(pos)=>null, current
     e.preventDefault()
     const boundingRect = e.currentTarget.getBoundingClientRect()
     clickDelta.current = {
-      x: (e.clientX - boundingRect.x + panOffset.x) / currentScale,
-      y: (e.clientY - boundingRect.y + panOffset.y) / currentScale,
+      x: Math.trunc((e.clientX - boundingRect.x + panOffset.x) / currentScale),
+      y: Math.trunc((e.clientY - boundingRect.y + panOffset.y) / currentScale),
     }
     document.addEventListener("mouseup", onUp)
     document.addEventListener("mousemove", onDrag)
