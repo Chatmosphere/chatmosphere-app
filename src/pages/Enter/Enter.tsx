@@ -17,6 +17,7 @@ import { BigHeadline } from '../../components/common/BigHeadline'
 import { SubHeadline } from '../../components/common/SubHeadline'
 import { VideoButton } from '../../components/Footer/VideoButton/VideoButton'
 import { ErrorHandler } from '../../components/common/Info/ErrorHandler'
+import { Info } from '../../components/common/Info/Info'
 
 const BigHeadContainer = styled.div`
 	display: flex;
@@ -48,6 +49,11 @@ export const Enter = () => {
 
 	return (
 		<React.Fragment>
+			<Info>
+				Welcome to our Prototype
+				<br />
+				Please use <b>Safari</b> or <b>Chrome</b> for now for a stable Experience
+			</Info>
 			<LocalStoreLogic />
 			<PanWrapper>
 				<Room>

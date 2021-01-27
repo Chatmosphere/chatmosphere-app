@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import {IoMdClose} from 'react-icons/io'
+import { useInfoStore } from './InfoStore'
 
 
 const InfoBox = styled.div`
@@ -33,15 +34,13 @@ const StyledClose = styled(IoMdClose)`
 `
 
 export const Info = ({ children }) => {
-	const [ visible, toggleVisible ] = React.useState(true)
-
-	const onClick = () => {
-		toggleVisible(false)
-	}
+	// const [ visible, toggleVisible ] = React.useState(true)
+	const visible = useInfoStore(store => store.show)
+	const setHidden = useInfoStore(store => store.setHidden)
 
 	if (visible) {
 		return (
-			<div onClick={onClick}>
+			<div onClick={setHidden}>
 				<InfoBox>
           {children}
           <StyledClose />

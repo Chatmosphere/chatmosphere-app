@@ -17,11 +17,11 @@ export const Session = () => {
 	return (
 		<React.Fragment>
 			<ErrorHandler />
-			{/* <Info>
+			<Info>
 				Welcome to our Prototype
 				<br />
 				Please use <b>Safari</b> or <b>Chrome</b> for now for a stable Experience
-			</Info> */}
+			</Info>
 			<Header>Chatmosphere</Header>
 			<JitsiConnection />
 			<LocalStoreLogic />

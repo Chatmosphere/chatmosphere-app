@@ -5,6 +5,7 @@ import { ReactComponent as Wave } from './../../assets/wave.svg'
 import { Footer } from '../../components/Footer/Footer'
 import {BigHeadline} from './../../components/common/BigHeadline'
 import { SubHeadline } from '../../components/common/SubHeadline'
+import { Info } from '../../components/common/Info/Info'
 
 const BigHeadContainer = styled.div`
 	display: flex;
@@ -27,6 +28,11 @@ const FormContainer = styled.div`
 export const Home = () => {
 	return (
 		<React.Fragment>
+			<Info>
+				Welcome to our Prototype
+				<br />
+				Please use <b>Safari</b> or <b>Chrome</b> for now for a stable Experience
+			</Info>
 			<CenterContainer>
 			<BigHeadContainer>
 				<Wave />

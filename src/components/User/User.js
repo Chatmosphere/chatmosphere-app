@@ -3,8 +3,8 @@ import { useConferenceStore } from './../../store/ConferenceStore';
 import { ReloadHint } from '../ReloadHint/ReloadHint';
 import { AudioTrack } from './AudioTrack';
 import { MuteIndicator } from './MuteIndicator';
-import { Name } from './Name';
 import { VideoTrack } from './VideoTrack';
+import { NameTag } from '../NameTag/NameTag';
 
 
 export const User = ({id, user}) => {
@@ -22,7 +22,7 @@ export const User = ({id, user}) => {
       <VideoTrack id={id} />
       <ReloadHint />
       <AudioTrack id={id} volume={myVolume} />
-      <Name>{user?.user?._displayName || 'Friendly Sphere'}</Name>
+      <NameTag>{user?.user?._displayName || 'Friendly Sphere'}</NameTag>
       <div>Volume {Math.round(myVolume * 11)}</div>
       {isMute && <MuteIndicator>🤭</MuteIndicator>}
     </div>
