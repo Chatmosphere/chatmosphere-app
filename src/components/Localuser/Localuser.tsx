@@ -49,7 +49,7 @@ export const Localuser: React.FC<ILocaluser> = ({audioRadius = false}) => {
       {audioTrack && (
         <LocalAudio key={audioTrack.track.id} track={audioTrack} />
       )}
-      {isMute && <MuteIndicator>🤭</MuteIndicator>}
+      {isMute && <MuteIndicator />}
       <NameContainer />
 		</Container>
 	);

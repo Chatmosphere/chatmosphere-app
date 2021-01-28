@@ -1,16 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useLocalStore } from './../../../store/LocalStore';
+import {ReactComponent as MuteCat} from './../../../assets/muteCatBig.svg'
 
 
 const Indicator = styled.div`
   position: absolute;
-  top:20px;
-  left: 36px;
-  font-size:8rem;
+  top: 20px;
+  left: 14px;
 `
 
-export const MuteIndicator = ({children}) => {
+export const MuteIndicator = () => {
 
   const {toggleMute} = useLocalStore()
 
@@ -20,7 +20,7 @@ export const MuteIndicator = ({children}) => {
 
   return (
     <Indicator onClick={handleClick}>
-      {children}
+      <MuteCat />
     </Indicator>
   )
 }
