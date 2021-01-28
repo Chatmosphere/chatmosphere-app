@@ -35,8 +35,6 @@ export const Localuser: React.FC<ILocaluser> = ({audioRadius = false}) => {
 
   const localUserNode = useRef<HTMLDivElement>(null)
 
-  console.log("AUDIOTRACK STATUS ", audioTrack?.isMuted())
-
   return (
     <Container
       ref={localUserNode}

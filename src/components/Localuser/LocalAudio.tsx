@@ -2,7 +2,7 @@ import React, { memo, useEffect, useRef, useState } from 'react';
 import { useConnectionStore } from './../../store/ConnectionStore';
 import { AudioTrack, useConferenceStore } from './../../store/ConferenceStore';
 
-const LocalAudio:React.FC<{track:AudioTrack}> = memo(({track}) => {
+const LocalAudio:React.FC<{track:AudioTrack}> = ({track}) => {
   const myRef:any = useRef()
   const room = useConferenceStore(store => store.conferenceObject)
   const jsMeet = useConnectionStore(store => store.jsMeet)
@@ -26,6 +26,6 @@ const LocalAudio:React.FC<{track:AudioTrack}> = memo(({track}) => {
   },[room,track])
 
   return <audio autoPlay={true} muted={true} id='localAudio' />
-})
+}
 
 export default LocalAudio
