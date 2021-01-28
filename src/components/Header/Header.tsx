@@ -18,7 +18,7 @@ const StyledHeader = styled.a`
   position: fixed;
   margin: 10px 0;
   right: 50px;
-  background: white;
+  background: ${props => props.theme.base['6']};
   padding: 10px;
   border-radius: 5px; 
   z-index: 10000;
@@ -28,7 +28,7 @@ const StyledHeader = styled.a`
   color:#000;
   height: 40px;
   &:hover {
-    color: #8823ee;
+    background-color: ${props => props.theme.base['4']};
     &:before {
       content: url(${loveCat});
       margin-right: 5px;

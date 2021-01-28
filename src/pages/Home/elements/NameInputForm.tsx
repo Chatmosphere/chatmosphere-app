@@ -27,9 +27,12 @@ const InputField = styled.input`
 	border: 1px solid ${props => props.theme.primary['1']};
   font-size: 1rem;
 	box-sizing: border-box;
-	border-radius: 5px 0 0 5px;
+	border-radius: ${props => props.theme.radius} 0 0 ${props => props.theme.radius};
   padding-left: 20px;
   width: 100%;
+  &:hover {
+    background: ${props => props.theme.base['5']};
+  }
   &:focus {
     outline: none;
     font-size:1rem;
@@ -45,11 +48,14 @@ const InputField = styled.input`
 const JoinButton = styled.input`
   height: 50px;
   background: ${props => props.theme.primary['2']};
-  border-radius: 0 5px 5px 0;
+  border-radius: 0 ${props => props.theme.radius} ${props => props.theme.radius} 0;
   width: 111px;
   color: ${props => props.theme.base['6']};
   font-size: 1rem;
   border: none;
+  &:hover {
+    background-color: ${props => props.theme.primary['3']};
+  }
 `
 
 const InfoBubble = styled(Info)`

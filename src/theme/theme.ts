@@ -44,14 +44,15 @@ const theme = {
     strong: "1rem",
     body: "1rem",
     small: "0.875rem"
-  }
+  },
+  radius: "3px"
 }
 
 // Theme ------
 
 export const warm:ITheme = {
   ...theme,
-  base: {
+  base: { 
     1:"#0E0E0E",
     2:"#525252",
     3:"#E5E5E5",
@@ -77,14 +78,14 @@ export const warm:ITheme = {
   }
 }
 
-export const darkTheme:ITheme = {
+export const dark:ITheme = {
   ...theme,
   base: {
-    1:"#0E0E0E",
+    1:"#FCFCFC",
     2:"#525252",
     3:"#E5E5E5",
-    4:"#F2F2F2",
-    5:"#FFFCF6",
+    4:"#282528", 
+    5:"#3E393F",
     6:"#FCFCFC",
   },
   primary: {

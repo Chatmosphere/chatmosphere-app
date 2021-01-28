@@ -15,21 +15,24 @@ export const Button = styled.button<IButton>`
 	height: 50px;
   width: 165px;
   border-radius: 5px;
-  color: #00187C;
-  border: 1px solid #00187C;
-  background-color: #FFFCF6;
+  color: ${props => props.theme.primary['1']};
+  border: 1px solid ${props => props.theme.primary['1']};
+  background-color: ${props => props.theme.base['5']};
   font-weight: normal;
 
   ${props => props.type === "primary" && css`
-    color: #FFFCF6;
-    border: 1px solid #093DAC;
-    background-color: #093DAC;
+    color: ${props => props.theme.base['5']};
+    border: 1px solid ${props => props.theme.primary['2']};
+    background-color: ${props => props.theme.primary['2']};
   `}
 
   ${props => props.type === "danger" && css`
-    color: #FFFCF6;
-    border: 2px #00187C;
-    background-color: #BE332F;
+    color: ${props => props.theme.base['5']};
+    border: 2px ${props => props.theme.primary['1']};
+    background-color: ${props => props.theme.secondary['3']};
+    & svg {
+      fill: ${props => props.theme.base['5']};
+    }
   `}
 
   & svg {
@@ -37,28 +40,28 @@ export const Button = styled.button<IButton>`
   }
 
   &:hover {
-    background-color: #D9DBEB;
+    background-color: ${props => props.theme.base['4']};
 
     ${props => props.type === "primary" && css`
-    border: 1px solid #00187C;
-    background-color: #5767DF;
+    border: 1px solid ${props => props.theme.primary['1']};
+    background-color: ${props => props.theme.primary['3']};
     `}
 
     ${props => props.type === "danger" && css`
-    border: 1px solid #680303;
-    background-color: #F76659;
+      border: 1px solid ${props => props.theme.secondary['2']};
+      background-color: ${props => props.theme.secondary['2']};
     `}
   
   }
   &:active {
-      background-color: #ACB2E2;
+      background-color: ${props => props.theme.primary['4']};
 
     ${props => props.type === "primary" && css`
-      background-color: #00187C;
+      background-color: ${props => props.theme.primary['1']};
     `}
 
     ${props => props.type === "danger" && css`
-      background-color: #680303;
+      background-color: ${props => props.theme.secondary['1']};
     `}
   }
   

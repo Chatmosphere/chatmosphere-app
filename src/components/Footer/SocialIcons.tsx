@@ -15,12 +15,12 @@ const ContainerBox = styled.div`
 
 const FeedbackLink = styled.a`
 	font-weight: bold;
-	font-size: 0.875rem;
+	font-size: ${props => props.theme.fontSize.small};
 	padding: 3px 8px;
 	margin-left: 2px;
-	color: #333;
+	color: ${props => props.theme.base['1']};
 	&:hover {
-		color: #8823ee;
+		color: ${props => props.theme.primary['3']};
 	}
 `
 

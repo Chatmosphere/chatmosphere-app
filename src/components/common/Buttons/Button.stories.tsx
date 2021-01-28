@@ -9,6 +9,6 @@ export default {
 
 export const Default = () => <Button>Test</Button>
 
-//export const Danger = () => <Button type={primary}>Test</Button>
+export const Secondary = () => <Button type="primary">Test</Button>
 
-export const Call = () => <Button><CallIcon/> Call</Button>
+export const Danger = () => <Button type="danger"><CallIcon/> Call</Button>

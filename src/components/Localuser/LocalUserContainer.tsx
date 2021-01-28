@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useLocalStore } from './../../store/LocalStore'
 import DragWrapper from '../DragWrapper/DragWrapper'
+import {throttle} from 'lodash'
 
 export const UserDragContainer = ({children}) => {
 
@@ -8,6 +9,8 @@ export const UserDragContainer = ({children}) => {
   const zoomTransformPan = useLocalStore(store => store.pan)
   const zoomTransformScale = useLocalStore(store => store.scale)
   const setLocalPosition = useLocalStore(store => store.setLocalPosition)
+
+  // const throttledSendPos = useCallback(throttle(setLocalPosition, 200),[]) //this works pretty well; TODO: test & implement
 
   return (
     <DragWrapper initPos={pos} currentScale={zoomTransformScale} panOffset={zoomTransformPan} callback={setLocalPosition}>

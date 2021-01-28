@@ -40,7 +40,9 @@ export const useLocalStore = create<Store>((set,get) => {
 
   
   // # Public Functions
-  const setLocalPosition = newPosition => set({pos:newPosition})
+  const setLocalPosition = (newPosition) => {
+    set({pos:newPosition})
+  }
   
   const toggleMute = () => {
     const audioTrack = get().audio
@@ -54,7 +56,7 @@ export const useLocalStore = create<Store>((set,get) => {
     }
   }
 
-  const setLocalTracks =  tracks => _produceAndSet(newState=>{
+  const setLocalTracks = tracks => _produceAndSet(newState=>{
     const audioTrack = tracks.find(t=>t.getType() === 'audio')
     const videoTrack = tracks.find(t=>t.getType() === 'video')
     newState.video = videoTrack
