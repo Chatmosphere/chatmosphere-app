@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-  -
+  - preferred Codec to be H265 in Options; it should switch the videoCodec to H265 instead of V8, not sure if this is used though; maybe it needs to be set on server
+
 ### Changed
-  -
+  - AudioRadius is now 650px; if its more it feels quite weird :)
+
 ### Fixed
   -
 ### Removed

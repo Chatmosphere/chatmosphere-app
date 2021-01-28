@@ -9,6 +9,9 @@ export interface IJitsiInitOptions {
   enableWindowOnErrorHandler?: boolean
   disableThirdPartyRequests?: boolean
   enableAnalyticsLogging?: boolean
+  preferredCodec?: string
+  disabledCodec?: string
+  preferH264?: boolean //deprecated
 }
 
 // -------------------------
@@ -21,7 +24,10 @@ export const conferenceOptions = {
 
 export const jitsiInitOptions:IJitsiInitOptions = {
   disableAudioLevels: false,
-  // disableSimulcast: false,
+  preferredCodec: 'H264',
+  disabledCodec: 'VP8',
+  disableSimulcast: false,
+  preferH264: true,
   // // useIPv6:true, // can be off
   // enableWindowOnErrorHandler: false,
   // disableThirdPartyRequests: false,
