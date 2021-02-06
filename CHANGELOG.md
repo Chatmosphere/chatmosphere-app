@@ -4,17 +4,37 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [unreleased] 
 
 ### Added
-  - preferred Codec to be H265 in Options; it should switch the videoCodec to H265 instead of V8, not sure if this is used though; maybe it needs to be set on server
 
 ### Changed
-  - AudioRadius is now 650px; if its more it feels quite weird :)
+
+### Fixed
+
+### Removed
+
+## [0.5.9] 2021-02-06
+
+### Added
+  - Added meta description in index.html (thx @bumi)
+
+### Changed
+  - Certificates are now linked in .env.development so it should also run on windows (Thanks @XristophD)
+  - 
 
 ### Fixed
   -
 ### Removed
+
+## [0.5.8] - 2021-01-28
+
+### Added
+  - preferred Codec to be H265 in Options; it should switch the videoCodec to H265 instead of VP8, not sure if this is used though; maybe it needs to be set on server
+
+### Changed
+  - AudioRadius is now 650px; if its more it feels quite weird :)
+
 
 ## [0.5.7] - 2021-01.28
 
