@@ -100,9 +100,12 @@ export const useLocalStore = create<Store>((set,get) => {
 })
 
 
+// const unsub1 = useLocalStore.subscribe((i) => globalThis.globalStore = i)
+
+
 if (process.env.NODE_ENV === "development") {
   let root = document.createElement('div');
-  root.id = 'simple-zustand-devtools3';
+  root.id = 'simple-zustand-devtools-3';
   document.body.appendChild(root);
 
   mountStoreDevtool("LocalStore", useLocalStore, root)

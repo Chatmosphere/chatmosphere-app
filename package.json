@@ -30,7 +30,7 @@
     "zustand": "^3.3.0"
   },
   "scripts": {
-    "start": "HTTPS=true SSL_CRT_FILE=./.cert/cert.pem SSL_KEY_FILE=./.cert/key.pem react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "build:demo": "env-cmd -f .env.demo react-scripts build && rm -rf demo && mv build demo",
     "test": "react-scripts test",
