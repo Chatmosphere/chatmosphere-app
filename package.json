@@ -1,7 +1,7 @@
 {
   "homepage": "https://stage.chatmosphere.cc",
   "name": "react-app",
-  "version": "0.5.8",
+  "version": "0.5.9",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.8",
