@@ -33,6 +33,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "build:demo": "env-cmd -f .env.demo react-scripts build && rm -rf demo && mv build demo",
+    "build:app": "env-cmd -f .env.app react-scripts build && rm -rf app && mv build app",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
