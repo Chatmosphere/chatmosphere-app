@@ -7,12 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased] 
 
 ### Added
+- Doc Folder for Documentation 
+- Added Contribution.md 
 
 ### Changed
+- Adjusted Readme to be an Overview
 
 ### Fixed
 
 ### Removed
+
 
 ## [0.5.9] 2021-02-06
 

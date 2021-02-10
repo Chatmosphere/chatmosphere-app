@@ -1,58 +1,33 @@
-# Getting Started with Create React App
+<div align="center" style="border:0 solid #efefef; background-color: #fff; padding:0; margin:0 0 50px 0; color:#333;">
+<h1 style="border-bottom:none; margin-bottom:0;">😽 Chatmosphere</h1>
+<b>The Open Source Videochat for Cozy Talks</b>
+</div>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+![Chatmosphere Demo](docs/chatmosphere.gif)
 
-*Before you can run*
-You need to have a local cert for a valid https connection since https is required for webRTC;
-a nice description to add one can be found here
-[https://www.freecodecamp.org/news/how-to-set-up-https-locally-with-create-react-app/](https://www.freecodecamp.org/news/how-to-set-up-https-locally-with-create-react-app/)
+Chatmosphere is an **open source project that aims to make video calls informal and natural**. We missed the dynamics of a self-organizing crowd hanging out at one big table together. The big table in a bar, on which so many discussions, jokes, comforting talks, utopias and ideas happened. So with chatmosphere you can move and zoom yourself in the area and hear people that are located near by you louder. Learn more [about the Chatmosphere project and ideas here](docs/ABOUT.md)
 
-Also you need to call `yarn install` once to install all dependencies;
-then in the project directory, you can run:
 
-### `yarn start`
+### Content
+* [How to Run Chatmosphere](docs/INSTALL.md)
+* [Contribution Guideline](docs/CONTRIBUTION.md)
+* Find Support here
+* Code of Conduct
+* Roadmap
+* [Shoutout and Fame](#shoutouts-and-fame)
+* License
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Contributing
 
-### `yarn test`
+### Shoutouts and Fame 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### License
 
-### `yarn build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-For the build to run on your server you need to set your own server url in `/package.json` line 2 as "homepage"
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## About the Project
-You can learn more [about the Chatmosphere project and ideas here](ABOUT.md)
-Also you can find our [code of conduct for excellent people here](CODE_OF_CONDUCT.md)
-
-## Learn More
-
+### Links
+Also you can find our [code of conduct for excellent people here](docs/CODE_OF_CONDUCT.md)
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
 To learn React, check out the [React documentation](https://reactjs.org/).

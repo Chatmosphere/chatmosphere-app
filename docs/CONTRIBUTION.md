@@ -1,0 +1,28 @@
+# Contribution Guidelines
+
+- **How Can I Contribute**
+    - How to Report Bugs
+    - How to suggest Ideas & new Features
+    - How to make a nice Pull Request
+- **What should I know before hacking on**
+    - **Architecture Decisions**
+        - maybe we could have an architecture chart
+        - how our store is set up
+            - general idea how to add state to stores
+    - **Packages we use**
+        - provide link to Styled Components
+        - The Icon Font
+- **Styleguides**
+    - Use our Prettifier
+        - provide config
+    - How to name folders
+    - Coding Style
+        - camelCase,
+        - Semicola can be omitted
+        - Functional components over class components
+        - Maybe Use our Linter
+            - 
+            - provide Linter
+        - How we use theme variables
+- Help Wanted / Ideas you could work on (maybe bring in good unit tests :)
+-
