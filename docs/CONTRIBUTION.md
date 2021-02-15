@@ -39,7 +39,7 @@ Good bug reports are extremely helpful - thank you!
 
 Guidelines for bug reports:
 
-1. **Use the GitHub issue search** &mdash; check if the issue has already been
+1. **Use the [GitHub issue search](https://github.com/Chatmosphere/chatmosphere-app/issues?q=is%3Aissue+is%3Aopen+label%3Abug)** &mdash; check if the issue has already been
    reported.
 
 2. **Check if the issue has been fixed** &mdash; try to reproduce it using the
@@ -72,8 +72,24 @@ Example:
 > causing the bug, and potential solutions (and your opinions on their
 > merits).
 
+Finally, don't forget to add the `bug` label to your issue.
+
 ### How to suggest Ideas and new Features
 ___
+
+Before creating enhancement suggestions or feature requests, please check [this list](#before-submitting-an-enhancement-suggestion) as you might find out that you don't need to create one. 
+When you are creating an enhancement suggestion 
+* Please include as many details as possible.
+* Use [this issue](https://github.com/Chatmosphere/chatmosphere-app/issues/11) as a template
+* Include the steps that you imagine you would take if the feature you're requesting existed.
+* See the [avaliable labels](https://github.com/Chatmosphere/chatmosphere-app/labels) and add the ones that apply. For instance, add the label `enhancement` to your issue and `design` label if it involves desgin
+
+#### Before Submitting New Feature Request
+
+* **Check the [change log](https://github.com/Chatmosphere/chatmosphere-app/blob/master/CHANGELOG.md) and [closed issues](https://github.com/Chatmosphere/chatmosphere-app/issues?q=is%3Aissue+is%3Aclosed)** — you might discover that the enhancement is already available. 
+* Check if you're using the **latest version of Chatmosphere**
+* Check if you can get the desired behavior by **changing** [connection options](https://github.com/Chatmosphere/chatmosphere-app/blob/master/src/serverConfig-example.ts) and [jitsi options](https://github.com/Chatmosphere/chatmosphere-app/blob/master/src/components/JitsiConnection/jitsiOptions.tsx).
+* **Perform a [cursory search](https://github.com/Chatmosphere/chatmosphere-app/issues)** to see if the enhancement has already been suggested. If it has, add a comment to the existing issue instead of opening a new one.
 
 
 ### How to make a nice Pull Request
