@@ -1,7 +1,7 @@
 # 😽 Install Chatmosphere
 
 
--> If you want to run **your own Jitsi Server** checkout [these instructions]() 
+-> If you want to run **your own Jitsi Server** checkout [these instructions](https://www.notion.so/universalinteraction/Documentation-87a86705ea564ead942d3c81d2bb06e6) 
 
 ## ☝️ Download Files
 * go to our github repository: [Chatmosphere/chatmosphere-app](https://github.com/Chatmosphere/chatmosphere-app)
