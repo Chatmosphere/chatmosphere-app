@@ -39,7 +39,7 @@ mkcert -install
 ```
 
 #### Create a Certificate
-Then, from the root folder of your downloaded chatmosphere directory your just downloaded, run:
+Then, from the root folder of your downloaded chatmosphere directory that you just downloaded, run:
 
 ```bash
 # Create .cert directory if it doesn't exist

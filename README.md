@@ -6,31 +6,22 @@
 
 ![Chatmosphere Demo](docs/chatmosphere.gif)
 
-Chatmosphere is an **open source project that aims to make video calls informal and natural**. We missed the dynamics of a self-organizing crowd hanging out at one big table together. The big table in a bar, on which so many discussions, jokes, comforting talks, utopias and ideas happened. So with chatmosphere you can move and zoom yourself in the area and hear people that are located near by you louder. Learn more [about the Chatmosphere project and ideas here](docs/ABOUT.md)
+**Chatmosphere is an open source project that aims to make video calls informal and natural**. We missed the dynamics of a self-organizing crowd hanging out at one big table together. The big table in a bar, where so many discussions, jokes, comforting talks, utopias and ideas happen. With chatmosphere you can move and zoom in the area and hear people that are located near by louder and have dynamic talks. To learn more about the Chatmosphere project and ideas have a look in our [ABOUT.md](docs/ABOUT.md)
 
 
-### Content
+### Helpful Links
 * [How to Run Chatmosphere](docs/INSTALL.md)
 * [Contribution Guideline](docs/CONTRIBUTION.md)
-* Find Support here
-* Code of Conduct
-* Roadmap
-* [Shoutout and Fame](#shoutouts-and-fame)
-* License
+* [Find Support here](https://github.com/Chatmosphere/chatmosphere-app/discussions)
+* [Code of Conduct for Excellent Humans](docs/CODE_OF_CONDUCT.md)
+* [Roadmap](https://www.notion.so/universalinteraction/Chatmosphere-Features-7f32c0b314944c3db99838634f9b3d42)
+* [Code License](LICENSE.md)
 
-
-### Contributing
-
-### Shoutouts and Fame 
-
-### License
-
-
-
-### Links
-Please find our [code of conduct for excellent people here](docs/CODE_OF_CONDUCT.md)  
-You can learn more about in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).  
-To learn React, check out the [React documentation](https://reactjs.org/).  
+<!-- 
+You can learn more about the awesome Create React App Starter Kit in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).  
+To learn more about React, check out the [React documentation](https://reactjs.org/).  
+-->
+<!-- TODO: write [Shoutout and Fame] -->
 
 ### Funded from September 2020 until February 2021 by
 
