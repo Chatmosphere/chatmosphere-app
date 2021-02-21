@@ -1,9 +1,9 @@
 # 😽 Install Chatmosphere
 
 
-If you want to run your own Jitsi Server checkout [these instructions]() 
+-> If you want to run **your own Jitsi Server** checkout [these instructions]() 
 
-## Download Files
+## ☝️ Download Files
 * go to our github repository: [Chatmosphere/chatmosphere-app](https://github.com/Chatmosphere/chatmosphere-app)
 * Download Zip or clone repo
 
@@ -12,7 +12,7 @@ If you want to run your own Jitsi Server checkout [these instructions]()
 * Either download the ZIP file and unpack it or clone with git
 * Then open the folder in your favourite IDE 
 
-## Install the App
+## ✌️ Install the App
 
 ```shell
 # run yarn install or npm install
@@ -49,7 +49,7 @@ mkdir -p .cert
 mkcert -key-file ./.cert/key.pem -cert-file ./.cert/cert.pem "localhost"
 ```
 
-## Run Chatmosphere
+## 😻 Run Chatmosphere
 
 ```bash
 # to start chatmosphere, type

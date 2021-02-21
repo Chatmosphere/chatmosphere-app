@@ -8,15 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Doc Folder for Documentation 
-- Added Contribution.md 
+- Added CONTRIBUTION.md 
+- Added INSTALL.md
 
 ### Changed
-- Adjusted Readme to be an Overview
+- Adjusted Readme.md to be an Overview
+- Added gif of chatmosphere in use
 
 ### Fixed
+- Updated Storybook to last version; they are using an old immer install but since we're not using storybook in our app itself this is no problem.
 
 ### Removed
-
+- openmoji npm package because it's huuuge; we added used icons in /assets folder
 
 ## [0.5.9] 2021-02-06
 
