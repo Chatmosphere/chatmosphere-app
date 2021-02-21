@@ -16,6 +16,7 @@
 * [Code of Conduct for Excellent Humans](docs/CODE_OF_CONDUCT.md)
 * [Roadmap](https://www.notion.so/universalinteraction/Chatmosphere-Features-7f32c0b314944c3db99838634f9b3d42)
 * [Code License](LICENSE.md)
+* [If You Want to Donate You Can Buy Us a Drink](https://www.buymeacoffee.com/chatmosphere)
 
 <!-- 
 You can learn more about the awesome Create React App Starter Kit in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).  
