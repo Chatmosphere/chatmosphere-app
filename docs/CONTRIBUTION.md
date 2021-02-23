@@ -5,8 +5,8 @@
 - [**How Can I Contribute ?**](#How-Can-I-Contribute)
     - [How to Report Bugs](#🐞-How-to-Report-Bugs)
     - [How to suggest Ideas and new Feature](#💡-How-to-suggest-Ideas-and-new-Features)
+    - [How to make a nice Pull Request](#🔃-How-to-make-a-nice-Pull-Request)
 <!--
-    - [How to make a nice Pull Request](#How-to-make-a-nice-Pull-Request)
  **What should I know before hacking on**
     - **Architecture Decisions**
         - maybe we could have an architecture chart
@@ -91,3 +91,15 @@ When you are creating an enhancement suggestion
 * **Check the [change log](https://github.com/Chatmosphere/chatmosphere-app/blob/master/CHANGELOG.md) and [closed issues](https://github.com/Chatmosphere/chatmosphere-app/issues?q=is%3Aissue+is%3Aclosed)** — you might discover that the enhancement is already available. 
 * Check if you're using the **latest version of Chatmosphere**
 * Check if you can get the desired behavior by **changing** [connection options](https://github.com/Chatmosphere/chatmosphere-app/blob/master/src/serverConfig-example.ts) and [jitsi options](https://github.com/Chatmosphere/chatmosphere-app/blob/master/src/components/JitsiConnection/jitsiOptions.tsx).
+
+### 🔃 How to make a nice Pull Request
+___
+
+Pull requests are the best way to propose changes to the codebase (we use [Github Flow](https://guides.github.com/introduction/flow/index.html)). We actively welcome your pull requests:
+
+1. Fork the repo and create your branch from `master`.
+2. In your commits, refer to the issue you are solving with this branch ([create an issue](#💡-How-to-suggest-Ideas-and-new-Features) if there isn't one)
+2. If you've added code that should be tested, add tests.
+3. If you've changed APIs, update the documentation.
+4. Make sure your code lints.
+5. Issue that pull request and ask for review!
