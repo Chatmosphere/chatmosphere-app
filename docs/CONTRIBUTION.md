@@ -10,11 +10,6 @@
     - [Code Architecture](#🏗-Code-Architecture)
     - [Packages we use](#📦-Packages-we-use)
 <!--
-        - maybe we could have an architecture chart
-        - how our store is set up
-            - general idea how to add state to stores
-        - provide link to Styled Components
-        - The Icon Font
 - **Styleguides**
     - Use our Prettifier
         - provide config
@@ -153,3 +148,12 @@ src
 * **`store:`** The app state is centralized inside these store objects; where all the state, logic and dependencies are handled. Therefore all other components are purely *presentational*.
  We are using [zustand](https://github.com/pmndrs/zustand) to store the app state and [immer](https://github.com/immerjs/immer) to manipulate the state inside the store.
 * [**stories**](https://storybook.js.org)
+
+### 📦 Packages we use
+___
+* [Styled Components](https://styled-components.com)
+* [React-Icons](https://react-icons.github.io/react-icons/)
+* [React Router](https://reactrouter.com/web)
+* [zustand](https://github.com/pmndrs/zustand)
+* [immer](https://github.com/immerjs/immer)
+* [react-zoom-pan-pinch](https://www.npmjs.com/package/react-zoom-pan-pinch)
