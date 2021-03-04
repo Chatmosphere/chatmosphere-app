@@ -5,16 +5,11 @@
 - [**How Can I Contribute ?**](#How-Can-I-Contribute)
     - [How to Report Bugs](#🐞-How-to-Report-Bugs)
     - [How to suggest Ideas and new Feature](#💡-How-to-suggest-Ideas-and-new-Features)
+    - [How to make a nice Pull Request](#🔃-How-to-make-a-nice-Pull-Request)
+ - [**What should I know before hacking on**](#What-should-I-know-before-hacking-on)
+    - [Code Architecture](#🏗-Code-Architecture)
+    - [Packages we use](#📦-Packages-we-use)
 <!--
-    - [How to make a nice Pull Request](#How-to-make-a-nice-Pull-Request)
- **What should I know before hacking on**
-    - **Architecture Decisions**
-        - maybe we could have an architecture chart
-        - how our store is set up
-            - general idea how to add state to stores
-    - **Packages we use**
-        - provide link to Styled Components
-        - The Icon Font
 - **Styleguides**
     - Use our Prettifier
         - provide config
@@ -91,3 +86,74 @@ When you are creating an enhancement suggestion
 * **Check the [change log](https://github.com/Chatmosphere/chatmosphere-app/blob/master/CHANGELOG.md) and [closed issues](https://github.com/Chatmosphere/chatmosphere-app/issues?q=is%3Aissue+is%3Aclosed)** — you might discover that the enhancement is already available. 
 * Check if you're using the **latest version of Chatmosphere**
 * Check if you can get the desired behavior by **changing** [connection options](https://github.com/Chatmosphere/chatmosphere-app/blob/master/src/serverConfig-example.ts) and [jitsi options](https://github.com/Chatmosphere/chatmosphere-app/blob/master/src/components/JitsiConnection/jitsiOptions.tsx).
+
+### 🔃 How to make a nice Pull Request
+___
+
+Pull requests are the best way to propose changes to the codebase (we use [Github Flow](https://guides.github.com/introduction/flow/index.html)). We actively welcome your pull requests:
+
+1. Fork the repo and create your branch from `master`.
+2. In your commits, refer to the issue you are solving with this branch ([create an issue](#💡-How-to-suggest-Ideas-and-new-Features) if there isn't one)
+2. If you've added code that should be tested, add tests.
+3. If you've changed APIs, update the documentation.
+4. Make sure your code lints.
+5. Issue that pull request and ask for review!
+
+<br/>
+      
+## What should I know before hacking on ?
+### 🏗 Code Architecture 
+___
+```
+src
+│   App.tsx
+│   serverConfig
+│
+└───assets 
+│   │   fonts
+│   │   svgs
+│   
+└───components
+│   │
+│   └───common
+│   │   └───Buttons
+│   │   └───Input
+│   │   └───...
+│   │
+│   └───header
+│   └───footer
+│   └───room
+│   └───...
+│
+└───pages
+│   └───enter
+│   └───home
+│   └───session
+│
+└───store
+│   │   ConferenceStore.tsx
+│   │   ConnectionStore.tsx
+│   │   LocalStore.tsx
+│   │   LocalStoreLogic.tsx
+│
+└───stories
+└───theme
+└───utils
+```
+
+* **`components`** 
+    * **`common`** `components` don't have a referance to logic (store) but are only *presentational*
+    * The rest of the components are the composition of the *presentational* components and DOM elements. These might use the store objects, but won't have a state within.
+* **`pages`** are components which contain sub-components to for a page with its all content. There is a page for each [`Route`](https://reactrouter.com/web)
+* **`store:`** The app state is centralized inside these store objects; where all the state, logic and dependencies are handled. Therefore all other components are purely *presentational*.
+ We are using [zustand](https://github.com/pmndrs/zustand) to store the app state and [immer](https://github.com/immerjs/immer) to manipulate the state inside the store.
+* [**stories**](https://storybook.js.org)
+
+### 📦 Packages we use
+___
+* [Styled Components](https://styled-components.com)
+* [React-Icons](https://react-icons.github.io/react-icons/)
+* [React Router](https://reactrouter.com/web)
+* [zustand](https://github.com/pmndrs/zustand)
+* [immer](https://github.com/immerjs/immer)
+* [react-zoom-pan-pinch](https://www.npmjs.com/package/react-zoom-pan-pinch)
