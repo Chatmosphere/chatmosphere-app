@@ -154,8 +154,8 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
   const init = (conferenceID:string):void => {
     const JitsiMeetJS = useConnectionStore.getState().jsMeet 
     const connection = useConnectionStore.getState().connection //either move to ConnectionStore or handle undefined here
-    // const conferenceName = conferenceID.length > 0 ? conferenceID.toLowerCase() : get().conferenceName?.toLowerCase()
-    const conferenceName = process.env.REACT_APP_DEMO_SESSION || conferenceID || get().conferenceName
+    const enteredConferenceName = conferenceID.length > 0 ? conferenceID.toLowerCase() : get().conferenceName?.toLowerCase()
+    const conferenceName = process.env.REACT_APP_DEMO_SESSION || enteredConferenceName
     set({conferenceName:conferenceName})
     // console.log("init:",connection ,JitsiMeetJS , conferenceName,useConnectionStore.getState().connected,conferenceID)
     if(connection && JitsiMeetJS && conferenceName) {

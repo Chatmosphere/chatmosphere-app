@@ -4,7 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased] 
+## [unreleased]
+
+
+
+## [0.6] 2021-03-04 
 
 ### Added
 - Doc Folder for Documentation 
@@ -17,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Updated Storybook to last version; they are using an old immer install but since we're not using storybook in our app itself this is no problem.
+- Fixed Bug where Session Name with capital letters caused error
 
 ### Removed
 - openmoji npm package because it's huuuge; we added used icons in /assets folder
