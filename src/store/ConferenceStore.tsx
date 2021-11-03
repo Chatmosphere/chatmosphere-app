@@ -227,5 +227,6 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
 })
 
 if(process.env.NODE_ENV === 'development') {
+  // @ts-ignore: Unreachable code error
 	mountStoreDevtool('ConferenceStore', useConferenceStore)
 }

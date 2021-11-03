@@ -161,6 +161,6 @@ if (process.env.NODE_ENV === "development") {
   let root = document.createElement('div');
   root.id = 'simple-zustand-devtools2';
   document.body.appendChild(root);
-
+  // @ts-ignore: Unreachable code error
   mountStoreDevtool("ConnectionStore", useConnectionStore, root)
 }
