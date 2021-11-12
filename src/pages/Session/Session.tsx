@@ -1,4 +1,5 @@
 import React from 'react'
+import { LoudspeakerButton } from '../../addons/Loundspeaker/components/LoudspeakerButton'
 import { ErrorHandler } from '../../components/common/Info/ErrorHandler'
 import { Info } from '../../components/common/Info/Info'
 import { Footer } from '../../components/Footer/Footer'
@@ -36,6 +37,7 @@ export const Session = () => {
 			<Footer>
 				<JoinButton joined={true} />
 				<MuteButton />
+				<LoudspeakerButton/>
 			</Footer>
 		</React.Fragment>
 	)

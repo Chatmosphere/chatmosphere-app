@@ -25,6 +25,7 @@ export const User = ({id, user}) => {
       <NameTag>{user?.user?._displayName || 'Friendly Sphere'}</NameTag>
       <div>Volume {Math.round(myVolume * 11)}</div>
       {isMute && <MuteIndicator>🤭</MuteIndicator>}
+      {user.properties?.megaphone === "true" && <div>🎉</div>}
     </div>
   )
 }

@@ -30,9 +30,10 @@ export type Track = {
   detach: (element:HTMLElement) => void
 }
 export type AudioTrack = Track
-export type VideoTrack = Track 
+export type VideoTrack = Track
+type IUserProperties = Record<string, unknown>
 
-export type User = { id:ID, user?:any, mute:boolean, volume:number, pos:Point, audio?:AudioTrack, video?:VideoTrack }
+export type User = { id:ID, user?:any, mute:boolean, properties?:Record<string, string>, volume:number, pos:Point, audio?:AudioTrack, video?:VideoTrack }
 type Users = { [id:string]:User }
 type Point = {x:number, y:number}
 type ID = string
@@ -46,6 +47,7 @@ export type IJitsiConference={
   addTrack:(track:Track)=>Promise<any>
   myUserId:()=>ID
   leave:()=>void
+  setLocalParticipantProperty:(key:string,value:any)=>void
 }
 
 type ConferenceStore = {
@@ -87,7 +89,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
 
   // Private Helper Functions *******************************************
   const _addUser = (id:ID, user?:any) :void => produceAndSet (newState => {
-    newState.users[id] = {id:id, user:user, mute:false, volume:1, pos:{x:0, y:0}}
+    newState.users[id] = {id:id, user:user, mute:false, properties:{}, volume:1, pos:{x:0, y:0}}
   })
   const _removeUser = (id:ID) :void => produceAndSet (newState => {
     delete newState.users[id]
@@ -148,7 +150,15 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     set({isJoined:true})//only Local User -> could be in LocalStore
     const conference = get().conferenceObject
     conference?.setDisplayName(get().displayName)
-  } 
+  }
+
+  const _onParticipantPropertyChanged = (e:any) => {
+    const id = e._id
+    const props = e._properties
+    produceAndSet (newState => {
+      newState.users[id].properties = {...props}
+    })
+  }
 
   // # Public functions *******************************************
   const init = (conferenceID:string):void => {
@@ -171,7 +181,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
       // conference.on(JitsiMeetJS.events.conference.TRACK_AUDIO_LEVEL_CHANGED, on_remote_track_audio_level_changed);
       //conference.on(JitsiMeetJS.events.conference.PHONE_NUMBER_CHANGED, onPhoneNumberChanged);
       conference.addCommandListener("pos", _onPositionReceived)
-      // r.on(JitsiMeetJS.events.conference.PARTICIPANT_PROPERTY_CHANGED, (e) => console.log("Property Changed ", e))
+      conference.on(JitsiMeetJS.events.conference.PARTICIPANT_PROPERTY_CHANGED, _onParticipantPropertyChanged)
       window.addEventListener('beforeunload', leave) //does this help?  
       window.addEventListener('unload', leave) //does this help?
       conference.join()
@@ -200,14 +210,24 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     const conference = get().conferenceObject
     conference?.setDisplayName(name)
   }
+  //if other user moves calculate new volume of that user
   const calculateVolume = (id:ID):void => produceAndSet (newState => {
-    const localUserPosition:Point = useLocalStore.getState().pos //check if this is updated or kept by closure
-    newState.users[id]['volume'] = getVolumeByDistance(localUserPosition, newState.users[id]['pos'])
+    if(newState.users[id].properties?.megaphone && newState.users[id].properties?.megaphone === "true") {
+      newState.users[id].volume = .8
+    } else {
+      const localUserPosition:Point = useLocalStore.getState().pos //check if this is updated or kept by closure
+      newState.users[id]['volume'] = getVolumeByDistance(localUserPosition, newState.users[id]['pos'])
+    }
   })
+  //if I move calculate all volumes of users
   const calculateVolumes = (localPos:Point) => produceAndSet (newState => {
     const users = newState.users
     Object.keys(users).map(key => {
       const user = users[key]
+      if(newState.users[key].properties?.megaphone && newState.users[key].properties?.megaphone === "true") {
+        newState.users[key].volume = .8
+        return null
+      }
       newState.users[key]['volume'] = getVolumeByDistance(localPos, user.pos)
       return null
     })
