@@ -6,6 +6,8 @@ import { MuteIndicator } from './MuteIndicator';
 import { VideoTrack } from './VideoTrack';
 import { NameTag } from '../NameTag/NameTag';
 import { MegaphoneIndicator } from './MegaphoneIndicator';
+import useSound from 'use-sound';
+import micTapSfx from './../../assets/sounds/micTap.mp3';
 
 
 export const User = ({id, user}) => {
@@ -14,9 +16,15 @@ export const User = ({id, user}) => {
   const myVolume = useConferenceStore(useCallback(store => store.users[id]['volume'], [id]))
   const isMute = useConferenceStore(useCallback(store => store.users[id]['mute'],[id]))
   const calculateVolume = useConferenceStore(useCallback(store => store.calculateVolume, []))
+  const [playSfx] = useSound(micTapSfx)
+
   useEffect(() => {
     calculateVolume(id)
   },[id, calculateVolume, myPos])
+
+  useEffect(()=> {
+    if(user.properties?.megaphone === "true") playSfx()
+  },[playSfx, user.properties?.megaphone])
 
   return(
     <div style={{position:'absolute', left:`${myPos.x}px`, top:`${myPos.y}px`}} className="userContainer" >
