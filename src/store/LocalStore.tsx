@@ -18,8 +18,10 @@ type Store = {
   setLocalPosition: (newPosition:Point) => void
   setLocalTracks: (tracks:Track[]) => void
   toggleMute: () => void
+  toggleMegaphone: (state:boolean) => void
   clearLocalTracks: () => void
   setMyID: (id:string) => void
+  megaphone: boolean
 } & User & ZoomPan
 
 export const useLocalStore = create<Store>((set,get) => {
@@ -27,6 +29,7 @@ export const useLocalStore = create<Store>((set,get) => {
   const state = {
     id:"",
     mute:false,
+    megaphone:false,
     volume:1,
     video:undefined,
     audio:undefined,
@@ -54,6 +57,10 @@ export const useLocalStore = create<Store>((set,get) => {
       audioTrack.mute()
       set({mute:true})
     }
+  }
+
+  const toggleMegaphone = (state) => {
+    set({megaphone:state})
   }
 
   const setLocalTracks = tracks => _produceAndSet(newState=>{
@@ -93,6 +100,7 @@ export const useLocalStore = create<Store>((set,get) => {
   setLocalPosition,
   setLocalTracks,
   toggleMute,
+  toggleMegaphone,
   clearLocalTracks,
   setMyID,
   onPanChange

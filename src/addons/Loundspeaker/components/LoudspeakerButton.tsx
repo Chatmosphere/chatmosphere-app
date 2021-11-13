@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '../../../components/common/Buttons/Button';
 import { useConferenceStore } from '../../../store/ConferenceStore';
+import { useLocalStore } from '../../../store/LocalStore';
 
 export const LoudspeakerButton = () => {
 
 	const conference = useConferenceStore(store => store.conferenceObject)
-	const [isMegaphoneActive, toggleMegaphone] = useState(false);
+	const isMegaphoneActive = useLocalStore(store => store.megaphone)
+	const toggleMegaphone = useLocalStore(store => store.toggleMegaphone)
 
 	useEffect(() => {
 		conference?.setLocalParticipantProperty('megaphone', isMegaphoneActive ? "true" : "false");

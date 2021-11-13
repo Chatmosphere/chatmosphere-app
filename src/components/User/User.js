@@ -5,6 +5,7 @@ import { AudioTrack } from './AudioTrack';
 import { MuteIndicator } from './MuteIndicator';
 import { VideoTrack } from './VideoTrack';
 import { NameTag } from '../NameTag/NameTag';
+import { MegaphoneIndicator } from './MegaphoneIndicator';
 
 
 export const User = ({id, user}) => {
@@ -25,7 +26,7 @@ export const User = ({id, user}) => {
       <NameTag>{user?.user?._displayName || 'Friendly Sphere'}</NameTag>
       <div>Volume {Math.round(myVolume * 11)}</div>
       {isMute && <MuteIndicator>🤭</MuteIndicator>}
-      {user.properties?.megaphone === "true" && <div>🎉</div>}
+      {user.properties?.megaphone === "true" && <MegaphoneIndicator />}
     </div>
   )
 }

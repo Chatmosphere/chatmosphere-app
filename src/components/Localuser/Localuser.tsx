@@ -8,6 +8,7 @@ import { ReloadHint } from "../ReloadHint/ReloadHint"
 import { panOptions } from "./../PanWrapper/panOptions"
 import { AudioRadius } from "./elements/AudioRadius"
 import { NameContainer } from "./elements/NameContainer"
+import { MegaphoneIndicator } from "../User/MegaphoneIndicator"
 
 const Container = styled.div`
   width: ${panOptions.user.size.x}px;
@@ -32,6 +33,7 @@ export const Localuser: React.FC<ILocaluser> = ({audioRadius = false}) => {
   const audioTrack = useLocalStore((store) => store.audio)
   const videoTrack = useLocalStore((store) => store.video)
   const isMute = useLocalStore((store) => store.mute)
+  const megaphone = useLocalStore((store) => store.megaphone)
 
   const localUserNode = useRef<HTMLDivElement>(null)
 
@@ -48,6 +50,7 @@ export const Localuser: React.FC<ILocaluser> = ({audioRadius = false}) => {
         <LocalAudio key={audioTrack.track.id} track={audioTrack} />
       )}
       {isMute && <MuteIndicator />}
+      {megaphone && <MegaphoneIndicator />}
       <NameContainer />
 		</Container>
 	);
