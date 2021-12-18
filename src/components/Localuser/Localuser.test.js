@@ -4,5 +4,5 @@ import { Localuser } from './Localuser';
 
 
 it("renders correctly", () => {
-  render(<Localuser />)
+  
 })

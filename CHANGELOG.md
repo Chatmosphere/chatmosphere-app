@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
-
+### Added
+### Changed
+- adding environmental variables to serverConfig.ts for jitsi server url (serviceUrl) to be either set in .env.local files by yourself or passed on `npm run start` or `npm run build` directly. So either add `SERVICE_URL = "url-of-your-jitsi-installation"` to your .env files (also to .env.development to be run during dev) or pass it like `SERVICE_URL=url-of-your-jitsi-installation npm run start`;
+### Fixed
+### Removed
 
 ## [0.6] 2021-03-04 
 

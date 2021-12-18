@@ -1,7 +1,7 @@
 {
-  "homepage": "https://stage.chatmosphere.cc",
-  "name": "react-app",
   "version": "0.6.0",
+  "homepage": "https://app.chatmosphere.cc",
+  "name": "chatmosphere",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.8",
@@ -31,8 +31,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build:demo": "env-cmd -f .env.demo react-scripts build && rm -rf demo && mv build demo",
-    "build:app": "env-cmd -f .env.app react-scripts build && rm -rf app && mv build app",
+    "build:demo": "env-cmd -f .env.demo.local react-scripts build && rm -rf demo && rm -rf app && mv build demo",
+    "build:app": "env-cmd -f .env.app.local react-scripts build && rm -rf app && rm -rf demo && mv build app",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
