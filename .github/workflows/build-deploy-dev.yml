@@ -29,12 +29,12 @@ jobs:
           npm install
           npm test
           PUBLIC_URL=${{ secrets.DEV_APP_URL }} REACT_APP_SERVICE_URL=${{ secrets.DEV_SERVICE_URL }} REACT_APP_USE_WEBSOCKETS="true" npm run build
-      # - name: rsync deploy
-      #   uses: burnett01/rsync-deployments@4.1
-      #   with:
-      #     switches: -avzr --delete
-      #     path: ./build/
-      #     remote_path: /var/www/virtual/${{ secrets.UBERSPACE_USER }}/${{ secrets.DEV_APP_URL }}/
-      #     remote_host: ${{ secrets.UBERSPACE_HOST }}
-      #     remote_user: ${{ secrets.UBERSPACE_USER }}
-      #     remote_key: ${{ secrets.DEPLOY_KEY_PRIVATE }}
+      - name: rsync deploy
+        uses: burnett01/rsync-deployments@4.1
+        with:
+          switches: -avzr --delete
+          path: ./build/
+          remote_path: /var/www/virtual/${{ secrets.UBERSPACE_USER }}/${{ secrets.DEV_APP_URL }}/
+          remote_host: ${{ secrets.UBERSPACE_HOST }}
+          remote_user: ${{ secrets.UBERSPACE_USER }}
+          remote_key: ${{ secrets.DEPLOY_KEY_PRIVATE }}
