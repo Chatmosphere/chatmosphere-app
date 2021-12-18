@@ -35,10 +35,10 @@ export const VideoTrack:React.FC<{id:number}> = React.memo(({id}) => {
   },[videoTrack, localVideoTrack])
 
    //Fix if Video not shown - reattaching works quite well
-   const onVideoClicked = (e) => {
-    videoTrack?.detach(e.target)
-    videoTrack?.attach(e.target)
-  }
+  //  const onVideoClicked = (e) => {
+  //   videoTrack?.detach(e.target)
+  //   videoTrack?.attach(e.target)
+  // }
 
   return (
     <Video autoPlay={true} ref={myRef} className={`remoteTrack videoTrack ${id}video`} id={`${id}video`} />

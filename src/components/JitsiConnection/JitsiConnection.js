@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useConnectionStore } from './../../store/ConnectionStore'
 import { useConferenceStore } from './../../store/ConferenceStore'
 import {useParams} from 'react-router-dom'

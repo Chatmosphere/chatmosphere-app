@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useLocalStore } from '../../store/LocalStore';
 import { useConferenceStore } from './../../store/ConferenceStore';
 
@@ -29,7 +29,7 @@ export const AudioTrack = ({id, volume}) => {
     const currentElement = myRef.current
     audioTrack?.detach(currentElement)
     audioTrack?.attach(currentElement)
-  },[localAudioTrack])
+  },[localAudioTrack, audioTrack])
 
   return (
     <audio autoPlay={true} ref={myRef} className={`remoteTrack audioTrack ${id}audio`} id={`${id}audio`} />

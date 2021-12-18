@@ -1,7 +1,5 @@
 // SETTINGS - these are Connection and Room Options for the Jitsi lib
 
-import { PropsList } from "react-zoom-pan-pinch/dist/store/interfaces/propsInterface"
-
 export interface IJitsiInitOptions {
   disableAudioLevels?: boolean
   disableSimulcast?: boolean

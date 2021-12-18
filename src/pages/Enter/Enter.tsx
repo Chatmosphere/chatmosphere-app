@@ -15,7 +15,6 @@ import { useConferenceStore } from '../../store/ConferenceStore'
 import styled from 'styled-components'
 import { BigHeadline } from '../../components/common/BigHeadline'
 import { SubHeadline } from '../../components/common/SubHeadline'
-import { VideoButton } from '../../components/Footer/VideoButton/VideoButton'
 import { ErrorHandler } from '../../components/common/Info/ErrorHandler'
 import { Info } from '../../components/common/Info/Info'
 
@@ -38,13 +37,13 @@ const CenterContainer = styled.div`
 
 export const Enter = () => {
 	const { id } = useParams() //get Id from url, should error check here I guess
-	const setConferenceName = useConferenceStore(store => store.setConferenceName)
+	const setConferenceName = useConferenceStore(React.useCallback(store => store.setConferenceName,[]))
 
 	React.useEffect(
 		() => {
 			setConferenceName(id)
 		},
-		[ id ],
+		[ id, setConferenceName ],
 	)
 
 	return (

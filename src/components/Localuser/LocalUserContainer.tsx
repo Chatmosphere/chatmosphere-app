@@ -1,7 +1,6 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import { useLocalStore } from './../../store/LocalStore'
 import DragWrapper from '../DragWrapper/DragWrapper'
-import {throttle} from 'lodash'
 
 export const UserDragContainer = ({children}) => {
 

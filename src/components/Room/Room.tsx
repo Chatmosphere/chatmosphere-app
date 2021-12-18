@@ -12,12 +12,12 @@ const RoomContainer = styled.div`
   display:block;
 `
 
-const Background = styled.div`
-  background-image:url("/build/favicon.ico");
-  opacity:0.1;
-  width:100%;
-  height:100%;
-`
+// const Background = styled.div`
+//   background-image:url("/build/favicon.ico");
+//   opacity:0.1;
+//   width:100%;
+//   height:100%;
+// `
 
 export const Room:React.FC = ({children}) => {
   return (

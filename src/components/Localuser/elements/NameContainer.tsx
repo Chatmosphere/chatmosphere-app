@@ -1,20 +1,20 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useConferenceStore } from "./../../../store/ConferenceStore";
 import { NameTag } from "../../NameTag/NameTag";
 import {InputField} from '../../common/Input/InputField'
 
 export const NameContainer = () => {
 
-  const [name, setName] = React.useState("Enter Your Name");
-  const [isActive, setActive] = React.useState(false);
+  const [name, setName] = useState("Enter Your Name");
+  const [isActive, setActive] = useState(false);
   const setDisplayName = useConferenceStore(store => store.setDisplayName)
   const displayName = useConferenceStore(store => store.displayName)
-  const onClick = useCallback(() => {
-    setActive(true);
-  },[]);
+  const onClick = useCallback(() => {setActive(true);},[]);
+
   useEffect(()=>{
     setName(displayName)
-  },[])
+  },[displayName])
+
   const onChange = (e) => {
     setName(e.target.value);
   };

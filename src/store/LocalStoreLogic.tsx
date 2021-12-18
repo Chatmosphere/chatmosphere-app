@@ -1,4 +1,3 @@
-import React from 'react'
 import { useEffect } from "react"
 import { useConferenceStore } from "./ConferenceStore"
 import { useConnectionStore } from "./ConnectionStore"

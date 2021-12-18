@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useConnectionStore } from './../../store/ConnectionStore';
 import { AudioTrack, useConferenceStore } from './../../store/ConferenceStore';
 

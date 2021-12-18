@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect } from "react"
+import React, { useEffect } from "react"
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch"
 import { useLocalStore } from "./../../store/LocalStore"
 import { panOptions, transformWrapperOptions} from './panOptions'
-import {throttle} from 'lodash'
 
 const panChange = store => store.onPanChange
 const setPos = store => store.setLocalPosition
@@ -20,7 +19,7 @@ export const PanWrapper = ({children}) => {
     setLocalPosition(panOptions.user.initialPosition)
     // throttlePan({scale:transformWrapperOptions.scale,positionX:transformWrapperOptions.defaultPositionX,positionY:transformWrapperOptions.defaultPositionY})
     // throttleSendPos(panOptions.user.initialPosition)
-  },[])
+  },[onPanChange, setLocalPosition])
 
   return (
     <TransformWrapper 
