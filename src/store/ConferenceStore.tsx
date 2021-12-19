@@ -43,8 +43,9 @@ export type IJitsiConference={
   sendCommand: (command:string,payload:any) => boolean
   join:()=>void
   setDisplayName:(name:string)=>void
-  addTrack:(track:Track)=>Promise<any>
+  addTrack:(track:ITrack)=>Promise<any>
   myUserId:()=>ID
+  setReceiverConstraints:(object)=>void
   leave:()=>void
 }
 
@@ -201,10 +202,10 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     conference?.setDisplayName(name)
   }
   const calculateVolume = (id:ID):void => produceAndSet (newState => {
-    const localUserPosition:Point = useLocalStore.getState().pos //check if this is updated or kept by closure
+    const localUserPosition:IPoint = useLocalStore.getState().pos //check if this is updated or kept by closure
     newState.users[id]['volume'] = getVolumeByDistance(localUserPosition, newState.users[id]['pos'])
   })
-  const calculateVolumes = (localPos:Point) => produceAndSet (newState => {
+  const calculateVolumes = (localPos:IPoint) => produceAndSet (newState => {
     const users = newState.users
     Object.keys(users).map(key => {
       const user = users[key]

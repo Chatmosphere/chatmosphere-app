@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import styled from 'styled-components'
+import { useLocalStore } from '../../store/LocalStore'
 
 export interface DragProps {
   initPos:Point

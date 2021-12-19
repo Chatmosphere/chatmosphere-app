@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { useConnectionStore } from './../../store/ConnectionStore';
-import { AudioTrack, useConferenceStore } from './../../store/ConferenceStore';
+import { useConferenceStore } from './../../store/ConferenceStore';
 
-const LocalAudio:React.FC<{track:AudioTrack}> = ({track}) => {
+const LocalAudio:React.FC<{track:IAudioTrack}> = ({track}) => {
   const myRef:any = useRef()
   const room = useConferenceStore(store => store.conferenceObject)
   const jsMeet = useConnectionStore(store => store.jsMeet)

@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { useConferenceStore, VideoTrack } from './../../store/ConferenceStore';
+import { useConferenceStore } from './../../store/ConferenceStore';
 
 const Video = styled.video`
   width: 200px; 
@@ -12,7 +12,7 @@ const Video = styled.video`
   transform: scaleX(-1);
 `
 
-const LocalVideo:React.FC<{track:VideoTrack}> = memo(({track}) => {
+const LocalVideo:React.FC<{track:IVideoTrack}> = memo(({track}) => {
   const myRef:any = useRef()
   const room = useConferenceStore(store => store.conferenceObject)
 
