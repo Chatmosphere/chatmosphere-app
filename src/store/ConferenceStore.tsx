@@ -235,7 +235,8 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     setConferenceName,
     setDisplayName,
     calculateVolume,
-    calculateVolumes
+    calculateVolumes,
+    setConstraints
   }
 })
 
