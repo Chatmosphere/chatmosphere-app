@@ -10,6 +10,7 @@ export interface IJitsiInitOptions {
   preferredCodec?: string
   disabledCodec?: string
   preferH264?: boolean //deprecated
+  videoConstraints?: any
 }
 
 // -------------------------
@@ -18,15 +19,19 @@ export const conferenceName = process.env.REACT_APP_DEMO_SESSION || "chatmospher
 
 export const conferenceOptions = {
   openBridgeChannel: false, //what is this doing?
+  channelLastN: 3, //does work
+  enableLayerSuspension: true,
 }
 
 export const jitsiInitOptions:IJitsiInitOptions = {
-  disableAudioLevels: false,
-  preferredCodec: 'H264',
-  disabledCodec: 'VP8',
-  disableSimulcast: false,
-  preferH264: true,
   // // useIPv6:true, // can be off
+  disableAudioLevels: false,
+  disableSimulcast: false,
+  disableThirdPartyRequests: true,
+  // preferredCodec: 'H264',
+  preferredCodec: 'VP8',
+  // disabledCodec: 'VP8',
+  // preferH264: true,
   // enableWindowOnErrorHandler: false,
   // disableThirdPartyRequests: false,
   // enableAnalyticsLogging: true

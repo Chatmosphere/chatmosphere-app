@@ -213,6 +213,19 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     })
   })
 
+  const setConstraints = (selectedUsers) => {
+    const conference = get().conferenceObject
+    conference?.setReceiverConstraints({
+      // 'lastN': 20, // Number of videos requested from the bridge.
+      'selectedEndpoints': selectedUsers, // The endpoints ids of the participants that are prioritized first.
+      // 'onStageEndpoints': ['A'], // The endpoint ids of the participants that are prioritized up to a higher resolution.
+      // 'defaultConstraints': { 'maxHeight': 180 }, // Default resolution requested for all endpoints.
+      // 'constraints': { // Endpoint specific resolution.
+      //  'A': { 'maxHeight': 720 }
+    })
+    
+  }
+
   // Return Object *******************************************
   return {
     ...initialState,

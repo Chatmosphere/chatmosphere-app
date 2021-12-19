@@ -33,6 +33,8 @@ export const useLocalStore = create<Store>((set,get) => {
     pos:panOptions.user.initialPosition,
     pan: {x:transformWrapperOptions.defaultPositionX || 0,y: transformWrapperOptions.defaultPositionY || 0},
     scale:1,
+    selectedUsers: [],
+    visibleUsers: [],
   }
 
   // # Private Functions
