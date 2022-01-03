@@ -164,7 +164,6 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
   const _setConstraint = () => {
     const conference = useConferenceStore.getState().conferenceObject
     const visibleUsers = get().visibleUsers
-    // if(visibleUsers && visibleUsers.length > 0) {
       conference?.setReceiverConstraints({
         'selectedEndpoints': [...visibleUsers],
         'lastN':visibleUsers.length,
@@ -173,7 +172,6 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
         'constraints': { // Endpoint specific resolution.
         }
       })
-    // }
   }
 
   return {
