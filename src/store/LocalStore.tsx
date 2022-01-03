@@ -164,11 +164,16 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
   const _setConstraint = () => {
     const conference = useConferenceStore.getState().conferenceObject
     const visibleUsers = get().visibleUsers
-    debugger
-    conference?.setReceiverConstraints({
-      'selectedEndpoints': [...visibleUsers],
-      'lastN':visibleUsers.length
-    })
+    // if(visibleUsers && visibleUsers.length > 0) {
+      conference?.setReceiverConstraints({
+        'selectedEndpoints': [...visibleUsers],
+        'lastN':visibleUsers.length,
+        'onStageEndpoints': [], // The endpoint ids of the participants that are prioritized up to a higher resolution.
+        'defaultConstraints': { 'maxHeight': 180 }, // Default resolution requested for all endpoints.
+        'constraints': { // Endpoint specific resolution.
+        }
+      })
+    // }
   }
 
   return {
