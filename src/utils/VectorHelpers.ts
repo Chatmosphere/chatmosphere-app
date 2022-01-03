@@ -1,6 +1,6 @@
-type Point = {x:number, y:number}
+import { audioRadius } from "./LookupTable"
 
-export const getVectorDistance = (p1:Point, p2:Point):number => {
+export const getVectorDistance = (p1:IPoint, p2:IPoint):number => {
 	const a = p1.x - p2.x
 	const b = p1.y - p2.y
 	const c = Math.sqrt(a*a + b*b)
@@ -13,10 +13,17 @@ export const mapVolumeToDist = (max:number, dist:number):number => {
 	return p
 }
 
-export const getVolumeByDistance = (p1:Point, p2:Point):number => {
+export const getVolumeByDistance = (p1:IPoint, p2:IPoint):number => {
 	const d = getVectorDistance(p1, p2)
 	// const dWidth = document.body.clientWidth / 2 // relative distance based on screen size
-	const dWidth = 650 // 3 * video size as a starter?
-	const v = mapVolumeToDist(dWidth, d)
+	const v = mapVolumeToDist(audioRadius, d)
 	return v
+}
+
+export const isOnScreen = (pos:IPoint, width:number, height:number):boolean => {
+	const x = pos.x
+	const y = pos.y
+	const isX = x > -width + 300 && x < window.innerWidth - 300
+	const isY = y > -height + 300 && y < window.innerHeight - 300
+	return isX && isY
 }

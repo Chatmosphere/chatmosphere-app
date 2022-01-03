@@ -43,8 +43,9 @@ export type IJitsiConference={
   sendCommand: (command:string,payload:any) => boolean
   join:()=>void
   setDisplayName:(name:string)=>void
-  addTrack:(track:Track)=>Promise<any>
+  addTrack:(track:ITrack)=>Promise<any>
   myUserId:()=>ID
+  setReceiverConstraints:(object)=>void
   leave:()=>void
 }
 
@@ -201,10 +202,10 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     conference?.setDisplayName(name)
   }
   const calculateVolume = (id:ID):void => produceAndSet (newState => {
-    const localUserPosition:Point = useLocalStore.getState().pos //check if this is updated or kept by closure
+    const localUserPosition:IPoint = useLocalStore.getState().pos //check if this is updated or kept by closure
     newState.users[id]['volume'] = getVolumeByDistance(localUserPosition, newState.users[id]['pos'])
   })
-  const calculateVolumes = (localPos:Point) => produceAndSet (newState => {
+  const calculateVolumes = (localPos:IPoint) => produceAndSet (newState => {
     const users = newState.users
     Object.keys(users).map(key => {
       const user = users[key]
@@ -212,6 +213,19 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
       return null
     })
   })
+
+  const setConstraints = (selectedUsers) => {
+    const conference = get().conferenceObject
+    conference?.setReceiverConstraints({
+      // 'lastN': 20, // Number of videos requested from the bridge.
+      'selectedEndpoints': selectedUsers, // The endpoints ids of the participants that are prioritized first.
+      // 'onStageEndpoints': ['A'], // The endpoint ids of the participants that are prioritized up to a higher resolution.
+      // 'defaultConstraints': { 'maxHeight': 180 }, // Default resolution requested for all endpoints.
+      // 'constraints': { // Endpoint specific resolution.
+      //  'A': { 'maxHeight': 720 }
+    })
+    
+  }
 
   // Return Object *******************************************
   return {
@@ -222,7 +236,8 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     setConferenceName,
     setDisplayName,
     calculateVolume,
-    calculateVolumes
+    calculateVolumes,
+    setConstraints
   }
 })
 
