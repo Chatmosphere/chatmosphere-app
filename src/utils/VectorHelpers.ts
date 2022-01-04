@@ -23,7 +23,7 @@ export const getVolumeByDistance = (p1:IPoint, p2:IPoint):number => {
 export const isOnScreen = (pos:IPoint, width:number, height:number):boolean => {
 	const x = pos.x
 	const y = pos.y
-	const isX = x > -width + 300 && x < window.innerWidth - 300
-	const isY = y > -height + 300 && y < window.innerHeight - 300
+	const isX = x > -width && x < window.innerWidth
+	const isY = y > -height && y < window.innerHeight
 	return isX && isY
 }
