@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: 
       name: staging
-      url: https://${{ secrets.PUBLIC_URL }}/
+      url: https://stage.chatmosphere.cc/
 
     strategy:
       matrix:
