@@ -203,7 +203,9 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
   }
   const calculateVolume = (id:ID):void => produceAndSet (newState => {
     const localUserPosition:IPoint = useLocalStore.getState().pos //check if this is updated or kept by closure
-    newState.users[id]['volume'] = getVolumeByDistance(localUserPosition, newState.users[id]['pos'])
+    if(newState.users[id]) {
+      newState.users[id]['volume'] = getVolumeByDistance(localUserPosition, newState.users[id]['pos'])
+    }
   })
   const calculateVolumes = (localPos:IPoint) => produceAndSet (newState => {
     const users = newState.users

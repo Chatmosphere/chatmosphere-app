@@ -110,7 +110,8 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
   // if user moves it can be calculated cheaper
   const calculateUserInRadius = (id:ID) => {
     const selectedUsers = get().selectedUsers
-    const user = useConferenceStore.getState().users[id]  
+    const user = useConferenceStore.getState().users[id]
+    if(!user) return
     const localUserPosition:IPoint = get().pos //check if this is updated or kept by closure
     if(getVectorDistance(user.pos, localUserPosition) < audioRadius) {
       //user is within radius
