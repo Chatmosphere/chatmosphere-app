@@ -37,7 +37,7 @@ jobs:
         with:
           switches: -avzr --delete
           path: ./build/
-          remote_path: /var/www/virtual/${{ secrets.UBERSPACE_USER }}/${{ secrets.PUBLIC_URL }}/
+          remote_path: /var/www/virtual/${{ secrets.UBERSPACE_USER }}/html/build
           remote_host: ${{ secrets.UBERSPACE_HOST }}
           remote_user: ${{ secrets.UBERSPACE_USER }}
           remote_key: ${{ secrets.DEPLOY_KEY_PRIVATE }}
