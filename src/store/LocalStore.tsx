@@ -49,7 +49,6 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
   
   // # Public Functions
   const setLocalPosition = (newPosition) => {
-
     set({pos:newPosition})
   }
   
