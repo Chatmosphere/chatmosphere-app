@@ -1,5 +1,6 @@
 import React, { useCallback } from "react"
 import styled from 'styled-components'
+import Chat from "../../addons/Chat"
 import { useAddonsStore } from "../../addons/addonsStore"
 
 
@@ -35,12 +36,11 @@ export const Footer: React.FC = ({ children }) => {
   return (
     <Container>
       <LeftBox></LeftBox>
-      <CenterBox id="footer_center">
-        {children}
-        <ConnectedFooterAddons />
+      <CenterBox>
+       {children}
       </CenterBox>
       <RightBox>
-        
+        <Chat />
       </RightBox>
     </Container>
   )
