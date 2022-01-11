@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import Card from "../../components/common/Card"
 import { useConferenceStore } from '../../store/ConferenceStore'
@@ -88,12 +88,6 @@ const Label = styled.span`
   width: 1px;
   word-wrap: normal !important;
 `
-
-type IMessage = {
-	id:string,
-	text:string,
-	nr:number
-}
 
 
 const Modal = ({callback}) => {
