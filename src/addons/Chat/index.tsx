@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Card from "../../components/common/Card"
 import { useConferenceStore } from '../../store/ConferenceStore'
-import { useConnectionStore } from '../../store/ConnectionStore'
-import shallow from 'zustand/shallow'
+import { MdMessage } from 'react-icons/md'
 
 const SendButton = styled.button`
 
@@ -61,6 +60,34 @@ const MessageText = styled.p`
 		margin: 0;
 		padding: 0;
 	`
+const Button = styled.button`
+	border: none;
+	height: 50px;
+	width: 50px;
+	font-size: 1.4rem;
+	line-height: 1.4rem;
+	border-radius:50px;
+	background: none;
+	:hover {
+		background-color:#fefefe;
+	}
+	:active {
+		background-color:#efefef;
+	}
+`
+
+const Label = styled.span`
+	border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  word-wrap: normal !important;
+`
 
 type IMessage = {
 	id:string,
@@ -69,14 +96,11 @@ type IMessage = {
 }
 
 
-const Modal = () => {
+const Modal = ({callback}) => {
 
 	const conference = useConferenceStore(store => store.conferenceObject)
-	const jsMeet = useConnectionStore(store => store.jsMeet)
 	const users = useConferenceStore(store => store.users, (oldState, newState) => Object.keys(oldState).length === Object.keys(newState).length)
-	const [messages, addMessage] = useState<Array<IMessage>>([])
-	const [textValue, setText] = useState("")
-	// const userRef = useRef(useConferenceStore.getState().users)
+	const messages = useConferenceStore(store => store.messages)
 
 	const sendMessage = useCallback((msg) => {
 		const el = document.querySelector<HTMLInputElement>('#chatInput')
@@ -88,34 +112,9 @@ const Modal = () => {
 		// document.querySelector<HTMLInputElement>('#chatInput').value = ''
 	},[conference])
 
-	const onMessageReceived = useCallback((id,text:string,nr) => {
-		console.log(messages)
-		messages.push({id:id, text:text, nr:nr})
-		addMessage([...messages])
-		// addMessage(messages.push(text))
-	},[messages])
-
-	const handleChange = (e) => {
-		setText(e.target.value)
-	}
-
-	useEffect(() => {
-		conference?.on(
-			jsMeet?.events.conference.MESSAGE_RECEIVED, 
-			onMessageReceived
-		)
-		return(() => {
-			conference?.off(
-				jsMeet?.events.conference.MESSAGE_RECEIVED,
-				onMessageReceived
-			)
-		})
-	},[conference, jsMeet, onMessageReceived])
-
-	// console.log("users ", users?.["7170a85c"]?.user)
 
 	return (
-		<Card title="Chat">
+		<Card title="Chat" callback={callback}>
 			<ContentArea>
 				{
 					messages.map((message, key) => {
@@ -154,8 +153,13 @@ const Modal = () => {
 
 const Chat = () => {
 
+  const	[show, toggleShow] = useState(false)
+
 	return (
-		<Modal />
+		<>
+		<Button onClick={() => toggleShow(!show)}><MdMessage /> <Label>Chat</Label></Button>
+		{show && <Modal callback={() => toggleShow(!show)} />}
+		</>
 	)
 }
 
