@@ -168,7 +168,7 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
         'selectedEndpoints': [...visibleUsers],
         'lastN':visibleUsers.length,
         'onStageEndpoints': [], // The endpoint ids of the participants that are prioritized up to a higher resolution.
-        'defaultConstraints': { 'maxHeight': 180 }, // Default resolution requested for all endpoints.
+        'defaultConstraints': { 'maxHeight': 200 }, // Default resolution requested for all endpoints.
         'constraints': { // Endpoint specific resolution.
         }
       })

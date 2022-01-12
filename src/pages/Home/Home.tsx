@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { NameInputContainer } from './elements/NameInputContainer'
 import { ReactComponent as Wave } from './../../assets/wave.svg'
-import { Footer } from '../../components/Footer/Footer'
 import {BigHeadline} from './../../components/common/BigHeadline'
 import { SubHeadline } from '../../components/common/SubHeadline'
 import { Info } from '../../components/common/Info/Info'
@@ -43,7 +42,7 @@ export const Home = () => {
 				<NameInputContainer />
 			</FormContainer>
 			</CenterContainer>
-			<Footer />
+			{/* <Footer /> */}
 		</React.Fragment>
 	)
 }
