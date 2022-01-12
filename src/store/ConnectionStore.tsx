@@ -53,6 +53,7 @@ type IJitsiConnection = {
   ) => IJitsiConference
   connect: () => void
   disconnect: () => void
+  addEventListener:(e)=>void
   xmpp:any
 }
 
