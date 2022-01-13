@@ -1,6 +1,6 @@
-import React from "react"
+import React, { useCallback } from "react"
 import styled from 'styled-components'
-import Chat from "../../addons/Chat"
+import { useAddonsStore } from "../../addons/addonsStore"
 
 
 const Container = styled.div`
@@ -35,12 +35,28 @@ export const Footer: React.FC = ({ children }) => {
   return (
     <Container>
       <LeftBox></LeftBox>
-      <CenterBox>
-       {children}
+      <CenterBox id="footer_center">
+        {children}
+        <ConnectedFooterAddons />
       </CenterBox>
       <RightBox>
-        <Chat />
+        
       </RightBox>
     </Container>
+  )
+}
+
+const ConnectedFooterAddons = () => {
+  const footerEl = useAddonsStore(
+    useCallback((store) => store.footerElements, []),
+  )
+
+  return (
+    <>
+      {footerEl?.map((b) => {
+        console.log(b)
+        return b?.el
+      })}
+    </>
   )
 }
