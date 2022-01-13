@@ -30,15 +30,17 @@ export type Track = {
   detach: (element:HTMLElement) => void
 }
 export type AudioTrack = Track
-export type VideoTrack = Track 
+export type VideoTrack = Track
+type IUserProperties = Record<string, string>
 
-export type User = { id:ID, user?:any, mute:boolean, volume:number, pos:Point, audio?:AudioTrack, video?:VideoTrack }
-type Users = { [id:string]:User }
+export type IUser = { id:ID, user?:any, mute:boolean, volume:number, pos:Point, properties?:IUserProperties, audio?:AudioTrack, video?:VideoTrack, onStage?:boolean }
+export type IUsers = { [id:string]:IUser }
 type Point = {x:number, y:number}
 type ID = string
 
 export type IJitsiConference={
   on: (eventType:string,callback:(...rest)=>void) => boolean
+  off: (eventType:string,callback:(...rest)=>void) => boolean
   addCommandListener: (command:string,callback:(e:any)=>void) => boolean
   sendCommand: (command:string,payload:any) => boolean
   join:()=>void
@@ -47,13 +49,14 @@ export type IJitsiConference={
   myUserId:()=>ID
   setReceiverConstraints:(object)=>void
   leave:()=>void
+  setLocalParticipantProperty:(key:string,value:any)=>void
 }
 
 type ConferenceStore = {
   conferenceObject?: IJitsiConference
   conferenceName: string|undefined
   isJoined: boolean
-  users: Users
+  users: IUsers
   displayName:string
   error:any
 } & ConferenceActions & UserActions
@@ -88,7 +91,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
 
   // Private Helper Functions *******************************************
   const _addUser = (id:ID, user?:any) :void => produceAndSet (newState => {
-    newState.users[id] = {id:id, user:user, mute:false, volume:1, pos:{x:0, y:0}}
+    newState.users[id] = {id:id, user:user, mute:false, properties:{}, volume:1, pos:{x:0, y:0}}
   })
   const _removeUser = (id:ID) :void => produceAndSet (newState => {
     delete newState.users[id]
@@ -149,7 +152,17 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     set({isJoined:true})//only Local User -> could be in LocalStore
     const conference = get().conferenceObject
     conference?.setDisplayName(get().displayName)
-  } 
+  }
+
+  const _onParticipantPropertyChanged = (e:any) => {
+    const id = e._id
+    const props = e._properties
+    produceAndSet (newState => {
+      const tmpState = newState.users[id].properties
+      newState.users[id].properties = {...tmpState,...props}
+    })
+  }
+
 
   // # Public functions *******************************************
   const init = (conferenceID:string):void => {
@@ -168,6 +181,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
       conference.on(JitsiMeetJS.events.conference.CONFERENCE_JOINED, _onConferenceJoined)
       conference.on(JitsiMeetJS.events.conference.TRACK_MUTE_CHANGED, _onTrackMuteChanged);
       conference.on(JitsiMeetJS.events.conference.CONFERENCE_ERROR, _onConferenceError);
+      conference.on(JitsiMeetJS.events.conference.PARTICIPANT_PROPERTY_CHANGED, _onParticipantPropertyChanged)
       //conference.on(JitsiMeetJS.events.conference.DISPLAY_NAME_CHANGED, onUserNameChanged);
       // conference.on(JitsiMeetJS.events.conference.TRACK_AUDIO_LEVEL_CHANGED, on_remote_track_audio_level_changed);
       //conference.on(JitsiMeetJS.events.conference.PHONE_NUMBER_CHANGED, onPhoneNumberChanged);
@@ -216,19 +230,6 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     })
   })
 
-  const setConstraints = (selectedUsers) => {
-    const conference = get().conferenceObject
-    conference?.setReceiverConstraints({
-      // 'lastN': 20, // Number of videos requested from the bridge.
-      'selectedEndpoints': selectedUsers, // The endpoints ids of the participants that are prioritized first.
-      // 'onStageEndpoints': ['A'], // The endpoint ids of the participants that are prioritized up to a higher resolution.
-      // 'defaultConstraints': { 'maxHeight': 180 }, // Default resolution requested for all endpoints.
-      // 'constraints': { // Endpoint specific resolution.
-      //  'A': { 'maxHeight': 720 }
-    })
-    
-  }
-
   // Return Object *******************************************
   return {
     ...initialState,
@@ -238,8 +239,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     setConferenceName,
     setDisplayName,
     calculateVolume,
-    calculateVolumes,
-    setConstraints
+    calculateVolumes
   }
 })
 

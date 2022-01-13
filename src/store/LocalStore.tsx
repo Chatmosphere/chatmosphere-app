@@ -26,6 +26,11 @@ type ILocalStore = {
   calculateUserOnScreen:(user:IUser, el:HTMLDivElement)=>void
   selectedUsers: Array<string>
   visibleUsers: Array<string>
+  usersOnStage: Array<string>
+  setOnStage: () => void
+  toggleStage: () => void
+  onStage: boolean
+  stageVisible: boolean
 } & IUser & ZoomPan
 
 export const useLocalStore = create<ILocalStore>((set,get) => {
@@ -39,8 +44,11 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
     pos:panOptions.user.initialPosition,
     pan: {x:transformWrapperOptions.defaultPositionX || 0,y: transformWrapperOptions.defaultPositionY || 0},
     scale:1,
+    onStage:false,
+    stageVisible: false,
     selectedUsers: [],
     visibleUsers: [],
+    usersOnStage: []
   }
 
   // # Private Functions
@@ -124,10 +132,24 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
     }
   }
 
+  const _setUsersOnStage = (user) => {
+    const stageUsers = get().usersOnStage
+    if(user.properties?.onStage) {
+      set(state => ({usersOnStage: [...state.usersOnStage, user.id] }))
+    } else {
+      if(stageUsers.includes(user.id)) {
+        const clearedUsers = stageUsers.filter(el => el !== user.id);
+        set(() => ({usersOnStage: [...clearedUsers] }))
+      }
+    }
+  }
+ 
   const calculateUsersOnScreen = () => {
     const els = document.querySelectorAll('.userContainer')
+    const users = useConferenceStore.getState().users
     const visibleUserIds:Array<string> = []
     els.forEach(element => {
+      _setUsersOnStage(users[element.id])
       const tmpPos = element.getBoundingClientRect()
       if(isOnScreen({x:tmpPos.x, y:tmpPos.y}, tmpPos.width, tmpPos.height)) visibleUserIds.push(element.id) 
     });
@@ -136,6 +158,7 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
   //
   const calculateUserOnScreen = (user:IUser, el:HTMLDivElement) => {
     const visibleUsers = get().visibleUsers
+    _setUsersOnStage(user)
     const pos = el.getBoundingClientRect()
     if(isOnScreen({x:pos.x, y:pos.y}, pos.width, pos.height)) {
       if(visibleUsers.indexOf(user.id) === -1) {
@@ -164,14 +187,23 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
   const _setConstraint = () => {
     const conference = useConferenceStore.getState().conferenceObject
     const visibleUsers = get().visibleUsers
+    const usersOnStage = get().usersOnStage
       conference?.setReceiverConstraints({
         'selectedEndpoints': [...visibleUsers],
-        'lastN':visibleUsers.length,
-        'onStageEndpoints': [], // The endpoint ids of the participants that are prioritized up to a higher resolution.
+        'lastN':visibleUsers.length + usersOnStage.length,
+        'onStageEndpoints': [...usersOnStage], // The endpoint ids of the participants that are prioritized up to a higher resolution.
         'defaultConstraints': { 'maxHeight': 200 }, // Default resolution requested for all endpoints.
         'constraints': { // Endpoint specific resolution.
         }
       })
+  }
+
+  const setOnStage = () => {
+    set(store => ({onStage: !store.onStage}))
+  }
+
+  const toggleStage = () => {
+    set(store => ({stageVisible: !store.stageVisible}))
   }
 
   return {
@@ -185,7 +217,9 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
   calculateUserOnScreen,
   calculateUsersInRadius,
   calculateUserInRadius,
-  onPanChange
+  onPanChange,
+  setOnStage,
+  toggleStage
 }
 })
 

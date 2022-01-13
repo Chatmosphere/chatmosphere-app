@@ -21,6 +21,7 @@ type IJitsiEvents = {
     CONFERENCE_JOINED
     TRACK_MUTE_CHANGED
     CONFERENCE_ERROR
+    PARTICIPANT_PROPERTY_CHANGED
   }
   connection: {
     CONNECTION_ESTABLISHED
@@ -69,7 +70,9 @@ type IStore = {
   connectServer: (conferenceName: string) => void
   disconnectServer: () => void
 }
-
+// ****************************************************************
+// CONNECTION STORE
+// ****************************************************************
 export const useConnectionStore = create<IStore>((set, get) => {
   const initialState = {
     serverUrl: "meet.jit.si",
