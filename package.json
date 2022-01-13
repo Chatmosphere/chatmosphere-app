@@ -57,14 +57,17 @@
     ]
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^6.4.9",
-    "@storybook/addon-essentials": "^6.4.9",
-    "@storybook/addon-links": "^6.4.9",
-    "@storybook/node-logger": "^6.4.9",
-    "@storybook/preset-create-react-app": "^3.1.6",
-    "@storybook/react": "^6.4.9",
+    "@storybook/addon-actions": "^6.4.12",
+    "@storybook/addon-essentials": "^6.4.12",
+    "@storybook/addon-links": "^6.4.12",
+    "@storybook/builder-webpack5": "^6.4.12",
+    "@storybook/manager-webpack5": "^6.4.12",
+    "@storybook/node-logger": "^6.4.12",
+    "@storybook/preset-create-react-app": "^4.0.0",
+    "@storybook/react": "^6.4.12",
     "@testing-library/react-hooks": "^7.0.2",
-    "prettier": "2.2.1"
+    "prettier": "2.2.1",
+    "webpack": "5"
   },
   "resolutions": {
     "babel-loader": "8.2.3"
