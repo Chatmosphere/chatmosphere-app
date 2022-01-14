@@ -1,37 +1,11 @@
 import produce from "immer";
 import create from "zustand";
-import { Track, useConferenceStore } from "./ConferenceStore";
+import { useConferenceStore } from "./ConferenceStore";
 import { panOptions, transformWrapperOptions } from "../components/PanWrapper/panOptions";
 import { mountStoreDevtool } from "simple-zustand-devtools";
 import { getVectorDistance, isOnScreen } from "../utils/VectorHelpers";
 import { audioRadius } from "../utils/LookupTable";
 
-//Feels like ZoomPan doesnt belong to LocalStore; maybe state of panHandler or own store?
-type ZoomPan = {
-  pos:IPoint
-  pan:IPoint 
-  scale:number
-  onPanChange: (params:any) => void
-} 
-
-type ILocalStore = {
-  setLocalPosition: (newPosition:IPoint) => void
-  setLocalTracks: (tracks:Track[]) => void
-  toggleMute: () => void
-  clearLocalTracks: () => void
-  setMyID: (id:string) => void
-  calculateUsersInRadius:(myPos:IPoint)=>void
-  calculateUserInRadius:(id:ID)=>void
-  calculateUsersOnScreen:()=>void
-  calculateUserOnScreen:(user:IUser, el:HTMLDivElement)=>void
-  selectedUsers: Array<string>
-  visibleUsers: Array<string>
-  usersOnStage: Array<string>
-  setOnStage: () => void
-  toggleStage: () => void
-  onStage: boolean
-  stageVisible: boolean
-} & IUser & ZoomPan
 
 export const useLocalStore = create<ILocalStore>((set,get) => {
 
@@ -105,7 +79,7 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
     set({scale:scale, pan:panPosition})
   }
 
-  const calculateUsersInRadius = (myPos:IPoint) => {
+  const calculateUsersInRadius = (myPos:IVector2) => {
     const users = useConferenceStore.getState().users
     const selectedUsers = Object.keys(users).filter(key => {
       const user = users[key]
@@ -119,7 +93,7 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
     const selectedUsers = get().selectedUsers
     const user = useConferenceStore.getState().users[id]
     if(!user) return
-    const localUserPosition:IPoint = get().pos //check if this is updated or kept by closure
+    const localUserPosition:IVector2 = get().pos //check if this is updated or kept by closure
     if(getVectorDistance(user.pos, localUserPosition) < audioRadius) {
       //user is within radius
       if(selectedUsers.indexOf(user.id) === -1) _pushSelectedUser(user.id)

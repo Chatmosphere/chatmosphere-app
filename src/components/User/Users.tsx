@@ -1,5 +1,5 @@
 import { StageUser } from '../../addons/Stage/components/User';
-import { IUser, useConferenceStore } from './../../store/ConferenceStore';
+import { useConferenceStore } from './../../store/ConferenceStore';
 import { User } from "./User"
 
 //TODO check if incorporation of user Object causes rerendering problems

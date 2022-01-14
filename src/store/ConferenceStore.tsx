@@ -14,69 +14,9 @@ declare global {
   }
 }
 
-export type Track = {
-  track:{id:string}
-  containers:any[]
-  getType: () => 'video'|'audio'
-  dispose: () => void
-  isLocal: () => boolean
-  isMuted: () => boolean
-  mute: () => void
-  unmute: () => void
-  addEventListener: (eventType:string,callback:(...rest)=>void) => boolean
-  removeEventListener: (eventType:string,callback:(...rest)=>void) => boolean
-  getParticipantId: () => ID
-  attach: (element:HTMLElement) => void
-  detach: (element:HTMLElement) => void
-}
-export type AudioTrack = Track
-export type VideoTrack = Track
-type IUserProperties = Record<string, string>
-
-export type IUser = { id:ID, user?:any, mute:boolean, volume:number, pos:Point, properties?:IUserProperties, audio?:AudioTrack, video?:VideoTrack, onStage?:boolean }
-export type IUsers = { [id:string]:IUser }
-type Point = {x:number, y:number}
-type ID = string
-
-export type IJitsiConference={
-  on: (eventType:string,callback:(...rest)=>void) => boolean
-  off: (eventType:string,callback:(...rest)=>void) => boolean
-  addCommandListener: (command:string,callback:(e:any)=>void) => boolean
-  sendCommand: (command:string,payload:any) => boolean
-  join:()=>void
-  setDisplayName:(name:string)=>void
-  addTrack:(track:ITrack)=>Promise<any>
-  myUserId:()=>ID
-  setReceiverConstraints:(object)=>void
-  leave:()=>void
-  setLocalParticipantProperty:(key:string,value:any)=>void
-}
-
-type ConferenceStore = {
-  conferenceObject?: IJitsiConference
-  conferenceName: string|undefined
-  isJoined: boolean
-  users: IUsers
-  displayName:string
-  error:any
-} & ConferenceActions & UserActions
-
-type ConferenceActions = {
-  init: (conferenceID:string) => void
-  join: () => void
-  leave: () => void
-  setConferenceName: (name:string) => boolean
-}
-
-type UserActions = {
-  setDisplayName:(name:string)=>void
-  calculateVolume: (id:ID) => void
-  calculateVolumes: (localPos:Point) => void
-}
-
 // # IMPLEMENTATIONS *******************************************
 
-export const useConferenceStore = create<ConferenceStore>((set,get) => {
+export const useConferenceStore = create<IConferenceStore>((set,get) => {
 
   const initialState = {
     conferenceObject:undefined,
@@ -87,7 +27,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     error:undefined,
   }
 
-  const produceAndSet = (callback:(newState:ConferenceStore)=>void)=>set(state => produce(state, newState => callback(newState)))
+  const produceAndSet = (callback:(newState:IConferenceStore)=>void)=>set(state => produce(state, newState => callback(newState)))
 
   // Private Helper Functions *******************************************
   const _addUser = (id:ID, user?:any) :void => produceAndSet (newState => {
@@ -96,7 +36,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
   const _removeUser = (id:ID) :void => produceAndSet (newState => {
     delete newState.users[id]
   })
-  const _addAudioTrack = (id:ID, track:Track) => produceAndSet (newState => {
+  const _addAudioTrack = (id:ID, track:IMediaTrack) => produceAndSet (newState => {
     if(newState.users[id]) 
     {
       newState.users[id].audio = track
@@ -106,7 +46,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
   const _removeAudioTrack = (id:ID):void => produceAndSet (newState => {
     if(newState.users[id]) newState.users[id].audio = undefined
   })
-  const _addVideoTrack = (id:ID, track:Track):void => produceAndSet (newState => {
+  const _addVideoTrack = (id:ID, track:IMediaTrack):void => produceAndSet (newState => {
     if(newState.users[id]) newState.users[id].video = track
   })
   const _removeVideoTrack = (id:ID):void => produceAndSet (newState => {
@@ -116,10 +56,10 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     const pos = JSON.parse(e.value)
     _updateUserPosition(pos.id, {x:pos.x, y:pos.y})
   }
-  const _updateUserPosition = (id:ID, pos:Point):void => produceAndSet (newState => {
+  const _updateUserPosition = (id:ID, pos:IVector2):void => produceAndSet (newState => {
     if(newState.users[id]) newState.users[id]['pos'] = pos
   })
-  const _onTrackMuteChanged = (track:Track):void => {
+  const _onTrackMuteChanged = (track:IMediaTrack):void => {
     if(track.getType() === 'video') return
     const tmpID = track.getParticipantId()
     set(state => produce(state, newState => {
@@ -133,7 +73,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     set({ conferenceObject: undefined, error:connection?.xmpp.lastErrorMsg })
   }
 
-  const _onRemoteTrackAdded = (track:Track):void => {
+  const _onRemoteTrackAdded = (track:IMediaTrack):void => {
     if(track.isLocal()) return // also run on your own tracks so exit
     const JitsiMeetJS = useConnectionStore.getState().jsMeet 
     track.addEventListener(JitsiMeetJS?.events.track.LOCAL_TRACK_STOPPED,() => console.log('remote track stopped'))
@@ -141,7 +81,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     const id = track.getParticipantId() // get user id of track
     track.getType() === "audio" ? _addAudioTrack(id, track) : _addVideoTrack(id, track)
   }
-  const _onRemoteTrackRemoved = (track:Track):void => {
+  const _onRemoteTrackRemoved = (track:IMediaTrack):void => {
     // TODO: Remove track from user Object
     const id = track.getParticipantId() // get user id of track
     track.getType() === 'audio' ? _removeAudioTrack(id) : _removeVideoTrack(id) // do we need that? maybe if user is still there but closes video?
@@ -165,7 +105,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
 
 
   // # Public functions *******************************************
-  const init = (conferenceID:string):void => {
+  const initConference = (conferenceID:string):void => {
     const JitsiMeetJS = useConnectionStore.getState().jsMeet 
     const connection = useConnectionStore.getState().connection //either move to ConnectionStore or handle undefined here
     const enteredConferenceName = conferenceID.length > 0 ? conferenceID.toLowerCase() : get().conferenceName?.toLowerCase()
@@ -187,8 +127,8 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
       //conference.on(JitsiMeetJS.events.conference.PHONE_NUMBER_CHANGED, onPhoneNumberChanged);
       conference.addCommandListener("pos", _onPositionReceived)
       // r.on(JitsiMeetJS.events.conference.PARTICIPANT_PROPERTY_CHANGED, (e) => console.log("Property Changed ", e))
-      window.addEventListener('beforeunload', leave) //does this help?  
-      window.addEventListener('unload', leave) //does this help?
+      window.addEventListener('beforeunload', leaveConference) //does this help?  
+      window.addEventListener('unload', leaveConference) //does this help?
       conference.join()
       set({conferenceObject:conference,error:undefined})
     } else {
@@ -199,7 +139,7 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
   const join = () => {
 
   }
-  const leave = () => { 
+  const leaveConference = () => { 
     const conference = get().conferenceObject
     conference?.leave()
   }
@@ -216,12 +156,12 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
     conference?.setDisplayName(name)
   }
   const calculateVolume = (id:ID):void => produceAndSet (newState => {
-    const localUserPosition:IPoint = useLocalStore.getState().pos //check if this is updated or kept by closure
+    const localUserPosition:IVector2 = useLocalStore.getState().pos //check if this is updated or kept by closure
     if(newState.users[id]) {
       newState.users[id]['volume'] = getVolumeByDistance(localUserPosition, newState.users[id]['pos'])
     }
   })
-  const calculateVolumes = (localPos:IPoint) => produceAndSet (newState => {
+  const calculateVolumes = (localPos:IVector2) => produceAndSet (newState => {
     const users = newState.users
     Object.keys(users).map(key => {
       const user = users[key]
@@ -233,9 +173,9 @@ export const useConferenceStore = create<ConferenceStore>((set,get) => {
   // Return Object *******************************************
   return {
     ...initialState,
-    init,
-    join,
-    leave,
+    initConference,
+    joinConference: join,
+    leaveConference,
     setConferenceName,
     setDisplayName,
     calculateVolume,
