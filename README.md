@@ -14,7 +14,7 @@
 * [Contribution Guideline](docs/CONTRIBUTION.md)
 * [Find Support here](https://github.com/Chatmosphere/chatmosphere-app/discussions)
 * [Code of Conduct for Excellent Humans](docs/CODE_OF_CONDUCT.md)
-* [Roadmap](https://www.notion.so/universalinteraction/Chatmosphere-Features-7f32c0b314944c3db99838634f9b3d42)
+* [Roadmap](https://github.com/orgs/Chatmosphere/projects/4)
 * [Code License](LICENSE.md)
 * [If You Want to Donate You Can Buy Us a Drink](https://www.buymeacoffee.com/chatmosphere)
 
