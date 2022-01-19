@@ -103,6 +103,10 @@ export const useConferenceStore = create<IConferenceStore>((set,get) => {
     })
   }
 
+  const _onUserNameChanged = (e, t) => {
+    // TODO Implement singular event when user changes name (now its updating every letter)
+  }
+
 
   // # Public functions *******************************************
   const initConference = (conferenceID:string):void => {
@@ -122,7 +126,7 @@ export const useConferenceStore = create<IConferenceStore>((set,get) => {
       conference.on(JitsiMeetJS.events.conference.TRACK_MUTE_CHANGED, _onTrackMuteChanged);
       conference.on(JitsiMeetJS.events.conference.CONFERENCE_ERROR, _onConferenceError);
       conference.on(JitsiMeetJS.events.conference.PARTICIPANT_PROPERTY_CHANGED, _onParticipantPropertyChanged)
-      //conference.on(JitsiMeetJS.events.conference.DISPLAY_NAME_CHANGED, onUserNameChanged);
+      conference.on(JitsiMeetJS.events.conference.DISPLAY_NAME_CHANGED, _onUserNameChanged);
       // conference.on(JitsiMeetJS.events.conference.TRACK_AUDIO_LEVEL_CHANGED, on_remote_track_audio_level_changed);
       //conference.on(JitsiMeetJS.events.conference.PHONE_NUMBER_CHANGED, onPhoneNumberChanged);
       conference.addCommandListener("pos", _onPositionReceived)
