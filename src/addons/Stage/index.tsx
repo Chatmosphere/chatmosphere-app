@@ -1,9 +1,22 @@
 import { useEffect} from 'react';
+import styled from 'styled-components';
 import { useConferenceStore } from '../../store/ConferenceStore';
 import { useConnectionStore } from '../../store/ConnectionStore';
 import { useLocalStore } from '../../store/LocalStore';
 import LocalUser, { User } from './components/User';
 
+
+const StageContainer = styled.div`
+	position: absolute;
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
+	width: auto;
+	height: 300px;
+	background-color: white;
+	top: 30px;
+	left: 30px;
+`
 
 
 const userSelector = store => store.users
@@ -24,10 +37,10 @@ const Stage = () => {
 	},[conference, JSMeet])
 
 	return (
-		<>
+		<StageContainer>
 			{onStage && <LocalUser />}
 			<StageUsers />
-		</>
+		</StageContainer>
 	)
 
 }

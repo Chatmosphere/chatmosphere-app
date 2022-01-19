@@ -4,12 +4,13 @@ import { useLocalStore } from "../../../store/LocalStore"
 
 
 const Container = styled.div`
-	position: absolute;
+	/* position: absolute; */
 	width: 300px;
 	height: 300px;
 	background-color: white;
-	top: 30px;
-	left: 30px;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0px 24px 48px 0px rgba(0, 0, 0, 0.25);
 `
 const Video = styled.video`
 	width: 300px; 
