@@ -1,4 +1,3 @@
-import { StageUser } from '../../addons/Stage/components/User';
 import { useConferenceStore } from './../../store/ConferenceStore';
 import { User } from "./User"
 
