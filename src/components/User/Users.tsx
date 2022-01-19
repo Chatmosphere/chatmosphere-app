@@ -14,7 +14,7 @@ export const Users = () => {
     {Object.entries(users).map((user) => {
       //@ts-ignore
       // if(user[1]?.properties?.onStage) return <StageUser key={user[0]} user={user} />
-      return <User key={user[0]} user={user[1]} id={user[0]}/>
+      return <User key={user[0]} id={user[0]}/>
     })}
     </>
   )
