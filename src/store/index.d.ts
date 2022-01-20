@@ -82,7 +82,7 @@ declare type ILocalStore = {
   selectedUsers: Array<string>
   visibleUsers: Array<string>
   usersOnStage: Array<string>
-  setOnStage: () => void
+  setOnStage: (state:boolean) => void
   toggleStage: () => void
   onStage: boolean
   stageVisible: boolean

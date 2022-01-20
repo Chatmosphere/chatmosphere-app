@@ -2,6 +2,7 @@ import { MdPresentToAll } from "react-icons/md"
 import { Button } from "../../../components/common/Buttons/Button"
 import { useConferenceStore } from "../../../store/ConferenceStore"
 import { useLocalStore } from "../../../store/LocalStore"
+import { useEffect } from "react"
 
 export const StageButton = ({callback=()=>null}) => {
 
@@ -14,9 +15,15 @@ export const StageButton = ({callback=()=>null}) => {
 
 	const onClick = () => {
 		const tmpStage = !onStage
-		setOnStage()
+		setOnStage(tmpStage)
 		conference?.setLocalParticipantProperty('onStage', tmpStage)
 	}
+
+	useEffect(()=>{
+		return(() => {
+			setOnStage(false)
+		})
+	},[setOnStage])
 
 	return (
 		<Button onClick={onClick}>

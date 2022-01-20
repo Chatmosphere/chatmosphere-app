@@ -174,8 +174,8 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
       })
   }
 
-  const setOnStage = () => {
-    set(store => ({onStage: !store.onStage}))
+  const setOnStage = (state:boolean) => {
+    set({onStage: state})
   }
 
   const toggleStage = () => {
