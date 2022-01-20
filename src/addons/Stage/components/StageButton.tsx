@@ -1,7 +1,7 @@
 import { MdPresentToAll } from "react-icons/md"
-import { Button } from "../../components/common/Buttons/Button"
-import { useConferenceStore } from "../../store/ConferenceStore"
-import { useLocalStore } from "../../store/LocalStore"
+import { Button } from "../../../components/common/Buttons/Button"
+import { useConferenceStore } from "../../../store/ConferenceStore"
+import { useLocalStore } from "../../../store/LocalStore"
 
 export const StageButton = ({callback=()=>null}) => {
 

@@ -1,9 +1,10 @@
-import { useEffect} from 'react';
-import styled from 'styled-components';
-import { useConferenceStore } from '../../store/ConferenceStore';
-import { useConnectionStore } from '../../store/ConnectionStore';
-import { useLocalStore } from '../../store/LocalStore';
-import LocalUser, { User } from './components/User';
+import { useEffect } from "react"
+import styled from "styled-components"
+import { useConferenceStore } from "../../store/ConferenceStore"
+import { useConnectionStore } from "../../store/ConnectionStore"
+import { useLocalStore } from "../../store/LocalStore"
+import LocalUser from "./components/User"
+import { StageUsers } from "./components/StageUsers"
 
 
 const Container = styled.div`
@@ -19,22 +20,28 @@ const Container = styled.div`
 `
 
 
-const userSelector = store => store.users
+//TODO cleaner way would be to handle the whole stage management here and refactor calculateUsersOnScreen
+// const onParticipantPropertyChange = (e) => {
+// 	useLocalStore.getState().calculateUsersOnScreen()
+// }
+
+const userOnScreenSelector = store => store.calculateUsersOnScreen
 
 const Stage = () => {
-	
+
 	// const stageVisible = useLocalStore(useCallback(store => store.stageVisible,[]))
 	const onStage = useLocalStore(store => store.onStage)
 	const conference = useConferenceStore(store => store.conferenceObject)
 	const JSMeet = useConnectionStore(store => store.jsMeet)
+	const calculateUsersOnScreen = useLocalStore(userOnScreenSelector)
 
 	useEffect(() => {
-		conference?.on(JSMeet?.events.conference.PARTICIPANT_PROPERTY_CHANGED, () => null)
+		conference?.on(JSMeet?.events.conference.PARTICIPANT_PROPERTY_CHANGED, calculateUsersOnScreen)
 
 		return (() => {
-			conference?.off(JSMeet?.events.conference.PARTICIPANT_PROPERTY_CHANGED, () => null)
+			conference?.off(JSMeet?.events.conference.PARTICIPANT_PROPERTY_CHANGED, calculateUsersOnScreen)
 		})
-	},[conference, JSMeet])
+	},[conference, JSMeet, calculateUsersOnScreen])
 
 	return (
 		<Container>
@@ -43,29 +50,6 @@ const Stage = () => {
 		</Container>
 	)
 
-}
-
-
-const StageUsers = () => {
-	const users:IUsers = useConferenceStore(userSelector)
-	
-	return (
-		<>
-		{Object.entries(users).map(user => {
-			if(user[1]?.properties?.onStage) {
-				// console.log("rerender")
-				/**
-					TODO this is rerendering on every move, even though react will diff it out, Im not sure thats cool;
-				 	we only need updates if properties change so we could have a stageusers array instead;
-				  -> could also have a "users Visible" array to only render them on stage at all
-				 */
-				//@ts-ignore
-				return <User key={user[0]} audio={user[1].audio} video={user[1].video} />
-			}
-			return null
-		})}
-		</>
-	)
 }
 
 

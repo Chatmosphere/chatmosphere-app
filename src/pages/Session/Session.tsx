@@ -1,6 +1,6 @@
 import React from "react"
 import Stage from "../../addons/Stage"
-import { StageButton } from "../../addons/Stage/StageButton"
+import { StageButton } from "../../addons/Stage/components/StageButton"
 import { ErrorHandler } from "../../components/common/Info/ErrorHandler"
 import { Info } from "../../components/common/Info/Info"
 import { Footer } from "../../components/Footer/Footer"
