@@ -16,6 +16,12 @@ const Video = styled.video`
   transform: scaleX(-1);
 `
 
+export const VideoContainer = styled.div`
+  width: 200px;
+  height: 200px;
+  border-radius: 100px;
+`
+
 export const VideoTrack:React.FC<{id:number}> = React.memo(({id}) => {
 
   const videoTrack = useConferenceStore(useCallback(store => store.users[id].video, [id]))
