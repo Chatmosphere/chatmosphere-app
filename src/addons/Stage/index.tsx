@@ -21,6 +21,8 @@ const Container = styled.div`
 
 
 //TODO cleaner way would be to handle the whole stage management here and refactor calculateUsersOnScreen
+// Actually that would be much better - no need to loop all users in localstore on each user movement to recalculate who is on stage
+// in set last-n we would just set calculated visible user array and stage user array that is set here only on participantpropertychange
 // const onParticipantPropertyChange = (e) => {
 // 	useLocalStore.getState().calculateUsersOnScreen()
 // }

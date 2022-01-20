@@ -106,6 +106,8 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
     }
   }
 
+  //check if property "onStage" is set -> addd to onStage Array, else remove form array if exists
+  // TODO this could also be done in the Stage addon iself; it feels as if it should be there; otherhand its good to have all logic in store somehow
   const _setUsersOnStage = (user) => {
     const stageUsers = get().usersOnStage
     if(user.properties?.onStage) {
@@ -163,7 +165,7 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
     const visibleUsers = get().visibleUsers
     const usersOnStage = get().usersOnStage
       conference?.setReceiverConstraints({
-        'selectedEndpoints': [...visibleUsers],
+        'selectedEndpoints': [...visibleUsers,...usersOnStage],
         'lastN':visibleUsers.length + usersOnStage.length,
         'onStageEndpoints': [...usersOnStage], // The endpoint ids of the participants that are prioritized up to a higher resolution.
         'defaultConstraints': { 'maxHeight': 200 }, // Default resolution requested for all endpoints.
