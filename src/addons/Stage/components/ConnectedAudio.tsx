@@ -23,7 +23,7 @@ export const ConnectedAudio:React.FunctionComponent<{audio:IAudioTrack | undefin
 			if (tmpEl)
 				audio?.attach(tmpEl);
 		});
-	});
+	},[audio]);
 
 	return <audio autoPlay={true} ref={myRef} className={className} id={id} />;
 };

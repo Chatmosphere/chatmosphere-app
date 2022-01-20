@@ -17,7 +17,7 @@ const Container = styled.div`
 export const User = ({video, audio}) => {
 	return (
 		<Container>
-			<ConnectedAudio audio={audio} volume={1} />
+			<ConnectedAudio audio={audio} volume={0.8} />
 			<ConnectedVideo className="stage_video" video={video} />
 		</Container>
 	)
