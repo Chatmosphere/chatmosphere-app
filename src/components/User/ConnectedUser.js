@@ -6,7 +6,6 @@ import { MuteIndicator } from './MuteIndicator';
 import { VideoContainer, VideoTrack } from "./VideoTrack"
 import { NameTag } from '../NameTag/NameTag';
 import { useLocalStore } from '../../store/LocalStore';
-import styled from "styled-components"
 
 
 export const ConnectedUser = ({id}) => {
@@ -40,25 +39,3 @@ export const ConnectedUser = ({id}) => {
     </div>
   )
 }
-
-const StyledUserContainer = styled.div.attrs({
-  style: ({pos}) => ({
-    left: `${pos.x}px`,
-    top: `${pos.y}px`
-  })
-})`
-  
-`
-
-// const User = React.forwardRef(({id, pos, show = true },ref) => {
-//   return (
-//     <div style={{position:'absolute', left:`${pos.x}px`, top:`${pos.y}px`}} id={id} className="userContainer" ref={ref} >
-//       {show && <VideoTrack id={id} />}
-//       <ReloadHint />
-//       <AudioTrack id={id} volume={myVolume} />
-//       <NameTag>{user?.user?._displayName || 'Friendly Sphere'}</NameTag>
-//       <div>Volume {Math.round(myVolume * 11)}</div>
-//       {isMute && <MuteIndicator>🤭</MuteIndicator>}
-//     </div>
-//   )
-// })
