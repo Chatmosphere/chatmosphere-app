@@ -6,7 +6,7 @@ import { useLocalStore } from '../../store/LocalStore';
 import LocalUser, { User } from './components/User';
 
 
-const StageContainer = styled.div`
+const Container = styled.div`
 	position: absolute;
 	display: flex;
 	flex-direction: row;
@@ -37,10 +37,10 @@ const Stage = () => {
 	},[conference, JSMeet])
 
 	return (
-		<StageContainer>
+		<Container>
 			{onStage && <LocalUser />}
 			<StageUsers />
-		</StageContainer>
+		</Container>
 	)
 
 }
@@ -53,7 +53,12 @@ const StageUsers = () => {
 		<>
 		{Object.entries(users).map(user => {
 			if(user[1]?.properties?.onStage) {
-				console.log("rerender")
+				// console.log("rerender")
+				/**
+					TODO this is rerendering on every move, even though react will diff it out, Im not sure thats cool;
+				 	we only need updates if properties change so we could have a stageusers array instead;
+				  -> could also have a "users Visible" array to only render them on stage at all
+				 */
 				//@ts-ignore
 				return <User key={user[0]} audio={user[1].audio} video={user[1].video} />
 			}
