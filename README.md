@@ -10,13 +10,13 @@
 
 
 ### Helpful Links
-* [How to Run Chatmosphere](docs/INSTALL.md)
+* [How to run Chatmosphere](docs/INSTALL.md)
 * [Contribution Guideline](docs/CONTRIBUTION.md)
 * [Find Support here](https://github.com/Chatmosphere/chatmosphere-app/discussions)
 * [Code of Conduct for Excellent Humans](docs/CODE_OF_CONDUCT.md)
 * [Roadmap](https://github.com/orgs/Chatmosphere/projects/4)
 * [Code License](LICENSE.md)
-* [If You Want to Donate You Can Buy Us a Drink](https://www.buymeacoffee.com/chatmosphere)
+* [Donations to help us maintaining Chatmospere and run our demo server](https://opencollective.com/chatmosphere)
 
 <!-- 
 You can learn more about the awesome Create React App Starter Kit in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).  
@@ -24,7 +24,7 @@ To learn more about React, check out the [React documentation](https://reactjs.o
 -->
 <!-- TODO: write [Shoutout and Fame] -->
 
-### Funded from September 2020 until February 2021 by
+### Funded from September 2020 until February 2021 and September 2021 until February 2021 by
 
 <p style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
 <a href="https://www.bmbf.de/en/" rel="nofollow"><img src="docs/BMBF-Logo.svg" alt="Logo of the German Ministry for Education and Research" style="max-width:100%; padding:20px;" height="150px"></a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="https://prototypefund.de/en/" rel="nofollow"><img src="docs/PF-Logo.svg" alt="Logo of the Prototype Fund" style="max-width:100%; padding:20px;" height="150px"></a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="https://okfn.de/en/" rel="nofollow"><img src="docs/OKFD-Logo.svg" alt="Logo of the Open Knowledge Foundation Germany" style="max-width:100%; padding:20px;" height="150px"></a>
