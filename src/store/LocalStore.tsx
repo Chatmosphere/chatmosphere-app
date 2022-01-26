@@ -48,7 +48,10 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
 
   const setLocalTracks = tracks => _produceAndSet(newState=>{
     const audioTrack = tracks.find(t=>t.getType() === 'audio')
-    const videoTrack = tracks.find(t=>t.getType() === 'video')
+    const videoTrack = tracks.find(t=>t.videoType==='camera')
+
+    // console.log("track object ", tracks.find(t=>t.videoType==='desktop'))
+    console.log("track object ", tracks)
     newState.video = videoTrack
     newState.audio = audioTrack
   })
