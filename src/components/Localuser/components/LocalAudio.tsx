@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { useConnectionStore } from './../../store/ConnectionStore';
-import { useConferenceStore } from './../../store/ConferenceStore';
+import { useConnectionStore } from '../../../store/ConnectionStore';
+import { useConferenceStore } from '../../../store/ConferenceStore';
 
 const LocalAudio:React.FC<{track:IAudioTrack}> = ({track}) => {
   const myRef:any = useRef()
