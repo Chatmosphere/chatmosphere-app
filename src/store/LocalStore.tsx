@@ -15,6 +15,7 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
     volume:1,
     video:undefined,
     audio:undefined,
+    desktop: undefined,
     pos:panOptions.user.initialPosition,
     pan: {x:transformWrapperOptions.defaultPositionX || 0,y: transformWrapperOptions.defaultPositionY || 0},
     scale:1,
@@ -49,11 +50,13 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
   const setLocalTracks = tracks => _produceAndSet(newState=>{
     const audioTrack = tracks.find(t=>t.getType() === 'audio')
     const videoTrack = tracks.find(t=>t.videoType==='camera')
+    const desktopTrack = tracks.find(t=>t.videoType==='desktop')
 
     // console.log("track object ", tracks.find(t=>t.videoType==='desktop'))
     console.log("track object ", tracks)
-    newState.video = videoTrack
+    newState.video = videoTrack || desktopTrack
     newState.audio = audioTrack
+    // newState.desktop = desktopTrack
   })
 
   const clearLocalTracks = () => _produceAndSet(newState=>{

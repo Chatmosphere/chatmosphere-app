@@ -167,7 +167,7 @@ declare interface IJitsiInitOptions {
 }
 
 // Conference STore
-declare type IUser = { id:ID, user?:any, mute:boolean, volume:number, pos:Point, properties?:IUserProperties, audio?:IAudioTrack, video?:IVideoTrack, onStage?:boolean }
+declare type IUser = { id:ID, user?:any, mute:boolean, volume:number, pos:Point, properties?:IUserProperties, audio?:IAudioTrack, video?:IVideoTrack, desktop?:IMediaTrack, onStage?:boolean }
 declare type IUsers = { [id:string]:IUser }
 declare type ID = string
 declare type IUserProperties = Record<string, string>
