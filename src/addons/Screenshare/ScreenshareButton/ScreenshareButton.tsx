@@ -22,15 +22,19 @@ export const ScreenshareButton = () => {
 
 		const setTracks = (tracks) => {
 			const track = tracks[0]
-			track.addEventListener(
-				window.JitsiMeetJS?.events.track.LOCAL_TRACK_STOPPED,() => console.log("LOCAL_TRACK_STOPPED", tracks)
-			)
+			if(track.videoType === 'desktop') {
+				track.addEventListener(
+					window.JitsiMeetJS?.events.track.LOCAL_TRACK_STOPPED,() => setIsSharing(false)
+				)
+			}
 			// tracks[0].track.onended = () => console.log("Track onended") //chrome #and firefox getting that event (Safari is not :(
 			// tracks[0].track.onmute = () => console.log("Track onmuted") //Safari Event
 			const videoTrack = conferenceObject?.getLocalTracks().find(track => track.getType() === "video")
 			setLocalTracks(tracks)
 			console.log("videoTrack", videoTrack);
-			if(track.videoType !== videoTrack.videoType) conferenceObject?.replaceTrack(videoTrack, track)
+			if(track.videoType !== videoTrack.videoType)  {
+				conferenceObject?.replaceTrack(videoTrack, track)
+			}
 		}
 
 		const createDesktopTrack = (jsmeet) => {
