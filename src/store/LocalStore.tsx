@@ -54,9 +54,9 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
 
     // console.log("track object ", tracks.find(t=>t.videoType==='desktop'))
     console.log("track object ", tracks)
-    newState.video = videoTrack || desktopTrack
+    newState.video = videoTrack
     newState.audio = audioTrack
-    // newState.desktop = desktopTrack
+    newState.desktop = desktopTrack
   })
 
   const clearLocalTracks = () => _produceAndSet(newState=>{

@@ -8,6 +8,7 @@ import { ReloadHint } from "../ReloadHint/ReloadHint"
 import { panOptions } from "./../PanWrapper/panOptions"
 import { AudioRadius } from "./components/AudioRadius"
 import { NameContainer } from "./components/NameContainer"
+import LocalDesktop from "../../addons/Screenshare/components/LocalDesktop"
 
 const Container = styled.div`
   width: ${panOptions.user.size.x}px;
@@ -31,6 +32,7 @@ export const Localuser: React.FC<ILocaluser> = ({audioRadius = false}) => {
 
   const audioTrack = useLocalStore((store) => store.audio)
   const videoTrack = useLocalStore((store) => store.video)
+  const desktopTrack = useLocalStore((store) => store.desktop)
   const isMute = useLocalStore((store) => store.mute)
 
   const localUserNode = useRef<HTMLDivElement>(null)
@@ -42,6 +44,9 @@ export const Localuser: React.FC<ILocaluser> = ({audioRadius = false}) => {
       {audioRadius && <AudioRadius></AudioRadius>}
       {videoTrack && (
         <LocalVideo key={videoTrack.track.id} track={videoTrack} />
+      )}
+      {desktopTrack && (
+        <LocalDesktop key={desktopTrack.track.id} track={desktopTrack} />
       )}
       <ReloadHint />
       {audioTrack && (
