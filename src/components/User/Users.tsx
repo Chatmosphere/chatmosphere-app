@@ -10,10 +10,10 @@ export const Users = () => {
   const users = useConferenceStore(userSelector)
   return (
     <>
-    {Object.entries(users).map((user) => {
+    {Object.keys(users).map((key) => {
       //@ts-ignore
       // if(user[1]?.properties?.onStage) return <StageUser key={user[0]} user={user} />
-      return <ConnectedUser key={user[0]} id={user[0]}/>
+      return <ConnectedUser key={key} id={key}/>
     })}
     </>
   )
