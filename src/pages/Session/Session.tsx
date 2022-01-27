@@ -14,7 +14,7 @@ import { PanWrapper } from "../../components/PanWrapper/PanWrapper"
 import { Room } from "../../components/Room/Room"
 import { Users } from "../../components/User/Users"
 import { LocalStoreLogic } from "../../store/LocalStoreLogic"
-import { ScreenshareButton } from "../../components/Footer/ScreenshareButton/ScreenshareButton"
+import { ScreenshareButton } from "../../addons/Screenshare/ScreenshareButton/ScreenshareButton"
 
 
 
