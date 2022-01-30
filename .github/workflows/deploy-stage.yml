@@ -5,7 +5,7 @@ on:
     inputs:
       environment:
         type: environment
-      description: Select the environment
+        description: Select the environment
       tags: 
         description: 'Dev Scenario Tags'
 
