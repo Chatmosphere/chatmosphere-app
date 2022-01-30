@@ -3,6 +3,9 @@ on:
   # Manual Trigger for Stage Server
   workflow_dispatch:
     inputs:
+      environment:
+        type: environment
+      description: Select the environment
       tags: 
         description: 'Dev Scenario Tags'
 
@@ -11,9 +14,9 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    environment: 
-      name: staging
-      url: https://stage.chatmosphere.cc/
+    # environment: 
+    #   name: staging
+      # url: https://stage.chatmosphere.cc/
 
     strategy:
       matrix:
