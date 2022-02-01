@@ -24,7 +24,7 @@ export const VideoContainer = styled.div`
 
 export const VideoTrack:React.FC<{id:number}> = React.memo(({id}) => {
 
-  const videoTrack = useConferenceStore(useCallback(store => store.users[id].video, [id]))
+  const videoTrack = useConferenceStore(useCallback(store => store.users[id]?.video, [id]))
   const myRef:any = useRef()
 
   const localVideoTrack = useLocalStore((store) => store.video)
