@@ -200,12 +200,12 @@ export const useConferenceStore = create<IConferenceStore>((set,get) => {
       .catch(error => console.log(error))
   }
   // not used currently - stub for alternative implementation if replacing streams doesnt fix delay; else remove
-  const replaceLocalTrackInConference = (newTrack:IMediaTrack, oldTrack:IMediaTrack) => {
-    const conference = get().conferenceObject
-    conference?.removeTrack(oldTrack)
-      .then(()=>addLocalTrackToConference(newTrack))
-      .catch(error => console.log(error))
-  }
+  // const replaceLocalTrackInConference = (newTrack:IMediaTrack, oldTrack:IMediaTrack) => {
+  //   const conference = get().conferenceObject
+  //   conference?.removeTrack(oldTrack)
+  //     .then(()=>addLocalTrackToConference(newTrack))
+  //     .catch(error => console.log(error))
+  // }
 
   // Return Object *******************************************
   return {
