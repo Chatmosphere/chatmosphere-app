@@ -13,7 +13,7 @@ export const Button = styled.button<IButton>`
   justify-content: center;
 	height: 50px;
   width: 165px;
-  border-radius: 5px;
+  border-radius: ${props => props.theme.button.radius};;
   color: ${props => props.theme.primary['1']};
   border: 1px solid ${props => props.theme.primary['1']};
   background-color: ${props => props.theme.base['5']};
