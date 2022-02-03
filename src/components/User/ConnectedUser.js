@@ -6,6 +6,7 @@ import { MuteIndicator } from './MuteIndicator';
 import { VideoContainer, VideoTrack } from "./VideoTrack"
 import { NameTag } from '../NameTag/NameTag';
 import { useLocalStore } from '../../store/LocalStore';
+import { DesktopVideo } from './DesktopVideo';
 
 
 export const ConnectedUser = ({id}) => {
@@ -17,6 +18,7 @@ export const ConnectedUser = ({id}) => {
   const calculateUserInRadius = useLocalStore(useCallback((store) => store.calculateUserInRadius,[]))
   const calculateUserOnScreen = useLocalStore(useCallback((store) => store.calculateUserOnScreen,[]))
   const user = useConferenceStore(useCallback(store => store.users[id], [id]))
+  const videoType = useConferenceStore(store => store.users[id]?.['video']?.['videoType'])
 
   const myRef = useRef()
 
@@ -28,14 +30,24 @@ export const ConnectedUser = ({id}) => {
 
   return(
     <div style={{position:'absolute', left:`${myPos.x}px`, top:`${myPos.y}px`}} id={id} className="userContainer" ref={myRef} >
-      <VideoContainer>
-        {!user.properties?.onStage && <VideoTrack id={id} />}
-      </VideoContainer>
+      {(videoType !== 'desktop') &&
+        <VideoContainer>
+          {!user.properties?.onStage && <VideoTrack id={id} />}
+          {videoType}
+        </VideoContainer>
+      }
+      {(videoType === 'desktop') && 
+        <VideoContainer>
+        {!user.properties?.onStage && <DesktopVideo user={user} />}
+        Desktop
+        </VideoContainer>
+      }
       <ReloadHint />
       <AudioTrack id={id} volume={myVolume} />
       <NameTag>{user?.user?._displayName || 'Friendly Sphere'}</NameTag>
       <div>Volume {Math.round(myVolume * 11)}</div>
       {isMute && <MuteIndicator>🤭</MuteIndicator>}
+      {videoType && <div>{videoType}</div>}
     </div>
   )
 }

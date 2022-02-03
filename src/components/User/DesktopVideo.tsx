@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { useCallback, useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import styled from "styled-components"
-import { useConferenceStore } from './../../store/ConferenceStore';
 import { useLocalStore } from './../../store/LocalStore';
 
 
 const Video = styled.video`
-  background: none;
+  background: red;
   width: 200px;
   height: 200px;
   object-position: 50% 50%;
@@ -17,14 +16,14 @@ const Video = styled.video`
 `
 
 export const VideoContainer = styled.div`
-  width: 200px;
+  width: 400px;
   height: 200px;
   border-radius: 100px;
 `
 
-export const VideoTrack:React.FC<{id:number}> = React.memo(({id}) => {
+export const DesktopVideo:React.FC<{user:IUser}> = React.memo(({user}) => {
 
-  const videoTrack = useConferenceStore(useCallback(store => store.users[id]?.video, [id]))
+  const videoTrack = user?.video
   const myRef:any = useRef()
 
   const localVideoTrack = useLocalStore((store) => store.video)
@@ -33,20 +32,17 @@ export const VideoTrack:React.FC<{id:number}> = React.memo(({id}) => {
   //The solution is to reattach the remote tracks once local track is available.
   useEffect(() => {
     const currentElement = myRef.current
-    videoTrack?.attach(currentElement)
+    if(videoTrack) {
+      videoTrack.attach(currentElement)
+    }
     return(() => {
       videoTrack?.detach(currentElement)
-      // videoTrack?.dispose() // is this causing trouble? 
     })
   },[videoTrack, localVideoTrack])
 
-   //Fix if Video not shown - reattaching works quite well
-  //  const onVideoClicked = (e) => {
-  //   videoTrack?.detach(e.target)
-  //   videoTrack?.attach(e.target)
-  // }
-
   return (
-    <Video autoPlay={true} ref={myRef} className={`remoteTrack videoTrack ${id}video`} id={`${id}video`} />
+    <div>
+      <Video autoPlay={true} ref={myRef} className={`remoteTrack desktopTrack ${user.id}video`} id={`${user.id}desktop`} />
+    </div>
   )
 })

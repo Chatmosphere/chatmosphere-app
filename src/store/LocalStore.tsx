@@ -52,8 +52,6 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
     const videoTrack = tracks.find(t=>t.videoType==='camera')
     const desktopTrack = tracks.find(t=>t.videoType==='desktop')
 
-    // console.log("track object ", tracks.find(t=>t.videoType==='desktop'))
-    console.log("track object ", tracks)
     newState.video = videoTrack
     newState.audio = audioTrack
     newState.desktop = desktopTrack
@@ -64,6 +62,7 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
     // newState.video?.dispose()
     newState.audio=undefined
     newState.video=undefined
+    newState.desktop=undefined
   })
 
   const setMyID = (id:string) => set({id:id})

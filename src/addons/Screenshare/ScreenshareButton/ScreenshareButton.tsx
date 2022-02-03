@@ -1,44 +1,42 @@
-// @ts-nocheck
 import { useConferenceStore } from "../../../store/ConferenceStore";
 import { useConnectionStore } from "../../../store/ConnectionStore"
 import { useLocalStore } from "../../../store/LocalStore"
 import { Button } from "../../../components/common/Buttons/Button"
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 
-// 	}
 
-	// TODO Error when alone in call - not sure why - replaceTrack has some empty object
+
+// TODO Error when alone in call - not sure why - replaceTrack has some empty object
 export const ScreenshareButton = () => {
 	const jsMeet = useConnectionStore(state => state.jsMeet)
-	const connection = useConnectionStore(state => state.connection)
 	const setLocalTracks = useLocalStore(useCallback(store => store.setLocalTracks,[]))
 	const conferenceObject = useConferenceStore(state => state.conferenceObject)
 	const [isSharing, setIsSharing] = useState(false)
 
 
-	useEffect(() => {
-
-
-		const setTracks = (tracks) => {
-			const track = tracks[0]
-			if(track.videoType === 'desktop') {
-				track.addEventListener(
-					window.JitsiMeetJS?.events.track.LOCAL_TRACK_STOPPED,() => setIsSharing(false)
-				)
-			}
-			// tracks[0].track.onended = () => console.log("Track onended") //chrome #and firefox getting that event (Safari is not :(
-			// tracks[0].track.onmute = () => console.log("Track onmuted") //Safari Event
-			const videoTrack = conferenceObject?.getLocalTracks().find(track => track.getType() === "video")
-			setLocalTracks(tracks)
-			console.log("videoTrack", videoTrack);
-			if(track.videoType !== videoTrack.videoType)  {
-				conferenceObject?.replaceTrack(videoTrack, track)
-			}
+	const setTracks = (tracks) => {
+		const newTrack = tracks[0]
+		if(newTrack.videoType === 'desktop') {
+			newTrack.addEventListener(
+				window.JitsiMeetJS?.events.track.LOCAL_TRACK_STOPPED,() => setIsSharing(false)
+			)
 		}
+		// tracks[0].track.onended = () => console.log("Track onended") //chrome #and firefox getting that event (Safari is not :(
+		// tracks[0].track.onmute = () => console.log("Track onmuted") //Safari Event
+		const oldTrack = conferenceObject?.getLocalTracks().find(track => track.getType() === "video")
+		setLocalTracks(tracks)
+		console.log("old videoTrack", oldTrack);
+		if(oldTrack && newTrack.videoType !== oldTrack.videoType)  {
+			conferenceObject?.replaceTrack(oldTrack, newTrack)
+			.then(()=>{
+				oldTrack.dispose()
+			})
+		}
+	}
 
 		const createDesktopTrack = (jsmeet) => {
-			jsmeet.createLocalTracks({ devices: [ 'desktop' ] }, true)
+			jsmeet.createLocalTracks({ devices: [ 'desktop' ] }, true) //TODO should happen in store also - just like in LocalVideo
 			.then((tracks) => setTracks(tracks))
 			.catch(error => {
 				console.log(error)
@@ -51,28 +49,17 @@ export const ScreenshareButton = () => {
 				console.log(error)
 			});
 		}
-
-		if(jsMeet && conferenceObject) {
-			if(isSharing) {
-				createDesktopTrack(jsMeet)
-			} else {
-				createVideoTrack(jsMeet)
-			}
+		
+		const onClick = () => {
+		if(!jsMeet) return
+		if(isSharing) {	
+			createVideoTrack(jsMeet)
+		} else {
+			createDesktopTrack(jsMeet)
 		}
-	},[isSharing, jsMeet, conferenceObject, setLocalTracks])
+		setIsSharing(!isSharing)
+	}
 
-	
-
-	// const toggleScreenshare = (meet) => {
-	// 	if(!meet) return
-
-	// 	meet.createLocalTracks({ devices: [ 'desktop' ] }, true)
-	// 	.then((tracks) => setTracks(tracks))
-	// 	.catch(error => {
-	// 		console.log(error)
-	// 	});
-	// }
-
-	return <Button onClick={() => setIsSharing(!isSharing)}>Screenshare</Button>
+	return <Button onClick={onClick}>Screenshare</Button>
 }
 

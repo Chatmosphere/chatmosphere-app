@@ -77,17 +77,30 @@ export const useConferenceStore = create<IConferenceStore>((set,get) => {
   const _onRemoteTrackAdded = (track:IMediaTrack):void => {
     if(track.isLocal()) return // also run on your own tracks so exit
     const JitsiMeetJS = useConnectionStore.getState().jsMeet 
-    track.addEventListener(JitsiMeetJS?.events.track.LOCAL_TRACK_STOPPED,() => console.log('remote track stopped'))
     track.addEventListener(JitsiMeetJS?.events.track.TRACK_AUDIO_OUTPUT_CHANGED,deviceId =>console.log(`track audio output device was changed to ${deviceId}`))
     const id = track.getParticipantId() // get user id of track
+    track.addEventListener(JitsiMeetJS?.events.track.TRACK_VIDEOTYPE_CHANGED, (e)=>_onVideoTypeChanged(e, id, track))
     track.getType() === "audio" ? _addAudioTrack(id, track) : _addVideoTrack(id, track)
   }
   const _onRemoteTrackRemoved = (track:IMediaTrack):void => {
     // TODO: Remove track from user Object
+    if(track.isLocal()) return
     const id = track.getParticipantId() // get user id of track
     track.getType() === 'audio' ? _removeAudioTrack(id) : _removeVideoTrack(id) // do we need that? maybe if user is still there but closes video?
     track.dispose()
   }
+
+  const _onVideoTypeChanged = (type:string, id, track) => produceAndSet (newState => {
+      newState.users[id].videoType = type
+      // alternative implementation if updating jitsi jvb doesnt fix current delay on switch of cam & screenshare
+      // if(type === 'desktop') {
+      //   newState.users[id].video = undefined
+      //   newState.users[id].desktop = track
+      // } else {
+      //   newState.users[id].video = track
+      //   newState.users[id].desktop = undefined
+      // }
+  })
 
   const _onConferenceJoined = () => {
     set({isJoined:true})//only Local User -> could be in LocalStore
@@ -137,7 +150,6 @@ export const useConferenceStore = create<IConferenceStore>((set,get) => {
       // conference.on(JitsiMeetJS.events.conference.TRACK_AUDIO_LEVEL_CHANGED, on_remote_track_audio_level_changed);
       //conference.on(JitsiMeetJS.events.conference.PHONE_NUMBER_CHANGED, onPhoneNumberChanged);
       conference.addCommandListener("pos", _onPositionReceived)
-      // r.on(JitsiMeetJS.events.conference.PARTICIPANT_PROPERTY_CHANGED, (e) => console.log("Property Changed ", e))
       window.addEventListener('beforeunload', leaveConference) //does this help?  
       window.addEventListener('unload', leaveConference) //does this help?
       conference.join()
@@ -181,6 +193,20 @@ export const useConferenceStore = create<IConferenceStore>((set,get) => {
     })
   })
 
+  // TODO: currently called by LocalVideo.tsx -> shouldn't it be called by store instead of dom components?
+  const addLocalTrackToConference = (newTrack:IMediaTrack) => {
+    const conference = get().conferenceObject
+    conference?.addTrack(newTrack)
+      .catch(error => console.log(error))
+  }
+  // not used currently - stub for alternative implementation if replacing streams doesnt fix delay; else remove
+  const replaceLocalTrackInConference = (newTrack:IMediaTrack, oldTrack:IMediaTrack) => {
+    const conference = get().conferenceObject
+    conference?.removeTrack(oldTrack)
+      .then(()=>addLocalTrackToConference(newTrack))
+      .catch(error => console.log(error))
+  }
+
   // Return Object *******************************************
   return {
     ...initialState,
@@ -190,7 +216,8 @@ export const useConferenceStore = create<IConferenceStore>((set,get) => {
     setConferenceName,
     setDisplayName,
     calculateVolume,
-    calculateVolumes
+    calculateVolumes,
+    addLocalTrackToConference
   }
 })
 
