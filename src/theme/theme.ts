@@ -3,28 +3,26 @@
 
 export interface ITheme {
   fontSize: {
-    h1: string
-    h2: string
-    h3: string
-    strong: string
-    body: string
-    small: string
+    h1?: string
+    h2?: string
+    h3?: string
+    h4?: string
+    strong?: string
+    body?: string
+    small?: string
   }
   base: {
-    1:string
-    2:string
-    3:string
-    4:string
-    5:string
-    6:string
+    1?:string
+    2?:string
+    3?:string
+    4?:string
+    5?:string
+    6?:string
+    bg?:string
+    darkBg?:string
+    textColor?:string
   }
-  primary: {
-    1:string
-    2:string
-    3:string
-    4:string
-    5:string
-  }
+  primary: ITheme["base"]
   secondary: {
     1:string
     2:string
@@ -45,6 +43,9 @@ const theme = {
     body: "1rem",
     small: "0.875rem"
   },
+  button: {
+    radius: "24px",
+  },
   radius: "3px"
 }
 
@@ -59,6 +60,8 @@ export const warm:ITheme = {
     4:"#F2F2F2",
     5:"#FFFCF6",
     6:"#FCFCFC",
+    bg:"#F5F4F3",
+    darkBg:"#9C9B9A",
   },
   primary: {
     1:"#00187C",
@@ -87,6 +90,8 @@ export const dark:ITheme = {
     4:"#282528", 
     5:"#3E393F",
     6:"#FCFCFC",
+    bg:"#272625",
+    darkBg:"#000000",
   },
   primary: {
     1:"#00187C",

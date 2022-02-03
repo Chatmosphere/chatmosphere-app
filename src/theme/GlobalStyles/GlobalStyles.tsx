@@ -64,14 +64,15 @@ export const GlobalStyles = createGlobalStyle<{theme:ITheme}>`
   a {
     cursor: default;
   }
-
+  //outerArea
   .react-transform-component{
     width: 100vw  !important;
     height: 100vh !important;
-    background-color:${props=>props.theme.base['4']};
+    background-color:${props=>props.theme.base.darkBg};
   }
+  //inner Area
   .react-transform-element{
-    background-color: ${props => props.theme.base['5']};
+    background-color: ${props => props.theme.base.bg};
     cursor:grab;
     display:inline-flex;
   }
