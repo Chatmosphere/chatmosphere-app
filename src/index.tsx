@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { ThemeProvider } from 'styled-components'
-import { warm } from './theme/theme'
+import { warm, dark } from './theme/theme'
 import { GlobalStyles } from './theme/GlobalStyles/GlobalStyles'
 
 ReactDOM.render(
