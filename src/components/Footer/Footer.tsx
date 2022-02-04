@@ -1,6 +1,6 @@
 import React from "react"
 import styled from 'styled-components'
-import Chat from "../../addons/Chat"
+import Chat from "../../addons/Chat/Chat"
 
 
 const Container = styled.div`

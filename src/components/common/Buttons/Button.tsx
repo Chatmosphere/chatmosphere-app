@@ -13,54 +13,61 @@ export const Button = styled.button<IButton>`
   justify-content: center;
 	height: 50px;
   width: 165px;
-  border-radius: ${props => props.theme.button.radius};;
-  color: ${props => props.theme.primary['1']};
-  border: 1px solid ${props => props.theme.primary['1']};
-  background-color: ${props => props.theme.base['5']};
+  border-radius: 25px;
+  color: ${props => props.theme.base['1']};
+  border: none;
+  background-color: ${props => props.theme.base['7']};
   font-weight: normal;
+  
+  & svg {
+    margin-right: 5px;
+    stroke: ${props => props.theme.base['4']};
+  }
 
   ${props => props.type === "primary" && css`
-    color: ${props => props.theme.base['5']};
-    border: 1px solid ${props => props.theme.primary['2']};
-    background-color: ${props => props.theme.primary['2']};
+    color: ${props => props.theme.base['7']};
+    border: 1px solid ${props => props.theme.color['5']};
+    background-color: ${props => props.theme.color['5']};
   `}
 
   ${props => props.type === "danger" && css`
-    color: ${props => props.theme.base['5']};
-    border: 2px ${props => props.theme.primary['1']};
-    background-color: ${props => props.theme.secondary['3']};
+    color: ${props => props.theme.base['7']};
+    border: 2px ${props => props.theme.color['7']};
+    background-color: ${props => props.theme.color['7']};
     & svg {
-      fill: ${props => props.theme.base['5']};
+      stroke: ${props => props.theme.base['7']};
     }
   `}
 
-  & svg {
-    margin-right: 5px;
-  }
+  ${props => props.type === "small" && css`
+    & label {
+      display:none;
+    }
+  `}
+
 
   &:hover {
-    background-color: ${props => props.theme.base['4']};
+    background-color: ${props => props.theme.base['6']};
 
     ${props => props.type === "primary" && css`
-    border: 1px solid ${props => props.theme.primary['1']};
-    background-color: ${props => props.theme.primary['3']};
+    background-color: ${props => props.theme.base['6']};
     `}
 
     ${props => props.type === "danger" && css`
-      border: 1px solid ${props => props.theme.secondary['2']};
-      background-color: ${props => props.theme.secondary['2']};
+      background-color: ${props => props.theme.base['6']};
+      border: inset 2px ${props => props.theme.color['7']};
     `}
   
   }
   &:active {
-      background-color: ${props => props.theme.primary['4']};
+      background-color: ${props => props.theme.base['4']};
 
     ${props => props.type === "primary" && css`
-      background-color: ${props => props.theme.primary['1']};
+      background-color: ${props => props.theme.base['1']};
     `}
 
     ${props => props.type === "danger" && css`
-      background-color: ${props => props.theme.secondary['1']};
+      background-color: ${props => props.theme.base['1']};
     `}
   }
   

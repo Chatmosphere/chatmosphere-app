@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Card from "../../components/common/Card"
 import { useConferenceStore } from '../../store/ConferenceStore'
 import { MdMessage } from 'react-icons/md'
+import ChatIcon from '../../assets/icons/ChatIcon'
 
 const SendButton = styled.button`
 
@@ -151,7 +152,7 @@ const Chat = () => {
 
 	return (
 		<>
-		<Button onClick={() => toggleShow(!show)}><MdMessage /> <Label>Chat</Label></Button>
+		<Button onClick={() => toggleShow(!show)}><ChatIcon /> <Label>Chat</Label></Button>
 		{show && <Modal callback={() => toggleShow(!show)} />}
 		</>
 	)

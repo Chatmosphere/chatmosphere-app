@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom'
 import { Button } from '../../common/Buttons/Button'
 import { FaPhone } from 'react-icons/fa'
 import { MdCallEnd } from 'react-icons/md'
+import { Phone, PhoneOff } from 'react-feather'
 
 export const JoinButton = ({ joined = false }) => {
 	const leave = useConferenceStore((store) => store.leaveConference)
@@ -27,14 +28,14 @@ export const JoinButton = ({ joined = false }) => {
 	if (joined) {
 		return (
 			<Button type="danger" onClick={onEndCall}>
-				<MdCallEnd />
+				<Phone />
 				Leave Call
 			</Button>
 		)
 	} else {
 		return (
 			<Button type="primary" onClick={onStartCall}>
-				<FaPhone />
+				<PhoneOff />
 				Join
 			</Button>
 		)

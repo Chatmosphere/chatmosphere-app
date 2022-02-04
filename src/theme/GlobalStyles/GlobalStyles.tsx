@@ -54,7 +54,7 @@ export const GlobalStyles = createGlobalStyle<{theme:ITheme}>`
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: ${props => props.theme.base['5']};
+    background-color: ${props => props.theme.base['6']};
   }
   
   input, textarea, button {

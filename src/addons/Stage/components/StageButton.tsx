@@ -3,6 +3,7 @@ import { Button } from "../../../components/common/Buttons/Button"
 import { useConferenceStore } from "../../../store/ConferenceStore"
 import { useLocalStore } from "../../../store/LocalStore"
 import { useEffect } from "react"
+import StageIcon from "../../../assets/icons/StageIcon"
 
 export const StageButton = ({callback=()=>null}) => {
 
@@ -27,7 +28,7 @@ export const StageButton = ({callback=()=>null}) => {
 
 	return (
 		<Button onClick={onClick}>
-			<MdPresentToAll />
+			<StageIcon />
 			Stage
 		</Button>
 	)

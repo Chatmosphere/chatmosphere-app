@@ -43,7 +43,7 @@ export const Session = () => {
         <StageButton />
         <JoinButton joined={true} />
         <MuteButton />
-        <ScreenshareButton />
+        <ScreenshareButton small="true" />
       </Footer>
       <Stage />
     </React.Fragment>

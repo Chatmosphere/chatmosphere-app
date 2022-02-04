@@ -1,14 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useLocalStore } from './../../../store/LocalStore';
-import {ReactComponent as MuteCat} from './../../../assets/muteCatBig.svg'
+import {ReactComponent as MuteCat} from './../../../assets/muteCatSmall.svg'
+import { MuteContainer } from '../../User/MuteIndicator';
 
 
-const Indicator = styled.div`
-  position: absolute;
-  top: 20px;
-  left: 14px;
-`
 
 export const MuteIndicator = () => {
 
@@ -19,9 +15,9 @@ export const MuteIndicator = () => {
   } 
 
   return (
-    <Indicator onClick={handleClick}>
+    <MuteContainer onClick={handleClick}>
       <MuteCat />
-    </Indicator>
+    </MuteContainer>
   )
 }
 

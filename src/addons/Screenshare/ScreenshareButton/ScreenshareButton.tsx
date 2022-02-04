@@ -3,12 +3,13 @@ import { useConnectionStore } from "../../../store/ConnectionStore"
 import { useLocalStore } from "../../../store/LocalStore"
 import { Button } from "../../../components/common/Buttons/Button"
 import { useCallback, useState } from "react";
+import ScreenShareIcon from "../../../assets/icons/ScreenShare";
 
 
 
 
 // TODO Error when alone in call - not sure why - replaceTrack has some empty object
-export const ScreenshareButton = () => {
+export const ScreenshareButton = (props) => {
 	const jsMeet = useConnectionStore(state => state.jsMeet)
 	const setLocalTracks = useLocalStore(useCallback(store => store.setLocalTracks,[]))
 	const conferenceObject = useConferenceStore(state => state.conferenceObject)
@@ -60,6 +61,6 @@ export const ScreenshareButton = () => {
 		setIsSharing(!isSharing)
 	}
 
-	return <Button onClick={onClick}>Screenshare</Button>
+	return <Button type="small" onClick={onClick}><ScreenShareIcon /> <label>Screenshare</label></Button>
 }
 

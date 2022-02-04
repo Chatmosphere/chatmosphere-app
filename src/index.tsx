@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { ThemeProvider } from 'styled-components'
-import { warm, dark } from './theme/theme'
+import { lightTheme, darkTheme } from './theme/theme'
 import { GlobalStyles } from './theme/GlobalStyles/GlobalStyles'
 
 ReactDOM.render(
 	<React.StrictMode>
-		<ThemeProvider theme={warm}>
+		<ThemeProvider theme={lightTheme}>
 			<>
       <GlobalStyles/>
 			<App />
