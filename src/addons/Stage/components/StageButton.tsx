@@ -1,5 +1,5 @@
 import { MdPresentToAll } from "react-icons/md"
-import { Button } from "../../../components/common/Buttons/Button"
+import { Button, IconButton } from "../../../components/common/Buttons/Button"
 import { useConferenceStore } from "../../../store/ConferenceStore"
 import { useLocalStore } from "../../../store/LocalStore"
 import { useEffect } from "react"
@@ -27,10 +27,9 @@ export const StageButton = ({callback=()=>null}) => {
 	},[setOnStage])
 
 	return (
-		<Button onClick={onClick}>
-			<StageIcon />
+		<IconButton onClick={onClick} IconStart={<StageIcon/>}>
 			Stage
-		</Button>
+		</IconButton>
 	)
 
 }

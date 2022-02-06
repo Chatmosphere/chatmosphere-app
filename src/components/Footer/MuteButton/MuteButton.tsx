@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from './../../common/Buttons/Button';
+import { Button, IconButton } from './../../common/Buttons/Button';
 import { useLocalStore } from './../../../store/LocalStore';
 import MicIcon from '../../../assets/icons/MicIcon';
 import MicOff from '../../../assets/icons/MicOff';
@@ -12,8 +12,8 @@ export const MuteButton = () => {
   const mute = useLocalStore(store => store.mute)
 
   if(mute) {
-    return <Button type="danger" onClick={toggleMute}><MicOff/> Unmute</Button>
+    return <IconButton danger onClick={toggleMute} IconStart={<MicOff/>}>Unmute</IconButton>
   } else {
-    return <Button type="secondary" onClick={toggleMute}><MicIcon/> Mute</Button>
+    return <IconButton small onClick={toggleMute} IconStart={<MicIcon/>}>Mute</IconButton>
   }
 }

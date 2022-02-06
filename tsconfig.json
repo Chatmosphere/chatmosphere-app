@@ -22,7 +22,8 @@
     "noImplicitAny": false
   },
   "include": [
-    "src", 
+    "src",
+    "src/**/*",
     "global.d.ts"  
   ]
 }

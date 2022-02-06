@@ -15,6 +15,8 @@ import { Room } from "../../components/Room/Room"
 import { Users } from "../../components/User/Users"
 import { LocalStoreLogic } from "../../store/LocalStoreLogic"
 import { ScreenshareButton } from "../../addons/Screenshare/ScreenshareButton/ScreenshareButton"
+import Chat from "../../addons/Chat/Chat"
+import {Settings} from "../../components/Footer/Settings/Settings"
 
 
 
@@ -39,11 +41,14 @@ export const Session = () => {
           </UserDragContainer>
         </Room>
       </PanWrapper>
-      <Footer>
+      <Footer
+        rightBox={[<Chat />,<Settings />]}
+        leftBox="Chatmosphere"
+      >
         <StageButton />
-        <JoinButton joined={true} />
         <MuteButton />
         <ScreenshareButton small="true" />
+        <JoinButton joined={true} />
       </Footer>
       <Stage />
     </React.Fragment>

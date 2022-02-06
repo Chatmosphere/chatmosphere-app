@@ -1,78 +1,124 @@
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components"
 
 interface IButton {
-  type?: any
-  danger?: boolean
+  IconStart?: React.ReactChild
+  IconEnd?: React.ReactChild
+  warning?: boolean
+  primary?: boolean
 }
 
-export const Button = styled.button<IButton>`
-  font-size: 1rem;
+const BaseButton = (props) => {
+  const { children, IconStart, IconEnd, ...rest } = props
+
+  return (
+    <button {...rest}>
+      {IconStart}
+      <label>{children}</label>
+      {IconEnd}
+    </button>
+  )
+}
+
+export const Button = styled(BaseButton)<IButton>`
+  font-size: ${(props) => props.theme.fontSize.body};
   display: flex;
-	flex-direction: row;
-	align-items: center;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
-	height: 50px;
-  width: 165px;
+  gap: 12px;
+  min-height: 46px;
+  min-width: 48px;
+  padding: 12px 20px;
   border-radius: 25px;
-  color: ${props => props.theme.base['1']};
-  border: none;
-  background-color: ${props => props.theme.base['7']};
+  color: ${(props) => props.theme.button.default.fg};
+  border: 2px solid transparent;
+  background-color: ${(props) => props.theme.button.default.bg};
   font-weight: normal;
-  
+
   & svg {
-    margin-right: 5px;
-    stroke: ${props => props.theme.base['4']};
+    stroke: ${(props) => props.theme.button.default.fg};
   }
 
-  ${props => props.type === "primary" && css`
-    color: ${props => props.theme.base['7']};
-    border: 1px solid ${props => props.theme.color['5']};
-    background-color: ${props => props.theme.color['5']};
-  `}
+  ${(props) =>
+    props.primary &&
+    css`
+      color: ${(props) => props.theme.button.primary.fg};
+      background-color: ${(props) => props.theme.button.primary.bg};
+      & svg {
+        stroke: ${(props) => props.theme.button.primary.fg};
+      }
+    `}
 
-  ${props => props.type === "danger" && css`
-    color: ${props => props.theme.base['7']};
-    border: 2px ${props => props.theme.color['7']};
-    background-color: ${props => props.theme.color['7']};
-    & svg {
-      stroke: ${props => props.theme.base['7']};
-    }
-  `}
-
-  ${props => props.type === "small" && css`
-    & label {
-      display:none;
-    }
-  `}
-
+  ${(props) =>
+    props.warning &&
+    css`
+      color: ${(props) => props.theme.button.warning.fg};
+      background-color: ${(props) => props.theme.button.warning.bg};
+      & svg {
+        stroke: ${(props) => props.theme.button.warning.fg};
+      }
+    `}
 
   &:hover {
-    background-color: ${props => props.theme.base['6']};
+    background-color: ${(props) => props.theme.button.default.bg_h};
 
-    ${props => props.type === "primary" && css`
-    background-color: ${props => props.theme.base['6']};
-    `}
+    ${(props) =>
+      props.primary &&
+      css`
+        background-color: ${(props) => props.theme.base["6"]};
+      `}
 
-    ${props => props.type === "danger" && css`
-      background-color: ${props => props.theme.base['6']};
-      border: inset 2px ${props => props.theme.color['7']};
-    `}
-  
+    ${(props) =>
+      props.warning &&
+      css`
+        background-color: ${(props) => props.theme.base["6"]};
+        border: solid 2px ${(props) => props.theme.color["7"]};
+      `}
   }
   &:active {
-      background-color: ${props => props.theme.base['4']};
+    background-color: ${(props) => props.theme.base["4"]};
 
-    ${props => props.type === "primary" && css`
-      background-color: ${props => props.theme.base['1']};
-    `}
+    ${(props) =>
+      props.primary &&
+      css`
+        background-color: ${(props) => props.theme.base["1"]};
+      `}
 
-    ${props => props.type === "danger" && css`
-      background-color: ${props => props.theme.base['1']};
-    `}
+    ${(props) =>
+      props.warning &&
+      css`
+        background-color: ${(props) => props.theme.base["1"]};
+      `}
   }
-  
+
   &:focus {
     outline: none;
   }
 `
 
+
+export const GhostButton = styled(Button)`
+  background-color: none;
+
+  ${(props) =>
+    props.warning &&
+    css`
+      color: ${(props) => props.theme.text.warning};
+      background: transparent;
+      border: 2px solid ${(props) => props.theme.button.warning.bg};
+      & svg {
+        stroke: ${(props) => props.theme.button.warning.bg};
+      }
+    `}
+  
+  &:hover {
+
+  }
+`
+
+export const IconButton = styled(Button)`
+  padding: 12px;
+  & label {
+    display: none;
+  }
+`

@@ -1,7 +1,7 @@
 import { useConferenceStore } from "../../../store/ConferenceStore";
 import { useConnectionStore } from "../../../store/ConnectionStore"
 import { useLocalStore } from "../../../store/LocalStore"
-import { Button } from "../../../components/common/Buttons/Button"
+import { Button, IconButton } from "../../../components/common/Buttons/Button"
 import { useCallback, useState } from "react";
 import ScreenShareIcon from "../../../assets/icons/ScreenShare";
 
@@ -61,6 +61,6 @@ export const ScreenshareButton = (props) => {
 		setIsSharing(!isSharing)
 	}
 
-	return <Button type="small" onClick={onClick}><ScreenShareIcon /> <label>Screenshare</label></Button>
+	return <IconButton onClick={onClick} IconStart={<ScreenShareIcon />}>Screenshare</IconButton>
 }
 

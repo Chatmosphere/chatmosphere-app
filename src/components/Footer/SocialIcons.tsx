@@ -18,9 +18,9 @@ const FeedbackLink = styled.a`
 	font-size: ${props => props.theme.fontSize.small};
 	padding: 3px 8px;
 	margin-left: 2px;
-	color: ${props => props.theme.base['1']};
+	color: ${props => props.theme.text.default};
 	&:hover {
-		color: ${props => props.theme.primary['3']};
+		color: ${props => props.theme.text.primary};
 	}
 `
 

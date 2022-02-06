@@ -22,23 +22,26 @@ const Label = styled.label`
 
 const InputField = styled.input`
 	height: 50px;
-	background: ${props => props.theme.base['4']};
-  color: ${props => props.theme.primary['1']};
-	border: 1px solid ${props => props.theme.primary['1']};
-  font-size: 1rem;
+	background: ${props => props.theme.input.default.bg};
+  color: ${props => props.theme.text.default};
+	border: 1px solid ${props => props.theme.line.dark};
+  font-size: ${props => props.theme.fontSize.body};
 	box-sizing: border-box;
-	border-radius: ${props => props.theme.radius} 0 0 ${props => props.theme.radius};
+	border-radius: ${props => props.theme.radius.small} 0 0 ${props => props.theme.radius.small};
   padding-left: 20px;
   width: 100%;
   &:hover {
-    background: ${props => props.theme.base['5']};
+    border: 1px solid ${props => props.theme.color['5']};
+    &::placeholder {
+      color: ${props => props.theme.color['5']};
+    }
   }
   &:focus {
     outline: none;
-    font-size:1rem;
+    font-size:${props => props.theme.fontSize.body};
   }
   &::placeholder {
-    font-size: 1rem;
+    font-size: ${props => props.theme.fontSize.body};
   }
   &:disabled {
     background-color: ${props => props.theme.base["3"]};
@@ -47,14 +50,14 @@ const InputField = styled.input`
 
 const JoinButton = styled.input`
   height: 50px;
-  background: ${props => props.theme.primary['2']};
-  border-radius: 0 ${props => props.theme.radius} ${props => props.theme.radius} 0;
+  background: ${props => props.theme.button.primary.bg};
+  border-radius: 0 ${props => props.theme.radius.small} ${props => props.theme.radius.small} 0;
   width: 111px;
-  color: ${props => props.theme.base['6']};
-  font-size: 1rem;
+  color: ${props => props.theme.button.primary.fg};
+  font-size: ${props => props.theme.fontSize.body};
   border: none;
   &:hover {
-    background-color: ${props => props.theme.primary['3']};
+    background-color: ${props => props.theme.button.primary.bg_h};
   }
 `
 
