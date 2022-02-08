@@ -40,6 +40,7 @@ const SettingsMenu = ({ title, onClose, children = [] as React.ReactNode }) => {
           jfdksa
         </Select>
         <Select name="whut">test</Select> */}
+				<Select name="whut">test</Select>
       </StyledContentBox>
     </Menu>
   )

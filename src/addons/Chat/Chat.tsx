@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import Card from "../../components/common/Card/Card"
 import { useConferenceStore } from '../../store/ConferenceStore'
 import ChatIcon from '../../assets/icons/ChatIcon'
 import { Menu } from '../../components/common/Menu/Menu'
@@ -88,14 +87,6 @@ const Label = styled.span`
   position: absolute;
   width: 1px;
   word-wrap: normal !important;
-`
-
-const StyledCard = styled(Card)`
-		width: 270px;
-		padding:15px;
-		top: 15px;
-		right: 15px;
-		bottom: 80px;
 `
 
 

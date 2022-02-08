@@ -1,5 +1,4 @@
-import { MdPresentToAll } from "react-icons/md"
-import { Button, IconButton } from "../../../components/common/Buttons/Button"
+import { IconButton } from "../../../components/common/Buttons/Button"
 import { useConferenceStore } from "../../../store/ConferenceStore"
 import { useLocalStore } from "../../../store/LocalStore"
 import { useEffect } from "react"

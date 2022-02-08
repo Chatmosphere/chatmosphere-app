@@ -1,7 +1,7 @@
 import { useConferenceStore } from "../../../store/ConferenceStore";
 import { useConnectionStore } from "../../../store/ConnectionStore"
 import { useLocalStore } from "../../../store/LocalStore"
-import { Button, IconButton } from "../../../components/common/Buttons/Button"
+import { IconButton } from "../../../components/common/Buttons/Button"
 import { useCallback, useState } from "react";
 import ScreenShareIcon from "../../../assets/icons/ScreenShare";
 
