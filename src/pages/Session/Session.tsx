@@ -1,5 +1,5 @@
 import React from "react"
-import Stage from "../../addons/Stage"
+import Stage from "../../addons/Stage/Stage"
 import { StageButton } from "../../addons/Stage/components/StageButton"
 import { ErrorHandler } from "../../components/common/Info/ErrorHandler"
 import { Info } from "../../components/common/Info/Info"
@@ -30,7 +30,7 @@ export const Session = () => {
         Please use <b>Safari</b> or <b>Chrome</b> for now for a stable
         Experience
       </Info>
-      <Header>Chatmosphere</Header>
+      <Header></Header>
       <JitsiConnection />
       <LocalStoreLogic />
       <PanWrapper>

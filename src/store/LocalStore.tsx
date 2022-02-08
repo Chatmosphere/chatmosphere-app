@@ -21,6 +21,7 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
     scale:1,
     onStage:false,
     stageVisible: false,
+    isSharing:false,
     selectedUsers: [],
     visibleUsers: [],
     usersOnStage: []

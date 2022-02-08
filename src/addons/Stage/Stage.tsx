@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { useConferenceStore } from "../../store/ConferenceStore"
 import { useConnectionStore } from "../../store/ConnectionStore"
 import { useLocalStore } from "../../store/LocalStore"
-import LocalUser from "./components/User"
+import {LocalUser} from "./components/StageUser"
 import { StageUsers } from "./components/StageUsers"
 
 

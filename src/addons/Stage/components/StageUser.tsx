@@ -23,7 +23,7 @@ export const User = ({video, audio}) => {
 	)
 }
 
-const LocalUser = () => {
+export const LocalUser = () => {
 	const localVideo = useLocalStore(store => store.video)
 	return (
 		<Container>
@@ -31,6 +31,3 @@ const LocalUser = () => {
 		</Container>
 	)
 }
-
-
-export default LocalUser

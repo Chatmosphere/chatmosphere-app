@@ -39,7 +39,6 @@ export const ConnectedUser = ({id}) => {
       {(videoType === 'desktop') && 
         <VideoContainer>
         {!user.properties?.onStage && <DesktopVideo user={user} />}
-        Desktop
         </VideoContainer>
       }
       <ReloadHint />
@@ -47,7 +46,6 @@ export const ConnectedUser = ({id}) => {
       <NameTag>{user?.user?._displayName || 'Friendly Sphere'}</NameTag>
       <div>Volume {Math.round(myVolume * 11)}</div>
       {isMute && <MuteIndicator>🤭</MuteIndicator>}
-      {videoType && <div>{videoType}</div>}
     </div>
   )
 }

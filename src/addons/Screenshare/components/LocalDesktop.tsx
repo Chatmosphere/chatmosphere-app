@@ -5,10 +5,7 @@ import { useConferenceStore } from "../../../store/ConferenceStore"
 const StyledVideo = styled.video`
   width: auto; 
   height: 200px;
-  /* object-position: 50% 50%; */
   display: block;
-	transform: translateX(0%);
-  /* object-fit: cover; */
 `
 
 const LocalDesktop:React.FC<{track:IVideoTrack}> = memo(({track}) => {

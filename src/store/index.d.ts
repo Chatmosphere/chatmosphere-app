@@ -93,6 +93,7 @@ declare type ILocalStore = {
   toggleStage: () => void
   onStage: boolean
   stageVisible: boolean
+  isSharing: boolean
 } & IUser & ZoomPan
 
 declare type deviceType = "audio" | "video" | "desktop"
