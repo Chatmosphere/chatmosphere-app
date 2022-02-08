@@ -27,7 +27,7 @@ const LocalUser = () => {
 	const localVideo = useLocalStore(store => store.video)
 	return (
 		<Container>
-			<ConnectedVideo id="local_video" video={localVideo} />
+			<ConnectedVideo mirrored id="local_video" video={localVideo} />
 		</Container>
 	)
 }
