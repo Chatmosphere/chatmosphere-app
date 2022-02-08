@@ -7,6 +7,8 @@ const Box = styled.div`
   border-radius:${props => props.theme.radius.small};
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
+	display:flex;
+	flex-direction: column;
 `
 
 const Header = styled.div`

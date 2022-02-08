@@ -27,9 +27,7 @@ export const StageButton = ({callback=()=>null}) => {
 	},[setOnStage])
 
 	return (
-		<IconButton onClick={onClick} IconStart={<StageIcon/>}>
-			Stage
-		</IconButton>
+		<IconButton onClick={onClick} round label="Stage" IconStart={<StageIcon/>} />
 	)
 
 }

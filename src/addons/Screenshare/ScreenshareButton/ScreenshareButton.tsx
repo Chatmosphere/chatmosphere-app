@@ -61,6 +61,6 @@ export const ScreenshareButton = (props) => {
 		setIsSharing(!isSharing)
 	}
 
-	return <IconButton onClick={onClick} IconStart={<ScreenShareIcon />}>Screenshare</IconButton>
+	return <IconButton round onClick={onClick} IconStart={<ScreenShareIcon />} label="Screenshare" />
 }
 

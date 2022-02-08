@@ -47,7 +47,7 @@ export const Session = () => {
       >
         <StageButton />
         <MuteButton />
-        <ScreenshareButton small="true" />
+        <ScreenshareButton />
         <JoinButton joined={true} />
       </Footer>
       <Stage />

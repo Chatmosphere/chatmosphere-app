@@ -1,14 +1,20 @@
-import { Meta } from '@storybook/react/types-6-0';
-import * as React from 'react';
-import { Button } from './Button';
-import {ReactComponent as CallIcon} from './../../../assets/call.svg'
+import { Story, Meta } from '@storybook/react';
+import { Button, IButtonProps} from './Button';
 
 export default {
-  title: "Components/Button"
+  title: "Components/Button",
+  component: Button,
 } as Meta
+
+const Template:Story<IButtonProps> = (args) => <Button {...args}>Test</Button>
+
+export const Primary = Template.bind({})
+Primary.args = {
+  primary:true,
+}
 
 export const Default = () => <Button>Test</Button>
 
-export const Secondary = () => <Button type="primary">Test</Button>
+export const Secondary = () => <Button primary>Test</Button>
 
-export const Danger = () => <Button type="danger"><CallIcon/> Call</Button>
+export const Danger = () => <Button warning>Call</Button>

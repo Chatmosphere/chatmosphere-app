@@ -1,25 +1,29 @@
 import styled, { css } from "styled-components"
 
-interface IButton {
+export interface IButtonProps {
   IconStart?: React.ReactChild
   IconEnd?: React.ReactChild
   warning?: boolean
   primary?: boolean
+  active?: boolean
+  focus?: boolean
+  label?: string
+  round?: boolean
 }
 
 const BaseButton = (props) => {
-  const { children, IconStart, IconEnd, ...rest } = props
+  const { label, IconStart, IconEnd, ...rest } = props
 
   return (
     <button {...rest}>
       {IconStart}
-      <label>{children}</label>
+      <label>{label}</label>
       {IconEnd}
     </button>
   )
 }
 
-export const Button = styled(BaseButton)<IButton>`
+export const Button = styled(BaseButton)<IButtonProps>`
   font-size: ${(props) => props.theme.fontSize.body};
   display: flex;
   flex-direction: row;
@@ -29,7 +33,8 @@ export const Button = styled(BaseButton)<IButton>`
   min-height: 46px;
   min-width: 48px;
   padding: 12px 20px;
-  border-radius: 25px;
+  border-radius: ${(props) =>
+    props.round ? "25px" : props.theme.radius.small};
   color: ${(props) => props.theme.button.default.fg};
   border: 2px solid transparent;
   background-color: ${(props) => props.theme.button.default.bg};
@@ -38,6 +43,12 @@ export const Button = styled(BaseButton)<IButton>`
   & svg {
     stroke: ${(props) => props.theme.button.default.fg};
   }
+
+  ${(props) =>
+    props.ghost &&
+    css`
+      background-color: transparent;
+    `}
 
   ${(props) =>
     props.primary &&
@@ -63,6 +74,12 @@ export const Button = styled(BaseButton)<IButton>`
     background-color: ${(props) => props.theme.button.default.bg_h};
 
     ${(props) =>
+      props.ghost &&
+      css`
+        background-color: ${(props) => props.theme.button.default.bg};
+      `}
+
+    ${(props) =>
       props.primary &&
       css`
         background-color: ${(props) => props.theme.base["6"]};
@@ -71,7 +88,7 @@ export const Button = styled(BaseButton)<IButton>`
     ${(props) =>
       props.warning &&
       css`
-        background-color: ${(props) => props.theme.base["6"]};
+        background-color: ${(props) => props.theme.button.warning.bg_h};
         border: solid 2px ${(props) => props.theme.color["7"]};
       `}
   }
@@ -96,7 +113,6 @@ export const Button = styled(BaseButton)<IButton>`
   }
 `
 
-
 export const GhostButton = styled(Button)`
   background-color: none;
 
@@ -105,14 +121,13 @@ export const GhostButton = styled(Button)`
     css`
       color: ${(props) => props.theme.text.warning};
       background: transparent;
-      border: 2px solid ${(props) => props.theme.button.warning.bg};
+      /* border: 2px solid ${(props) => props.theme.button.warning.bg}; */
       & svg {
         stroke: ${(props) => props.theme.button.warning.bg};
       }
     `}
-  
-  &:hover {
 
+  &:hover {
   }
 `
 

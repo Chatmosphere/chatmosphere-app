@@ -21,6 +21,7 @@ const color = {
   blue100: "#5770EB",
   pink100: "#e67a94",
   red100: "#E15D4C",
+  red120: "#f07969",
 }
 
 // Theme ------------------------------
@@ -81,6 +82,7 @@ const warm = {
     },
     warning:{
       bg: color.red100,
+      bg_h: color.red120,
       fg: color.mono100
     },
     primary:{
