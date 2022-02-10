@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { useConferenceStore } from './../../store/ConferenceStore';
+import { useConferenceStore } from '../../../store/ConferenceStore';
 
 const Video = styled.video`
   width: 200px; 
@@ -16,20 +16,22 @@ const LocalVideo:React.FC<{track:IVideoTrack}> = memo(({track}) => {
   const myRef:any = useRef()
   const room = useConferenceStore(store => store.conferenceObject)
 
+  useEffect(() => {
+    room?.addTrack(track) //TODO should be done in store I think?
+      .catch(error => console.log(error))//the track might have been added already, handle the promise error
+    return () => {
+      // room?.removeTrack(tmpTrack) //we're replacing, not deleting and adding a new one
+    }
+  },[room, track])
 
   useEffect(()=> {
     const el = myRef.current
     if(track?.containers?.length === 0) track.attach(el)
-    return (() => {
+    return () => {
       track.detach(el)
-      // track.dispose()
-    })
+    }
   },[track])
 
-  useEffect(() => {
-    room?.addTrack(track)
-      .catch(error => {});//the track might have been added already, handle the promise error
-  },[room, track])
 
   return <Video autoPlay={true} ref={myRef} className={`localTrack videoTrack`} />
 })

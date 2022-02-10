@@ -3,6 +3,7 @@ declare type JitsiMeetJS = any
 declare type IMediaTrack = {
   track:{id:string}
   containers:any[]
+  videoType?:string
   getType: () => deviceType
   dispose: () => void
   isLocal: () => boolean
@@ -29,11 +30,14 @@ declare type IJitsiConference={
   join:()=>void
   setDisplayName:(name:string)=>void
   addTrack:(track:IMediaTrack)=>Promise<any>
+  removeTrack:(track:IMediaTrack)=>Promise<any>
   myUserId:()=>ID
   setReceiverConstraints:(object)=>void
   leave:()=>void
   setLocalParticipantProperty:(key:string,value:any)=>void
   sendTextMessage:(txt:string)=>void
+  getLocalTracks: () => IMediaTrack[]
+  replaceTrack:(oldTrack:IMediaTrack,newTrack:IMediaTrack)=>Promise<any>
 }
 
 declare interface IJitsiEvents {
@@ -41,6 +45,7 @@ declare interface IJitsiEvents {
     LOCAL_TRACK_STOPPED
     TRACK_AUDIO_OUTPUT_CHANGED
     TRACK_AUDIO_LEVEL_CHANGED
+    TRACK_VIDEOTYPE_CHANGED
   }
   conference: {
     USER_JOINED
@@ -138,6 +143,8 @@ declare type IConferenceStore = {
   setDisplayName:(name:string)=>void //why here?
   calculateVolume: (id:ID) => void // why here?
   calculateVolumes: (localPos:IVector2) => void // why here?
+  replaceLocalTrackInConference?: (newTrack:IMediaTrack, oldTrack:IMediaTrack) => void
+  addLocalTrackToConference?: (newTrack:IMediaTrack) => void
   messages: Array<{id:string, text:string, nr:number}>
 }
 
@@ -167,7 +174,8 @@ declare interface IJitsiInitOptions {
 }
 
 // Conference STore
-declare type IUser = { id:ID, user?:any, mute:boolean, volume:number, pos:Point, properties?:IUserProperties, audio?:IAudioTrack, video?:IVideoTrack, onStage?:boolean }
+//TODO: VideoType should be used to determine if desktop or camera is show 
+declare type IUser = { id:ID, user?:any, mute:boolean, volume:number, pos:Point, properties?:IUserProperties, audio?:IAudioTrack, video?:IVideoTrack, videoType?:string, desktop?:IMediaTrack, onStage?:boolean }
 declare type IUsers = { [id:string]:IUser }
 declare type ID = string
 declare type IUserProperties = Record<string, string>
