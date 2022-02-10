@@ -7,7 +7,7 @@ import { FaPhone } from 'react-icons/fa'
 import { MdCallEnd } from 'react-icons/md'
 
 export const JoinButton = ({ joined = false }) => {
-	const leave = useConferenceStore((store) => store.leave)
+	const leave = useConferenceStore((store) => store.leaveConference)
 	const disconnectServer = useConnectionStore((store) => store.disconnectServer)
 	const conferenceName = useConferenceStore((store) => store.conferenceName)
 	const history = useHistory()

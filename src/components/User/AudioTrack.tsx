@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { useLocalStore } from '../../store/LocalStore';
-import { useConferenceStore } from './../../store/ConferenceStore';
+import { useConferenceStore } from "../../store/ConferenceStore";
 
 export const AudioTrack = ({id, volume}) => {
   const audioTrack = useConferenceStore(useCallback(store => store.users[id]['audio'], [id]))
@@ -35,3 +35,25 @@ export const AudioTrack = ({id, volume}) => {
     <audio autoPlay={true} ref={myRef} className={`remoteTrack audioTrack ${id}audio`} id={`${id}audio`} />
   )
 }
+
+
+// const Audio:React.FunctionComponent<{track:any, volume:number} & React.HTMLAttributes<HTMLAudioElement>> = ({track, volume})=> {
+
+//   const myRef:any = useRef()
+
+//   useEffect(() => {
+//     const el = myRef.current
+//     if(el) {
+//       if(el) track?.attach(el)
+//     }
+//     return(() => {
+//       track?.detach(el)
+//     })
+//   },[track])
+
+//   useEffect(() => {
+//     if(myRef.current & myRef.current.volume) myRef.current.volume = volume
+//   },[volume])
+
+//   return (<audio ref={myRef} autoPlay={true} />)
+// }

@@ -1,6 +1,6 @@
 declare type JitsiMeetJS = any
 
-declare type ITrack = {
+declare type IMediaTrack = {
   track:{id:string}
   containers:any[]
   getType: () => deviceType
@@ -15,22 +15,24 @@ declare type ITrack = {
   attach: (element:HTMLElement) => void
   detach: (element:HTMLElement) => void
 }
+declare type IAudioTrack = IMediaTrack
+declare type IVideoTrack = IMediaTrack 
 
-declare type IPoint = {x:number, y:number}
+declare type IVector2 = {x:number, y:number}
 
-declare type IAudioTrack = ITrack
-declare type IVideoTrack = ITrack 
 
 declare type IJitsiConference={
   on: (eventType:string,callback:(...rest)=>void) => boolean
+  off: (eventType:string,callback:(...rest)=>void) => boolean
   addCommandListener: (command:string,callback:(e:any)=>void) => boolean
   sendCommand: (command:string,payload:any) => boolean
   join:()=>void
   setDisplayName:(name:string)=>void
-  addTrack:(track:ITrack)=>Promise<any>
+  addTrack:(track:IMediaTrack)=>Promise<any>
   myUserId:()=>ID
   setReceiverConstraints:(object)=>void
   leave:()=>void
+  setLocalParticipantProperty:(key:string,value:any)=>void
 }
 
 declare type IJitsiEvents = {
@@ -47,6 +49,8 @@ declare type IJitsiEvents = {
     CONFERENCE_JOINED
     TRACK_MUTE_CHANGED
     CONFERENCE_ERROR
+    PARTICIPANT_PROPERTY_CHANGED
+    DISPLAY_NAME_CHANGED
   }
   connection: {
     CONNECTION_ESTABLISHED
@@ -56,6 +60,7 @@ declare type IJitsiEvents = {
 }
 
 declare type Vector2 = {x:number, y:number}
+
 //Feels like ZoomPan doesnt belong to LocalStore; maybe state of panHandler or own store?
  declare type ZoomPan = {
   pos:Vector2
@@ -65,11 +70,22 @@ declare type Vector2 = {x:number, y:number}
 } 
 
 declare type ILocalStore = {
-  setLocalPosition: (newPosition:Vector2) => void
-  setLocalTracks: (tracks:ITrack[]) => void
+  setLocalPosition: (newPosition:IVector2) => void
+  setLocalTracks: (tracks:Track[]) => void
   toggleMute: () => void
   clearLocalTracks: () => void
   setMyID: (id:string) => void
+  calculateUsersInRadius:(myPos:IVector2)=>void
+  calculateUserInRadius:(id:ID)=>void
+  calculateUsersOnScreen:()=>void
+  calculateUserOnScreen:(user:IUser, el:HTMLDivElement)=>void
+  selectedUsers: Array<string>
+  visibleUsers: Array<string>
+  usersOnStage: Array<string>
+  setOnStage: (state:boolean) => void
+  toggleStage: () => void
+  onStage: boolean
+  stageVisible: boolean
 } & IUser & ZoomPan
 
 declare type deviceType = "audio" | "video" | "desktop"
@@ -80,13 +96,13 @@ declare type IMediaDevices = {
 
 declare type IJsMeet = {
   init: (options: IJitsiInitOptions) => void
-  addTrack: (track: ITrack) => void
+  addTrack: (track: IMediaTrack) => void
   events: IJitsiEvents
   mediaDevices: IMediaDevices
   createLocalTracks: (
     options: { devices: deviceType[] },
     notSure: boolean,
-  ) => Promise<ITrack[]>
+  ) => Promise<IMediaTrack[]>
   JitsiConnection: any
 }
 declare type IJitsiConnection = {
@@ -99,39 +115,40 @@ declare type IJitsiConnection = {
   xmpp:any
 }
 
+// should be connected with connection store 
 declare type IConferenceStore = {
-  serverUrl: string
-  jsMeet?: IJsMeet
-  serverConnection?: IJitsiConnection
-  isConnectedToServer: boolean
+  conferenceObject?: IJitsiConference
+  conferenceName: string|undefined
+  isJoined: boolean
+  users: IUsers
+  displayName:string
   error:any
-  initJitsiMeet: () => any
-  setConnected: () => void
-  setDisconnected: () => void
-  connectServer: (conferenceName: string) => void
-  disconnectServer: () => void
+  serverUrl?: string // not used
+  jsMeet?: IJsMeet // not used
+  serverConnection?: IJitsiConnection //used?
+  isConnectedToServer?: boolean // used?
+  initConference: (conferenceID:sring) => void //
+  joinConference?: () => void // Not Used 
+  leaveConference: () => void
+  setConferenceName: (name:string) => boolean
+  connectServer?: (conferenceName: string) => void
+  disconnectServer?: () => void
+  setDisplayName:(name:string)=>void //why here?
+  calculateVolume: (id:ID) => void // why here?
+  calculateVolumes: (localPos:IVector2) => void // why here?
 }
 
 declare type IConnectionStore = {
-  serverUrl: string //needed for?
+  serverUrl: string
   jsMeet?: IJsMeet
-  serverConnection?: IJitsiConnection
-  isConnectedToServer: boolean
+  connection?: IJitsiConnection
+  connected: boolean
   error:any
-  conferenceObject?: IJitsiConference
-  conferenceName?: string|undefined
-  hasJoinedConference?: boolean
-  users?: IUsers
-  displayName?:string
   initJitsiMeet: () => any
   setConnected: () => void
   setDisconnected: () => void
   connectServer: (conferenceName: string) => void
   disconnectServer: () => void
-  initConference: (conferenceID:string) => void
-  joinConference: () => void
-  leaveConference: () => void
-  setConferenceName: (name:string) => boolean
 }
 
 declare interface IJitsiInitOptions {
@@ -147,10 +164,10 @@ declare interface IJitsiInitOptions {
 }
 
 // Conference STore
-type IUser = { id:ID, user?:any, mute:boolean, volume:number, pos:Vector2, audio?:IAudioTrack, video?:IVideoTrack }
-type IUsers = { [id:string]:IUser }
-type ID = string
-
+declare type IUser = { id:ID, user?:any, mute:boolean, volume:number, pos:Point, properties?:IUserProperties, audio?:IAudioTrack, video?:IVideoTrack, onStage?:boolean }
+declare type IUsers = { [id:string]:IUser }
+declare type ID = string
+declare type IUserProperties = Record<string, string>
 
 type ConferenceStore = {
   conferenceObject?: IJitsiConference

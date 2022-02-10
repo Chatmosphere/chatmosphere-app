@@ -1,32 +1,11 @@
 import produce from "immer";
 import create from "zustand";
-import { Track, useConferenceStore } from "./ConferenceStore";
+import { useConferenceStore } from "./ConferenceStore";
 import { panOptions, transformWrapperOptions } from "../components/PanWrapper/panOptions";
 import { mountStoreDevtool } from "simple-zustand-devtools";
 import { getVectorDistance, isOnScreen } from "../utils/VectorHelpers";
 import { audioRadius } from "../utils/LookupTable";
 
-//Feels like ZoomPan doesnt belong to LocalStore; maybe state of panHandler or own store?
-type ZoomPan = {
-  pos:IPoint
-  pan:IPoint 
-  scale:number
-  onPanChange: (params:any) => void
-} 
-
-type ILocalStore = {
-  setLocalPosition: (newPosition:IPoint) => void
-  setLocalTracks: (tracks:Track[]) => void
-  toggleMute: () => void
-  clearLocalTracks: () => void
-  setMyID: (id:string) => void
-  calculateUsersInRadius:(myPos:IPoint)=>void
-  calculateUserInRadius:(id:ID)=>void
-  calculateUsersOnScreen:()=>void
-  calculateUserOnScreen:(user:IUser, el:HTMLDivElement)=>void
-  selectedUsers: Array<string>
-  visibleUsers: Array<string>
-} & IUser & ZoomPan
 
 export const useLocalStore = create<ILocalStore>((set,get) => {
 
@@ -39,8 +18,11 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
     pos:panOptions.user.initialPosition,
     pan: {x:transformWrapperOptions.defaultPositionX || 0,y: transformWrapperOptions.defaultPositionY || 0},
     scale:1,
+    onStage:false,
+    stageVisible: false,
     selectedUsers: [],
     visibleUsers: [],
+    usersOnStage: []
   }
 
   // # Private Functions
@@ -97,7 +79,7 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
     set({scale:scale, pan:panPosition})
   }
 
-  const calculateUsersInRadius = (myPos:IPoint) => {
+  const calculateUsersInRadius = (myPos:IVector2) => {
     const users = useConferenceStore.getState().users
     const selectedUsers = Object.keys(users).filter(key => {
       const user = users[key]
@@ -111,7 +93,7 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
     const selectedUsers = get().selectedUsers
     const user = useConferenceStore.getState().users[id]
     if(!user) return
-    const localUserPosition:IPoint = get().pos //check if this is updated or kept by closure
+    const localUserPosition:IVector2 = get().pos //check if this is updated or kept by closure
     if(getVectorDistance(user.pos, localUserPosition) < audioRadius) {
       //user is within radius
       if(selectedUsers.indexOf(user.id) === -1) _pushSelectedUser(user.id)
@@ -124,10 +106,26 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
     }
   }
 
+  //check if property "onStage" is set -> addd to onStage Array, else remove form array if exists
+  // TODO this could also be done in the Stage addon iself; it feels as if it should be there; otherhand its good to have all logic in store somehow
+  const _setUsersOnStage = (user) => {
+    const stageUsers = get().usersOnStage
+    if(user.properties?.onStage) {
+      set(state => ({usersOnStage: [...state.usersOnStage, user.id] }))
+    } else {
+      if(stageUsers.includes(user.id)) {
+        const clearedUsers = stageUsers.filter(el => el !== user.id);
+        set(() => ({usersOnStage: [...clearedUsers] }))
+      }
+    }
+  }
+ 
   const calculateUsersOnScreen = () => {
     const els = document.querySelectorAll('.userContainer')
+    const users = useConferenceStore.getState().users
     const visibleUserIds:Array<string> = []
     els.forEach(element => {
+      _setUsersOnStage(users[element.id])
       const tmpPos = element.getBoundingClientRect()
       if(isOnScreen({x:tmpPos.x, y:tmpPos.y}, tmpPos.width, tmpPos.height)) visibleUserIds.push(element.id) 
     });
@@ -136,6 +134,7 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
   //
   const calculateUserOnScreen = (user:IUser, el:HTMLDivElement) => {
     const visibleUsers = get().visibleUsers
+    _setUsersOnStage(user)
     const pos = el.getBoundingClientRect()
     if(isOnScreen({x:pos.x, y:pos.y}, pos.width, pos.height)) {
       if(visibleUsers.indexOf(user.id) === -1) {
@@ -164,14 +163,23 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
   const _setConstraint = () => {
     const conference = useConferenceStore.getState().conferenceObject
     const visibleUsers = get().visibleUsers
+    const usersOnStage = get().usersOnStage
       conference?.setReceiverConstraints({
-        'selectedEndpoints': [...visibleUsers],
-        'lastN':visibleUsers.length,
-        'onStageEndpoints': [], // The endpoint ids of the participants that are prioritized up to a higher resolution.
-        'defaultConstraints': { 'maxHeight': 180 }, // Default resolution requested for all endpoints.
+        'selectedEndpoints': [...visibleUsers,...usersOnStage],
+        'lastN':visibleUsers.length + usersOnStage.length,
+        'onStageEndpoints': [...usersOnStage], // The endpoint ids of the participants that are prioritized up to a higher resolution.
+        'defaultConstraints': { 'maxHeight': 200 }, // Default resolution requested for all endpoints.
         'constraints': { // Endpoint specific resolution.
         }
       })
+  }
+
+  const setOnStage = (state:boolean) => {
+    set({onStage: state})
+  }
+
+  const toggleStage = () => {
+    set(store => ({stageVisible: !store.stageVisible}))
   }
 
   return {
@@ -185,7 +193,9 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
   calculateUserOnScreen,
   calculateUsersInRadius,
   calculateUserInRadius,
-  onPanChange
+  onPanChange,
+  setOnStage,
+  toggleStage
 }
 })
 

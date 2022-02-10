@@ -11,7 +11,7 @@ const getInitJitsi = store => store.initJitsiMeet
 const getConnectServer = store => store.connectServer
 const getJitsiMeet = store => store.initJitsiMeet
 const getDisconnectServer = store => store.disconnectServer
-const getInitConference  = store => store.init
+const getInitConference  = store => store.initConference
 
 const JitsiConnection = () => {
   const disconnectServer = useConnectionStore(getDisconnectServer)

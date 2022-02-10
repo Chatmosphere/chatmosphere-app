@@ -1,7 +1,6 @@
 import React from 'react';
 import {renderHook, act} from "@testing-library/react-hooks"
 import { useLocalStore } from './LocalStore';
-import { Track } from "./ConferenceStore"
 
 
 jest.mock("../store/LocalStore", () => {
@@ -44,7 +43,7 @@ it("toggles mute", () => {
 			isMuted:jest.fn(() => false),
 			mute: jest.fn(),
 			unmute: jest.fn()
-		} as unknown as Track
+		} as unknown as IMediaTrack
 
 		result.current.toggleMute()
 	})
