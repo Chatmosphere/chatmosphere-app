@@ -26,13 +26,13 @@ const Close = styled.button`
 
 `
 
-export const Card = ({title, children}) => {
+export const Card = ({title, callback=()=>null, children}) => {
 
 	return (
 	<Box>
 		<Header>
 			<Title>{title}</Title>
-			<Close>Close</Close>
+			<Close onClick={callback}>Close</Close>
 		</Header>
 		{children}
 	</Box>

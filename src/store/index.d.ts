@@ -33,9 +33,10 @@ declare type IJitsiConference={
   setReceiverConstraints:(object)=>void
   leave:()=>void
   setLocalParticipantProperty:(key:string,value:any)=>void
+  sendTextMessage:(txt:string)=>void
 }
 
-declare type IJitsiEvents = {
+declare interface IJitsiEvents {
   track: {
     LOCAL_TRACK_STOPPED
     TRACK_AUDIO_OUTPUT_CHANGED
@@ -51,6 +52,7 @@ declare type IJitsiEvents = {
     CONFERENCE_ERROR
     PARTICIPANT_PROPERTY_CHANGED
     DISPLAY_NAME_CHANGED
+    MESSAGE_RECEIVED
   }
   connection: {
     CONNECTION_ESTABLISHED
@@ -136,6 +138,7 @@ declare type IConferenceStore = {
   setDisplayName:(name:string)=>void //why here?
   calculateVolume: (id:ID) => void // why here?
   calculateVolumes: (localPos:IVector2) => void // why here?
+  messages: Array<{id:string, text:string, nr:number}>
 }
 
 declare type IConnectionStore = {
