@@ -25,9 +25,11 @@ export const User = ({video, audio}) => {
 
 export const LocalUser = () => {
 	const localVideo = useLocalStore(store => store.video)
+	const videoType = useLocalStore(store => store.videoType)
 	return (
 		<Container>
-			<ConnectedVideo mirrored id="local_video" video={localVideo} />
+			{(localVideo && videoType === "camera" ) && <ConnectedVideo mirrored id="local_video" video={localVideo} />}
+			{(localVideo && videoType === "desktop" ) && <ConnectedVideo id="local_video" video={localVideo} />}
 		</Container>
 	)
 }

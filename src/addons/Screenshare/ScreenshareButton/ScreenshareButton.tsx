@@ -10,8 +10,10 @@ import ScreenShareIcon from "../../../assets/icons/ScreenShare";
 
 // TODO Error when alone in call - not sure why - replaceTrack has some empty object
 export const ScreenshareButton = (props) => {
+
 	const jsMeet = useConnectionStore(state => state.jsMeet)
-	const setLocalTracks = useLocalStore(useCallback(store => store.setLocalTracks,[]))
+	// const setLocalTracks = useLocalStore(useCallback(store => store.setLocalTracks,[]))
+	const replaceLocalTrack = useLocalStore(useCallback(store => store.replaceLocalTrack,[]))
 	const conferenceObject = useConferenceStore(state => state.conferenceObject)
 	const [isSharing, setIsSharing] = useState(false)
 
@@ -26,8 +28,11 @@ export const ScreenshareButton = (props) => {
 		// tracks[0].track.onended = () => console.log("Track onended") //chrome #and firefox getting that event (Safari is not :(
 		// tracks[0].track.onmute = () => console.log("Track onmuted") //Safari Event
 		const oldTrack = conferenceObject?.getLocalTracks().find(track => track.getType() === "video")
-		setLocalTracks(tracks)
+		replaceLocalTrack(newTrack)
 		console.log("old videoTrack", oldTrack);
+		// TODO: dkg Reminder
+		// FIX: crazy wise this is deleting local audio track but its still delivered and live on the call - why is that? 
+
 		if(oldTrack && newTrack.videoType !== oldTrack.videoType)  {
 			conferenceObject?.replaceTrack(oldTrack, newTrack)
 			.then(()=>{
