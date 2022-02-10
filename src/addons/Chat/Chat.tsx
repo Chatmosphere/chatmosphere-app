@@ -124,7 +124,8 @@ const Modal = ({callback}) => {
 								</ChatElement>
 							)
 						}
-						return (<ChatElement key={key}>
+						return (
+						<ChatElement key={key}>
 							<UserName>
 								You
 							</UserName>
