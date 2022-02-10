@@ -42,7 +42,7 @@ export const Session = () => {
         </Room>
       </PanWrapper>
       <Footer
-        rightBox={[<Chat />,<Settings />]}
+        rightBox={[<Chat key="rB1"/>,<Settings key="rB2" />]}
         leftBox="Chatmosphere"
       >
         <StageButton />
