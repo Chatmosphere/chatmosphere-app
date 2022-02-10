@@ -10,9 +10,9 @@ export interface IButtonProps {
   label?: string
   round?: boolean
 }
-
+//better way would be to set values as val="true" & omit if false
 const BaseButton = (props) => {
-  const { label, IconStart, IconEnd, ...rest } = props
+  const { label, IconStart, IconEnd, primary, active, warning, focus, round, small, ghost, ...rest } = props
 
   return (
     <button {...rest}>
