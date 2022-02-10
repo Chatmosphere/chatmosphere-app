@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import Card from "../../components/common/Card"
 import { useConferenceStore } from '../../store/ConferenceStore'
-import { MdMessage } from 'react-icons/md'
+import ChatIcon from '../../assets/icons/ChatIcon'
+import { Menu } from '../../components/common/Menu/Menu'
 
 const SendButton = styled.button`
 
@@ -108,7 +108,7 @@ const Modal = ({callback}) => {
 
 
 	return (
-		<Card title="Chat" callback={callback}>
+		<Menu title="Chat" onClose={callback}>
 			<ContentArea>
 				{
 					messages.map((message, key) => {
@@ -124,7 +124,8 @@ const Modal = ({callback}) => {
 								</ChatElement>
 							)
 						}
-						return (<ChatElement key={key}>
+						return (
+						<ChatElement key={key}>
 							<UserName>
 								You
 							</UserName>
@@ -140,7 +141,7 @@ const Modal = ({callback}) => {
 				<StyledTextarea id="chatInput"/>
 				<SendButton onClick={sendMessage}>Send</SendButton>
 			</Input>
-		</Card>
+		</Menu>
 	)
 }
 
@@ -151,7 +152,7 @@ const Chat = () => {
 
 	return (
 		<>
-		<Button onClick={() => toggleShow(!show)}><MdMessage /> <Label>Chat</Label></Button>
+		<Button onClick={() => toggleShow(!show)}><ChatIcon /> <Label>Chat</Label></Button>
 		{show && <Modal callback={() => toggleShow(!show)} />}
 		</>
 	)

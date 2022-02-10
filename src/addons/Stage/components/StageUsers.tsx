@@ -1,5 +1,5 @@
 import { useConferenceStore } from "../../../store/ConferenceStore"
-import { User } from "./User"
+import { User } from "./StageUser"
 
 const userSelector = store => store.users
 
@@ -16,7 +16,7 @@ export const StageUsers = () => {
            we only need updates if properties change so we could have a stageusers array instead;
            -> could also have a "users Visible" array to only render them on stage at all
            */
-          //@ts-ignore
+          
           return <User key={user[0]} audio={user[1].audio} video={user[1].video} />
         }
         return null

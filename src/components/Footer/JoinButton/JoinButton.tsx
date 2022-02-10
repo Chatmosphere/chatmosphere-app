@@ -3,8 +3,7 @@ import { useConferenceStore } from '../../../store/ConferenceStore'
 import { useConnectionStore } from '../../../store/ConnectionStore'
 import { useHistory } from 'react-router-dom'
 import { Button } from '../../common/Buttons/Button'
-import { FaPhone } from 'react-icons/fa'
-import { MdCallEnd } from 'react-icons/md'
+import { PhoneOff } from 'react-feather'
 
 export const JoinButton = ({ joined = false }) => {
 	const leave = useConferenceStore((store) => store.leaveConference)
@@ -26,17 +25,11 @@ export const JoinButton = ({ joined = false }) => {
 
 	if (joined) {
 		return (
-			<Button type="danger" onClick={onEndCall}>
-				<MdCallEnd />
-				Leave Call
-			</Button>
+			<Button warning round onClick={onEndCall} label="Leave Call" />
 		)
 	} else {
 		return (
-			<Button type="primary" onClick={onStartCall}>
-				<FaPhone />
-				Join
-			</Button>
+			<Button primary round onClick={onStartCall} label="Join" IconStart={	<PhoneOff />} />
 		)
 	}
 }

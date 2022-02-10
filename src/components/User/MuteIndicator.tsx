@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import {ReactComponent as MuteCatSmall} from './../../assets/muteCatSmall.svg'
 
-const MuteContainer = styled.div`
+export const MuteContainer = styled.div`
   position:absolute;
   top: 170px;
   left: 50%;

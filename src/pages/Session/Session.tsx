@@ -1,5 +1,5 @@
 import React from "react"
-import Stage from "../../addons/Stage"
+import Stage from "../../addons/Stage/Stage"
 import { StageButton } from "../../addons/Stage/components/StageButton"
 import { ErrorHandler } from "../../components/common/Info/ErrorHandler"
 import { Info } from "../../components/common/Info/Info"
@@ -15,6 +15,8 @@ import { Room } from "../../components/Room/Room"
 import { Users } from "../../components/User/Users"
 import { LocalStoreLogic } from "../../store/LocalStoreLogic"
 import { ScreenshareButton } from "../../addons/Screenshare/ScreenshareButton/ScreenshareButton"
+import Chat from "../../addons/Chat/Chat"
+import {Settings} from "../../components/Footer/Settings/Settings"
 
 
 
@@ -28,7 +30,7 @@ export const Session = () => {
         Please use <b>Safari</b> or <b>Chrome</b> for now for a stable
         Experience
       </Info>
-      <Header>Chatmosphere</Header>
+      <Header></Header>
       <JitsiConnection />
       <LocalStoreLogic />
       <PanWrapper>
@@ -39,11 +41,14 @@ export const Session = () => {
           </UserDragContainer>
         </Room>
       </PanWrapper>
-      <Footer>
+      <Footer
+        rightBox={[<Chat key="rB1"/>,<Settings key="rB2" />]}
+        leftBox="Chatmosphere"
+      >
         <StageButton />
-        <JoinButton joined={true} />
         <MuteButton />
         <ScreenshareButton />
+        <JoinButton joined={true} />
       </Footer>
       <Stage />
     </React.Fragment>

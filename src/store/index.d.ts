@@ -79,6 +79,7 @@ declare type Vector2 = {x:number, y:number}
 declare type ILocalStore = {
   setLocalPosition: (newPosition:IVector2) => void
   setLocalTracks: (tracks:Track[]) => void
+  replaceLocalTrack: (track:IMediaTrack) => void
   toggleMute: () => void
   clearLocalTracks: () => void
   setMyID: (id:string) => void
@@ -93,6 +94,7 @@ declare type ILocalStore = {
   toggleStage: () => void
   onStage: boolean
   stageVisible: boolean
+  isSharing: boolean
 } & IUser & ZoomPan
 
 declare type deviceType = "audio" | "video" | "desktop"
@@ -175,7 +177,7 @@ declare interface IJitsiInitOptions {
 
 // Conference STore
 //TODO: VideoType should be used to determine if desktop or camera is show 
-declare type IUser = { id:ID, user?:any, mute:boolean, volume:number, pos:Point, properties?:IUserProperties, audio?:IAudioTrack, video?:IVideoTrack, videoType?:string, desktop?:IMediaTrack, onStage?:boolean }
+declare type IUser = { id:ID, user?:any, mute:boolean, volume:number, pos:Point, properties?:IUserProperties, audio?:IAudioTrack, video?:IVideoTrack, videoType?:string, onStage?:boolean }
 declare type IUsers = { [id:string]:IUser }
 declare type ID = string
 declare type IUserProperties = Record<string, string>

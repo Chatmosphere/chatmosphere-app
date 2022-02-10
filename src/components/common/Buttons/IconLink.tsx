@@ -7,9 +7,9 @@ const Link = styled.a`
 	flex-direction: row;
 	align-items: flex-start;
 	padding: 10px;
-  color: ${props => props.theme.base['1']};
+  color: ${props => props.theme.text.default};
   &:hover {
-		color:${props => props.theme.primary['3']};
+		color:${props => props.theme.text.primary};
   }
 `
 

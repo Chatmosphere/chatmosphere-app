@@ -93,13 +93,7 @@ export const useConferenceStore = create<IConferenceStore>((set,get) => {
   const _onVideoTypeChanged = (type:string, id, track) => produceAndSet (newState => {
       newState.users[id].videoType = type
       // alternative implementation if updating jitsi jvb doesnt fix current delay on switch of cam & screenshare
-      // if(type === 'desktop') {
-      //   newState.users[id].video = undefined
-      //   newState.users[id].desktop = track
-      // } else {
-      //   newState.users[id].video = track
-      //   newState.users[id].desktop = undefined
-      // }
+      // remove track from conference and add again
   })
 
   const _onConferenceJoined = () => {

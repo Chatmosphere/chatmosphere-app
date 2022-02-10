@@ -36,6 +36,6 @@ const StyledHeader = styled.a`
   }
 `
 
-export const Header = ({children}) => (
-  <StyledHeader target="_blank" href="http://chatmosphere.cc">Chatmosphere</StyledHeader>
+export const Header = ({children=""}) => (
+  <StyledHeader target="_blank" href="http://chatmosphere.cc">{children}</StyledHeader>
 )

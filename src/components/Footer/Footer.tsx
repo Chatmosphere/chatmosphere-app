@@ -1,6 +1,5 @@
 import React from "react"
 import styled from 'styled-components'
-import Chat from "../../addons/Chat"
 
 
 const Container = styled.div`
@@ -14,7 +13,7 @@ const Container = styled.div`
 `
 
 const LeftBox = styled.div`
-  margin: 10px;
+  margin-left: 12px;
 `
 
 const CenterBox = styled.div`
@@ -27,19 +26,24 @@ const CenterBox = styled.div`
   }
 `
   const RightBox = styled.div`
-    margin: 10px;
+    margin-right: 12px;
+    display: flex;
+    flex-direction: row;
+    gap:10px;
   `
 
-export const Footer: React.FC = ({ children }) => {
+export const Footer = ({ children, rightBox, leftBox }:{children?:React.ReactNode, rightBox?:React.ReactNode, leftBox?:React.ReactNode}) => {
  
   return (
     <Container>
-      <LeftBox></LeftBox>
+      <LeftBox>
+        {leftBox}
+      </LeftBox>
       <CenterBox>
        {children}
       </CenterBox>
       <RightBox>
-        <Chat />
+        {rightBox}
       </RightBox>
     </Container>
   )

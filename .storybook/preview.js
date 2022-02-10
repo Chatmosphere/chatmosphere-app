@@ -1,5 +1,5 @@
 import { ThemeProvider } from "styled-components";
-import {warm} from './../src/theme/theme'
+import {lightTheme} from './../src/theme/theme'
 
 
 export const parameters = {
@@ -8,7 +8,7 @@ export const parameters = {
 
 export const decorators = [
   (Story) => (
-    <ThemeProvider theme={warm}>
+    <ThemeProvider theme={lightTheme}>
       <Story />
     </ThemeProvider>
   ),

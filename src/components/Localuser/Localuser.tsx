@@ -32,7 +32,7 @@ export const Localuser: React.FC<ILocaluser> = ({audioRadius = false}) => {
 
   const audioTrack = useLocalStore((store) => store.audio)
   const videoTrack = useLocalStore((store) => store.video)
-  const desktopTrack = useLocalStore((store) => store.desktop)
+  const videoType = useLocalStore(store => store.videoType)
   const isMute = useLocalStore((store) => store.mute)
 
   const localUserNode = useRef<HTMLDivElement>(null)
@@ -42,11 +42,11 @@ export const Localuser: React.FC<ILocaluser> = ({audioRadius = false}) => {
       ref={localUserNode}
     >
       {audioRadius && <AudioRadius></AudioRadius>}
-      {videoTrack && (
+      {(videoTrack && videoType === "camera" ) && (
         <LocalVideo key={videoTrack.track.id} track={videoTrack} />
       )}
-      {desktopTrack && (
-        <LocalDesktop key={desktopTrack.track.id} track={desktopTrack} />
+      {(videoTrack && videoType === "desktop") && (
+        <LocalDesktop key={videoTrack.track.id} track={videoTrack} />
       )}
       <ReloadHint />
       {audioTrack && (

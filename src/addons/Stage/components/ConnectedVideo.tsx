@@ -1,16 +1,20 @@
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
 
-const Video = styled.video`
+interface IVideo extends React.HTMLAttributes<HTMLVideoElement> {
+	mirrored: boolean;
+}
+
+const Video = styled.video<IVideo>`
 	width: 300px; 
   height: 300px;
   /* object-position: 50% 50%; */
   display: block;
   object-fit: cover;
-  /* transform: scaleX(-1); */
+  transform: ${props => props.mirrored ? "scaleX(-1)" : "scaleX(1)"};
 `
 
-export const ConnectedVideo:React.FunctionComponent<{video:IVideoTrack | undefined, className?:string, id?:string} & React.HTMLAttributes<HTMLVideoElement>> = ({ video, className, id }) => {
+export const ConnectedVideo:React.FunctionComponent<{video:IVideoTrack | undefined, mirrored?:boolean, className?:string, id?:string} & React.HTMLAttributes<HTMLVideoElement>> = ({ video, mirrored=false, className, id }) => {
 	
 	const myRef: any = useRef<HTMLVideoElement>();
 	
@@ -32,6 +36,6 @@ export const ConnectedVideo:React.FunctionComponent<{video:IVideoTrack | undefin
 	}, [video]);
 
 	return (
-		<Video className={className} id={id} autoPlay={true} ref={myRef}></Video>
+		<Video className={className} mirrored={mirrored} id={id} autoPlay={true} ref={myRef}></Video>
 	);
 };

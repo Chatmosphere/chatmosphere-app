@@ -6,12 +6,11 @@ import { useLocalStore } from './../../store/LocalStore';
 
 const Video = styled.video`
   background: red;
-  width: 200px;
+  width: auto;
   height: 200px;
   object-position: 50% 50%;
   display: block;
-  border-radius: 100px;
-  object-fit: cover;
+  border-radius: ${props => props.theme.radius.small};
   transform: scaleX(1);
 `
 
