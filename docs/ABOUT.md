@@ -57,7 +57,7 @@ We're currently funded by the [Prototype Fund](https://prototypefund.de/) in ord
 
 If you have any questions or issues regarding this project, feel free to contact us anytime and we'll try to answer as quick as life allows us to. [info@chatmosphere.cc](mailto:info@chatmosphere.cc)
 
-## Funded from September 2020 until February 2021 by
+## Funded from September 2020 until February 2021 and from September 2021 until February 2022 by
 
 <p style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
 <a href="https://www.bmbf.de/en/" rel="nofollow"><img src="BMBF-Logo.svg" alt="Logo of the German Ministry for Education and Research" style="max-width:100%; padding:20px;" height="150px"></a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="https://prototypefund.de/en/" rel="nofollow"><img src="PF-Logo.svg" alt="Logo of the Prototype Fund" style="max-width:100%; padding:20px;" height="150px"></a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="https://okfn.de/en/" rel="nofollow"><img src="OKFD-Logo.svg" alt="Logo of the Open Knowledge Foundation Germany" style="max-width:100%; padding:20px;" height="150px"></a>
