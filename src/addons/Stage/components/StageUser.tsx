@@ -21,36 +21,35 @@ const UserContainer = styled.div<IStageContainer>`
   position: relative;
 `
 
-const sizes = {
-  s: 8,
-  m: 1.8,
-  l: 1.2,
-}
 
 const SelectedUserContainer = styled(UserContainer)`
   position: absolute;
-  width: 60%;
-	height: auto;
+  width: auto;
+  max-width: 90%;
+  height: 50%;
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
+  & > div {
+    width: auto;
+    height: 100%;
+  }
 `
 
-
-const setSelector = store => store.setSelectedUserOnStage
+const setSelector = (store) => store.setSelectedUserOnStage
 
 const RemoteUser = ({ video, audio, volume, id, selected = false }) => {
   const setSelectedUser = useLocalStore(setSelector)
 
   if (selected) {
     return createPortal(
-			<SelectedUserContainer>
-      <UserContainer>
-        <AudioComponent audio={audio} volume={volume} />
-        <VideoComponent className="stage_video" video={video} />
-        <ResizeControl callback={() => setSelectedUser(id)} />
-      </UserContainer>
-			</SelectedUserContainer>,
+      <SelectedUserContainer>
+        <UserContainer>
+          <AudioComponent audio={audio} volume={volume} />
+          <VideoComponent className="stage_video" video={video} />
+          <ResizeControl callback={() => setSelectedUser(id)} />
+        </UserContainer>
+      </SelectedUserContainer>,
       document.body,
     )
   }
