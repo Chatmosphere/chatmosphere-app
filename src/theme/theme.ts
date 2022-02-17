@@ -47,6 +47,7 @@ const defaultTheme = {
 }
 
 const warm = {
+  name: "warm",
   base: {
     1: color.mono0,
     2: color.mono10,
@@ -112,6 +113,7 @@ const warm = {
 
 const dark = {
   ...warm,
+  name: "dark",
 }
 
 export const lightTheme:ThemeType = { ...defaultTheme, ...warm }

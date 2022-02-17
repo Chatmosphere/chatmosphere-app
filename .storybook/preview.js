@@ -1,15 +1,18 @@
 import { ThemeProvider } from "styled-components";
-import {lightTheme} from './../src/theme/theme'
+import { withThemesProvider } from "themeprovider-storybook";
+import {lightTheme, darkTheme} from './../src/theme/theme'
 
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
 }
 
-export const decorators = [
-  (Story) => (
-    <ThemeProvider theme={lightTheme}>
-      <Story />
-    </ThemeProvider>
-  ),
-];
+// export const decorators = [
+//   (Story, context) => (
+//     <ThemeProvider theme={lightTheme}>
+//       <Story {...context} />
+//     </ThemeProvider>
+//   ),
+// ];
+
+export const decorators = [withThemesProvider([lightTheme, darkTheme])]
