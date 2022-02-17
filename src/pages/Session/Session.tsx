@@ -23,13 +23,13 @@ import {Settings} from "../../components/Footer/Settings/Settings"
 export const Session = () => {
   return (
     <React.Fragment>
-      <ErrorHandler />
       <Info>
         Welcome to our Prototype
         <br />
-        Please use <b>Safari</b> or <b>Chrome</b> for now for a stable
+        Please use <b>Chromium</b> or <b>Chrome</b> for now for a stable
         Experience
       </Info>
+      <ErrorHandler />
       <Header></Header>
       <JitsiConnection />
       <LocalStoreLogic />
