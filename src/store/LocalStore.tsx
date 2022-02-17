@@ -1,62 +1,64 @@
-import produce from "immer";
-import create from "zustand";
-import { useConferenceStore } from "./ConferenceStore";
-import { panOptions, transformWrapperOptions } from "../components/PanWrapper/panOptions";
-import { mountStoreDevtool } from "simple-zustand-devtools";
-import { getVectorDistance, isOnScreen } from "../utils/VectorHelpers";
-import { audioRadius } from "../utils/LookupTable";
+import produce from "immer"
+import create from "zustand"
+import { useConferenceStore } from "./ConferenceStore"
+import { panOptions, transformWrapperOptions } from "../components/PanWrapper/panOptions"
+import { mountStoreDevtool } from "simple-zustand-devtools"
+import { getVectorDistance, isOnScreen } from "../utils/VectorHelpers"
+import { audioRadius } from "../utils/LookupTable"
 
 
-export const useLocalStore = create<ILocalStore>((set,get) => {
+export const useLocalStore = create<ILocalStore>((set, get) => {
 
   const state = {
-    id:"",
-    mute:false,
-    volume:1,
-    video:undefined,
-    audio:undefined,
-    pos:panOptions.user.initialPosition,
-    pan: {x:transformWrapperOptions.defaultPositionX || 0,y: transformWrapperOptions.defaultPositionY || 0},
-    scale:1,
-    onStage:false,
-    stageVisible: false,
-    isSharing:false,
-    selectedUsers: [],
+    id: "",
+    mute: false,
+    volume: 1,
+    video: undefined,
+    audio: undefined,
+    pos: panOptions.user.initialPosition,
+    pan: { x: transformWrapperOptions.defaultPositionX || 0, y: transformWrapperOptions.defaultPositionY || 0 },
+    scale: 1,
+    onStage: false,
+    stageVisible: true,
+    stageMute: false,
+    isSharing: false,
+    usersInRadius: [],
     visibleUsers: [],
-    usersOnStage: []
+    usersOnStage: [],
+    selectedUsersOnStage: [],
   }
 
   // # Private Functions
-  const _produceAndSet = (callback:(newState:ILocalStore)=>void)=>set(state => produce(state, newState => callback(newState)))
-  
+  const _produceAndSet = (callback: (newState: ILocalStore) => void) => set(state => produce(state, newState => callback(newState)))
+
   // # Public Functions
   const setLocalPosition = (newPosition) => {
-    set({pos:newPosition})
+    set({ pos: newPosition })
   }
-  
+
   const toggleMute = () => {
     const audioTrack = get().audio
-    if(!audioTrack) return
-    if(audioTrack.isMuted()) {
+    if (!audioTrack) return
+    if (audioTrack.isMuted()) {
       audioTrack.unmute()
-      set({mute:false})
+      set({ mute: false })
     } else {
       audioTrack.mute()
-      set({mute:true})
+      set({ mute: true })
     }
   }
 
-  const setLocalTracks = tracks => _produceAndSet(newState=>{
-    const audioTrack = tracks.find(t=>t.getType() === 'audio')
-    const videoTrack = tracks.find(t=>t.getType()==='video')
-    
-    newState.videoType = videoTrack?.videoType === "desktop" ? 'desktop' : 'camera' //set videoType
+  const setLocalTracks = tracks => _produceAndSet(newState => {
+    const audioTrack = tracks.find(t => t.getType() === "audio")
+    const videoTrack = tracks.find(t => t.getType() === "video")
+
+    newState.videoType = videoTrack?.videoType === "desktop" ? "desktop" : "camera" //set videoType
     newState.video = videoTrack
     newState.audio = audioTrack
   })
 
-  const replaceLocalTrack = newTrack => _produceAndSet(newState=>{
-    if(newTrack.getType() === "audio") {
+  const replaceLocalTrack = newTrack => _produceAndSet(newState => {
+    if (newTrack.getType() === "audio") {
       newState.audio = newTrack
     } else {
       newState.videoType = newTrack.videoType === "desktop" ? "desktop" : "camera"
@@ -64,16 +66,16 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
     }
   })
 
-  const clearLocalTracks = () => _produceAndSet(newState=>{
+  const clearLocalTracks = () => _produceAndSet(newState => {
     // newState.audio?.dispose() //these throw errors on reconnection - some event handlers still leftover
     // newState.video?.dispose()
-    newState.audio=undefined
-    newState.video=undefined
+    newState.audio = undefined
+    newState.video = undefined
   })
 
-  const setMyID = (id:string) => set({id:id})
+  const setMyID = (id: string) => set({ id: id })
 
-  const onPanChange = ({scale,positionX, positionY}) => {
+  const onPanChange = ({ scale, positionX, positionY }) => {
     const viewport = {
       x: panOptions.room.size.x * scale,
       y: panOptions.room.size.y * scale,
@@ -87,87 +89,95 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
       y: Math.max(-panLimit.y, Math.min(0, positionY)),
     }
     calculateUsersOnScreen()
-    set({scale:scale, pan:panPosition})
+    set({ scale: scale, pan: panPosition })
   }
 
-  const calculateUsersInRadius = (myPos:IVector2) => {
+  const calculateUsersInRadius = (myPos: IVector2) => {
     const users = useConferenceStore.getState().users
-    const selectedUsers = Object.keys(users).filter(key => {
+    const usersInRadius = Object.keys(users).filter(key => {
       const user = users[key]
-      if(getVectorDistance(myPos, user.pos) < audioRadius) return true
+      if (getVectorDistance(myPos, user.pos) < audioRadius) return true
       return false
     })
-    _setSelectedUsers(selectedUsers)
+    _setUsersInRadius(usersInRadius)
   }
   // if user moves it can be calculated cheaper
-  const calculateUserInRadius = (id:ID) => {
-    const selectedUsers = get().selectedUsers
+  const calculateUserInRadius = (id: ID) => {
+    const usersInRadius = get().usersInRadius
     const user = useConferenceStore.getState().users[id]
-    if(!user) return
-    const localUserPosition:IVector2 = get().pos //check if this is updated or kept by closure
-    if(getVectorDistance(user.pos, localUserPosition) < audioRadius) {
+    if (!user) return
+    const localUserPosition: IVector2 = get().pos //check if this is updated or kept by closure
+    if (getVectorDistance(user.pos, localUserPosition) < audioRadius) {
       //user is within radius
-      if(selectedUsers.indexOf(user.id) === -1) _pushSelectedUser(user.id)
+      if (usersInRadius.indexOf(user.id) === -1) _pushSelectedUser(user.id)
     } else {
       //not in radius but in array -> remove from array
-      if(selectedUsers.includes(user.id)) {
-        const clearedUsers = selectedUsers.filter(el => el !== user.id);
-        _setSelectedUsers(clearedUsers);
+      if (usersInRadius.includes(user.id)) {
+        const clearedUsers = usersInRadius.filter(el => el !== user.id)
+        _setUsersInRadius(clearedUsers)
       }
     }
   }
 
   //check if property "onStage" is set -> addd to onStage Array, else remove form array if exists
   // TODO this could also be done in the Stage addon iself; it feels as if it should be there; otherhand its good to have all logic in store somehow
-  const _setUsersOnStage = (user) => {
+  const _setUserOnStage = (user) => {
     const stageUsers = get().usersOnStage
-    if(user.properties?.onStage) {
-      set(state => ({usersOnStage: [...state.usersOnStage, user.id] }))
+    if (user.properties?.onStage) {
+      set(state => ({ usersOnStage: [...state.usersOnStage, user.id] }))
     } else {
-      if(stageUsers.includes(user.id)) {
-        const clearedUsers = stageUsers.filter(el => el !== user.id);
-        set(() => ({usersOnStage: [...clearedUsers] }))
+      if (stageUsers.includes(user.id)) {
+        const clearedUsers = stageUsers.filter(el => el !== user.id)
+        set(() => ({ usersOnStage: [...clearedUsers] }))
       }
     }
   }
- 
+
   const calculateUsersOnScreen = () => {
-    const els = document.querySelectorAll('.userContainer')
+    const els = document.querySelectorAll(".userContainer")
     const users = useConferenceStore.getState().users
-    const visibleUserIds:Array<string> = []
+    const visibleUserIds: Array<string> = []
     els.forEach(element => {
-      _setUsersOnStage(users[element.id])
+      _setUserOnStage(users[element.id])
       const tmpPos = element.getBoundingClientRect()
-      if(isOnScreen({x:tmpPos.x, y:tmpPos.y}, tmpPos.width, tmpPos.height)) visibleUserIds.push(element.id) 
-    });
+      if (isOnScreen({ x: tmpPos.x, y: tmpPos.y }, tmpPos.width, tmpPos.height)) visibleUserIds.push(element.id)
+    })
     _setVisibleUsers(visibleUserIds)
   }
   //
-  const calculateUserOnScreen = (user:IUser, el:HTMLDivElement) => {
+  const calculateUserOnScreen = (user: IUser, el: HTMLDivElement) => {
     const visibleUsers = get().visibleUsers
-    _setUsersOnStage(user)
+    _setUserOnStage(user)
     const pos = el.getBoundingClientRect()
-    if(isOnScreen({x:pos.x, y:pos.y}, pos.width, pos.height)) {
-      if(visibleUsers.indexOf(user.id) === -1) {
+    if (isOnScreen({ x: pos.x, y: pos.y }, pos.width, pos.height)) {
+      if (visibleUsers.indexOf(user.id) === -1) {
         _pushVisibleUser(user.id)
       }
     } else {
       //not on screen
-      if(visibleUsers.includes(user.id)) {
-        const clearedUsers = visibleUsers.filter(el => el !== user.id);
+      if (visibleUsers.includes(user.id)) {
+        const clearedUsers = visibleUsers.filter(el => el !== user.id)
         _setVisibleUsers(clearedUsers)
       }
     }
   }
 
-  const _setSelectedUsers = (ids) => _produceAndSet(store => {store.selectedUsers = [...ids]})
-  const _pushSelectedUser = (id) => _produceAndSet(store => {store.selectedUsers.push(id)})
+  const _setUsersInRadius = (ids) => _produceAndSet(store => {
+    store.usersInRadius = [...ids]
+  })
+  const _pushSelectedUser = (id) => _produceAndSet(store => {
+    store.usersInRadius.push(id)
+  })
   const _setVisibleUsers = (ids) => {
-    _produceAndSet(store => {store.visibleUsers = [...ids]})
+    _produceAndSet(store => {
+      store.visibleUsers = [...ids]
+    })
     _setConstraint()
   }
   const _pushVisibleUser = (id) => {
-    _produceAndSet(store => {store.visibleUsers.push(id)})
+    _produceAndSet(store => {
+      store.visibleUsers.push(id)
+    })
     _setConstraint()
   }
 
@@ -175,40 +185,55 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
     const conference = useConferenceStore.getState().conferenceObject
     const visibleUsers = get().visibleUsers
     const usersOnStage = get().usersOnStage
-      conference?.setReceiverConstraints({
-        'selectedEndpoints': [...visibleUsers,...usersOnStage],
-        'lastN':visibleUsers.length + usersOnStage.length,
-        'onStageEndpoints': [...usersOnStage], // The endpoint ids of the participants that are prioritized up to a higher resolution.
-        'defaultConstraints': { 'maxHeight': 200 }, // Default resolution requested for all endpoints.
-        'constraints': { // Endpoint specific resolution.
-        }
-      })
+    conference?.setReceiverConstraints({
+      "selectedEndpoints": [...visibleUsers, ...usersOnStage],
+      "lastN": visibleUsers.length + usersOnStage.length,
+      "onStageEndpoints": [...usersOnStage], // The endpoint ids of the participants that are prioritized up to a higher resolution.
+      "defaultConstraints": { "maxHeight": 200 }, // Default resolution requested for all endpoints.
+      "constraints": { // Endpoint specific resolution.
+      },
+    })
   }
 
-  const setOnStage = (state:boolean) => {
-    set({onStage: state})
+  const setOnStage = (state: boolean) => {
+    set({ onStage: state })
   }
 
   const toggleStage = () => {
-    set(store => ({stageVisible: !store.stageVisible}))
+    set(store => ({ stageVisible: !store.stageVisible }))
+  }
+  const toggleStageMute = () => {
+    set(store => ({stageMute: !store.stageMute}))
+  }
+
+  const setSelectedUserOnStage = (id:ID) => {
+    _produceAndSet(store => {
+      if(store.selectedUsersOnStage[0] === id) {
+        store.selectedUsersOnStage = []
+      } else {
+        store.selectedUsersOnStage = [id]
+      }
+    })
   }
 
   return {
-  ...state,
-  setLocalPosition,
-  setLocalTracks,
-  replaceLocalTrack,
-  toggleMute,
-  clearLocalTracks,
-  setMyID,
-  calculateUsersOnScreen,
-  calculateUserOnScreen,
-  calculateUsersInRadius,
-  calculateUserInRadius,
-  onPanChange,
-  setOnStage,
-  toggleStage
-}
+    ...state,
+    setLocalPosition,
+    setLocalTracks,
+    replaceLocalTrack,
+    toggleMute,
+    clearLocalTracks,
+    setMyID,
+    calculateUsersOnScreen,
+    calculateUserOnScreen,
+    calculateUsersInRadius,
+    calculateUserInRadius,
+    onPanChange,
+    setOnStage,
+    toggleStage,
+    toggleStageMute,
+    setSelectedUserOnStage,
+  }
 })
 
 
@@ -216,9 +241,9 @@ export const useLocalStore = create<ILocalStore>((set,get) => {
 
 
 if (process.env.NODE_ENV === "development") {
-  let root = document.createElement('div');
-  root.id = 'simple-zustand-devtools-3';
-  document.body.appendChild(root);
+  let root = document.createElement("div")
+  root.id = "simple-zustand-devtools-3"
+  document.body.appendChild(root)
   // @ts-ignore: Unreachable code error
   mountStoreDevtool("LocalStore", useLocalStore, root)
 }

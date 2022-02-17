@@ -87,13 +87,17 @@ declare type ILocalStore = {
   calculateUserInRadius:(id:ID)=>void
   calculateUsersOnScreen:()=>void
   calculateUserOnScreen:(user:IUser, el:HTMLDivElement)=>void
-  selectedUsers: Array<string>
+  usersInRadius: Array<string>
   visibleUsers: Array<string>
   usersOnStage: Array<string>
   setOnStage: (state:boolean) => void
   toggleStage: () => void
+  toggleStageMute: ()=>void
   onStage: boolean
+  selectedUsersOnStage: Array<string>
+  setSelectedUserOnStage: (id:ID)=>void
   stageVisible: boolean
+  stageMute: boolean
   isSharing: boolean
 } & IUser & ZoomPan
 
