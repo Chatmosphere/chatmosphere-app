@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { useConferenceStore } from "../../store/ConferenceStore"
 import ChatIcon from "../../assets/icons/ChatIcon"
@@ -56,6 +56,7 @@ const MessageText = styled.span`
   line-height: 1.2em;
   margin: 0;
   padding: 0;
+  white-space: pre-wrap;
 `
 const Button = styled.button`
   border: none;
@@ -103,31 +104,60 @@ const Message = ({name, content}) => {
   )
 }
 
+// Modalwindow
 const Modal = ({ callback }) => {
   const conference = useConferenceStore((store) => store.conferenceObject)
   const users = useConferenceStore(
     (store) => store.users,
     (oldState, newState) =>
-      Object.keys(oldState).length === Object.keys(newState).length,
-  )
-  const messages = useConferenceStore((store) => store.messages)
+    Object.keys(oldState).length === Object.keys(newState).length,
+    )
+    const messages = useConferenceStore((store) => store.messages)
+    const chatParentRef = useRef<HTMLDivElement>(null)
+    const inputFieldRef = useRef<HTMLTextAreaElement | any>(null)
 
   const sendMessage = useCallback(
-    (msg) => {
-      const el = document.querySelector<HTMLInputElement>("#chatInput")
-      const txt = el?.value
+    () => {
+      const txt = inputFieldRef.current?.value
+      if(txt === "") return
       if (txt) {
-        el.value = ""
         conference?.sendTextMessage(txt)
       }
-      // document.querySelector<HTMLInputElement>('#chatInput').value = ''
     },
     [conference],
   )
+  
+  //Scroll to top on new Message
+  useEffect(() => {
+    const domNode = chatParentRef.current
+    if (domNode) {
+      domNode.scrollTop = domNode.scrollHeight
+    }
+  })
+
+  //Send with ENTER, linebreak with ALT + ENTER
+  useEffect(() => {
+    const sendOnEnter = (e) => {
+      if (e.key === "Enter" && e.altKey === true) {
+        e.preventDefault()
+        inputFieldRef.current.value = inputFieldRef.current.value + "\r\n"
+      } else if (e.key === "Enter") {
+        e.preventDefault()
+        sendMessage()
+        inputFieldRef.current.value = ""
+      } 
+    }
+    const inputField = inputFieldRef.current //save in const for unmount
+    inputField.addEventListener("keydown", sendOnEnter)
+    //unmount
+    return() => {
+      inputField.removeEventListener("keydown", sendOnEnter)
+    }
+  }, [sendMessage])
 
   return (
     <Menu title="Chat" onClose={callback}>
-      <ContentArea>
+      <ContentArea ref={chatParentRef}>
         {messages.map((message, key) => {
           if (users[message.id]) return <Message key={key} name={users?.[message.id].user._displayName} content={message.text}/>
           return <Message key={key} name="You" content={message.text} />
@@ -135,7 +165,7 @@ const Modal = ({ callback }) => {
       </ContentArea>
 
       <Input>
-        <StyledTextarea id="chatInput" />
+        <StyledTextarea ref={inputFieldRef} id="chatInput" />
         <SendButton onClick={sendMessage}>Send</SendButton>
       </Input>
     </Menu>
