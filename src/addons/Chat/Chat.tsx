@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { useConferenceStore } from "../../store/ConferenceStore"
 import ChatIcon from "../../assets/icons/ChatIcon"
@@ -111,6 +111,7 @@ const Modal = ({ callback }) => {
       Object.keys(oldState).length === Object.keys(newState).length,
   )
   const messages = useConferenceStore((store) => store.messages)
+  const chatParentRef = useRef<HTMLDivElement>(null)
 
   const sendMessage = useCallback(
     (msg) => {
@@ -125,9 +126,17 @@ const Modal = ({ callback }) => {
     [conference],
   )
 
+  useEffect(() => {
+    //Scroll to top on new Message
+    const domNode = chatParentRef.current
+    if (domNode) {
+      domNode.scrollTop = domNode.scrollHeight
+    }
+  })
+
   return (
     <Menu title="Chat" onClose={callback}>
-      <ContentArea>
+      <ContentArea ref={chatParentRef}>
         {messages.map((message, key) => {
           if (users[message.id]) return <Message key={key} name={users?.[message.id].user._displayName} content={message.text}/>
           return <Message key={key} name="You" content={message.text} />
