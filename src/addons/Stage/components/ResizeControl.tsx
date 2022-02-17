@@ -1,7 +1,6 @@
 import { MouseEventHandler } from "react"
 import { Maximize2 } from "react-feather"
 import styled from "styled-components"
-import { Button, IconButton } from "../../../components/common/Buttons/Button"
 
 const ResizeContainer = styled.div`
   position: absolute;

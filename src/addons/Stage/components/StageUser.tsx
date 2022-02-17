@@ -1,4 +1,4 @@
-import { memo, useState } from "react"
+import { memo} from "react"
 import { createPortal } from "react-dom"
 import styled from "styled-components"
 import { useLocalStore } from "../../../store/LocalStore"
