@@ -1,11 +1,12 @@
 import { useEffect, useRef } from "react";
 
-export const ConnectedAudio:React.FunctionComponent<{audio:IAudioTrack | undefined, volume:number, className?:string, id?:string}> = ({ audio, volume, className, id }) => {
+//Could be a general Audio Element for all other components
+export const AudioComponent:React.FunctionComponent<{audio:IAudioTrack | undefined, volume:number, className?:string, id?:string}> = ({ audio, volume, className, id }) => {
 
 	const myRef: any = useRef();
 
 	useEffect(() => {
-		if (myRef.current && myRef.current.volume)
+		if (myRef.current && myRef.current.volume !== undefined)
 			myRef.current.volume = volume;
 	}, [volume]);
 

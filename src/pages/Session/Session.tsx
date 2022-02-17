@@ -1,5 +1,5 @@
 import React from "react"
-import Stage from "../../addons/Stage/Stage"
+import ConnectedStage from "../../addons/Stage/Stage"
 import { StageButton } from "../../addons/Stage/components/StageButton"
 import { ErrorHandler } from "../../components/common/Info/ErrorHandler"
 import { Info } from "../../components/common/Info/Info"
@@ -50,7 +50,7 @@ export const Session = () => {
         <ScreenshareButton />
         <JoinButton joined={true} />
       </Footer>
-      <Stage />
+      <ConnectedStage />
     </React.Fragment>
   )
 }
