@@ -26,7 +26,7 @@ const ScrollContainer = styled.div`
   padding-right: 60px;
   padding-left: 24px;
   width: 12%;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: visible;
 `
 
