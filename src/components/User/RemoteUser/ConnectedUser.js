@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { useConferenceStore } from './../../store/ConferenceStore';
-import { ReloadHint } from '../ReloadHint/ReloadHint';
+import { useConferenceStore } from '../../../store/ConferenceStore';
+import { ReloadHint } from '../../ReloadHint/ReloadHint';
 import { AudioTrack } from './AudioTrack';
 import { MuteIndicator } from './MuteIndicator';
 import { VideoContainer, VideoTrack } from "./VideoTrack"
-import { NameTag } from '../NameTag/NameTag';
-import { useLocalStore } from '../../store/LocalStore';
+import { NameTag } from '../../NameTag/NameTag';
+import { useLocalStore } from '../../../store/LocalStore';
 import { DesktopVideo } from './DesktopVideo';
 
 

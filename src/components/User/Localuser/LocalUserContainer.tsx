@@ -1,6 +1,6 @@
 import React from 'react'
-import { useLocalStore } from './../../store/LocalStore'
-import DragWrapper from '../DragWrapper/DragWrapper'
+import { useLocalStore } from '../../../store/LocalStore'
+import DragWrapper from '../../DragWrapper/DragWrapper'
 
 export const UserDragContainer = ({children}) => {
 

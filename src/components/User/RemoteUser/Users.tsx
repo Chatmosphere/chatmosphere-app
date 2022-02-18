@@ -1,4 +1,4 @@
-import { useConferenceStore } from './../../store/ConferenceStore';
+import { useConferenceStore } from '../../../store/ConferenceStore';
 import { ConnectedUser } from "./ConnectedUser"
 
 //TODO check if incorporation of user Object causes rerendering problems -> it causes rerendering by pos update

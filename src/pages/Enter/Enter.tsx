@@ -5,8 +5,8 @@ import { ReactComponent as Wave } from './../../assets/wave.svg'
 
 import { Footer } from '../../components/Footer/Footer'
 import { PanWrapper } from '../../components/PanWrapper/PanWrapper'
-import { UserDragContainer } from './../../components/Localuser/LocalUserContainer'
-import { Localuser } from '../../components/Localuser/Localuser'
+import { UserDragContainer } from '../../components/User/Localuser/LocalUserContainer'
+import { Localuser } from '../../components/User/Localuser/Localuser'
 import { JoinButton } from '../../components/Footer/JoinButton/JoinButton'
 import { MuteButton } from '../../components/Footer/MuteButton/MuteButton'
 
