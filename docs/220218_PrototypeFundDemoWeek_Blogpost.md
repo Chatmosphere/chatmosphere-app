@@ -12,7 +12,7 @@
  \- author: Christian Ivanis
  link: http://christianivanis.com/
  brief: Wir erweitern Chatmosphere für große Gruppen und machen es stabiler.
- summary: Um Chatmosphere zu skalieren wurde eine session-übergreifenden Architektur skizziert eine Testumgebung für Lasttests gebaut und Kommunikations-Werkzeugen entwickelt, um die Kommunikation über mehrere gleichzeitige Gespräche hinweg zu ermöglichen.
+ summary: Wir haben neue Features für die Kommunikation in großen Gruppen in Chatmosphere entwickelt, dazu eine session-übergreifende Architektur entworfen und eine Testumgebung bereit gestellt um die Serverlast zu evaluieren.
 
 Huhu Marie, huhu Patricia: Die Bildunterschriften sind mit “Bildunterschrift” gekennzeichnet. _Bitte das Wort "Bildunterschrift" nicht mitkopieren 😅_
 
