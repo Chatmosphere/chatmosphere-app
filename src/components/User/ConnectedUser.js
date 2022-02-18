@@ -33,7 +33,6 @@ export const ConnectedUser = ({id}) => {
       {(videoType !== 'desktop') &&
         <VideoContainer>
           {!user.properties?.onStage && <VideoTrack id={id} />}
-          {videoType}
         </VideoContainer>
       }
       {(videoType === 'desktop') && 
