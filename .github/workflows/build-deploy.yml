@@ -6,13 +6,6 @@ on:
       environment:
         type: environment
         description: Select the environment
-      tags: 
-        description: 'Dev Scenario Tags'
-      websockets:
-        description: 'Connect with Websockets or Bosh'
-        default: true
-        required: true 
-        type: boolean
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -38,7 +31,7 @@ jobs:
         run: |
           npm install
           npm test
-          PUBLIC_URL="https://${{ secrets.PUBLIC_URL }}" REACT_APP_SERVICE_URL=${{ secrets.SERVICE_URL }} REACT_APP_USE_WEBSOCKETS="${{ github.event.inputs.websockets }}" npm run build
+          PUBLIC_URL="https://${{ secrets.PUBLIC_URL }}" REACT_APP_SERVICE_URL=${{ secrets.SERVICE_URL }} REACT_APP_USE_WEBSOCKETS="true" npm run build
       - name: rsync deploy
         uses: burnett01/rsync-deployments@4.1
         with:
