@@ -38,7 +38,7 @@ jobs:
         run: |
           npm install
           npm test
-          PUBLIC_URL="https://${{ secrets.PUBLIC_URL }}" REACT_APP_SERVICE_URL=${{ secrets.SERVICE_URL }} REACT_APP_USE_WEBSOCKETS="${{ github.event.inputs.logLevel }}" npm run build
+          PUBLIC_URL="https://${{ secrets.PUBLIC_URL }}" REACT_APP_SERVICE_URL=${{ secrets.SERVICE_URL }} REACT_APP_USE_WEBSOCKETS="${{ github.event.inputs.websockets }}" npm run build
       - name: rsync deploy
         uses: burnett01/rsync-deployments@4.1
         with:
