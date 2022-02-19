@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useConferenceStore } from '../../../store/ConferenceStore';
-import { ReloadHint, UserBackdrop } from '../components/Backdrop/UserBackdrop';
+import { UserBackdrop } from '../components/Backdrop/UserBackdrop';
 import { AudioTrack } from './AudioTrack';
 import { MuteIndicator } from './MuteIndicator';
 import { VideoContainer, VideoTrack } from "./VideoTrack"

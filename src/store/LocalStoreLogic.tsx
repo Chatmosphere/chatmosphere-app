@@ -3,7 +3,6 @@ import { useConferenceStore } from "./ConferenceStore"
 import { useConnectionStore } from "./ConnectionStore"
 import { useLocalStore } from "./LocalStore"
 import { throttle } from "lodash"
-import { conferenceName } from "../components/JitsiConnection/jitsiOptions"
 
 const sendPositionToPeers = (pos: string, conferenceObject) => {
   conferenceObject?.sendCommand("pos", { value: pos })
