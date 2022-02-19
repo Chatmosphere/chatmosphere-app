@@ -18,7 +18,7 @@ export const ConnectedUser = ({id}) => {
   const calculateUserInRadius = useLocalStore(useCallback((store) => store.calculateUserInRadius,[]))
   const calculateUserOnScreen = useLocalStore(useCallback((store) => store.calculateUserOnScreen,[]))
   const user = useConferenceStore(useCallback(store => store.users[id], [id]))
-  const videoType = useConferenceStore(store => store.users[id]?.['video']?.['videoType'])
+  const videoType = useConferenceStore(store => store.users[id]?.['video']?.['videoType']) // FIXME maybe thats why there is a red square????
   const isOnStage = user.properties?.onStage
   const myRef = useRef()
 
