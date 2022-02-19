@@ -17,6 +17,7 @@ const BaseButton = (props) => {
     label,
     IconStart,
     IconEnd,
+    icon,
     primary,
     active,
     warning,
