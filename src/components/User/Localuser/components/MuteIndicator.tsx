@@ -1,6 +1,6 @@
-import { useLocalStore } from './../../../store/LocalStore';
-import {ReactComponent as MuteCat} from './../../../assets/muteCatSmall.svg'
-import { MuteContainer } from '../../User/MuteIndicator';
+import { useLocalStore } from '../../../../store/LocalStore';
+import {ReactComponent as MuteCat} from '../../../../assets/muteCatSmall.svg'
+import { MuteContainer } from '../../RemoteUser/MuteIndicator';
 
 
 

@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { useConferenceStore } from './../../store/ConferenceStore';
-import { ReloadHint } from '../ReloadHint/ReloadHint';
+import { useConferenceStore } from '../../../store/ConferenceStore';
+import { ReloadHint, UserBackdrop } from '../components/Backdrop/UserBackdrop';
 import { AudioTrack } from './AudioTrack';
 import { MuteIndicator } from './MuteIndicator';
 import { VideoContainer, VideoTrack } from "./VideoTrack"
-import { NameTag } from '../NameTag/NameTag';
-import { useLocalStore } from '../../store/LocalStore';
+import { NameTag } from '../../NameTag/NameTag';
+import { useLocalStore } from '../../../store/LocalStore';
 import { DesktopVideo } from './DesktopVideo';
 
 
@@ -18,8 +18,8 @@ export const ConnectedUser = ({id}) => {
   const calculateUserInRadius = useLocalStore(useCallback((store) => store.calculateUserInRadius,[]))
   const calculateUserOnScreen = useLocalStore(useCallback((store) => store.calculateUserOnScreen,[]))
   const user = useConferenceStore(useCallback(store => store.users[id], [id]))
-  const videoType = useConferenceStore(store => store.users[id]?.['video']?.['videoType'])
-
+  const videoType = useConferenceStore(store => store.users[id]?.['video']?.['videoType']) // FIXME maybe thats why there is a red square????
+  const isOnStage = user.properties?.onStage
   const myRef = useRef()
 
   useEffect(() => {
@@ -29,22 +29,25 @@ export const ConnectedUser = ({id}) => {
   },[id, calculateVolume, calculateUserInRadius, calculateUserOnScreen, user, myPos])
 
   return(
-    <div style={{position:'absolute', left:`${myPos.x}px`, top:`${myPos.y}px`}} id={id} className="userContainer" ref={myRef} >
-      {(videoType !== 'desktop') &&
-        <VideoContainer>
-          {!user.properties?.onStage && <VideoTrack id={id} />}
-        </VideoContainer>
-      }
-      {(videoType === 'desktop') && 
-        <VideoContainer>
-        {!user.properties?.onStage && <DesktopVideo user={user} />}
-        </VideoContainer>
-      }
-      <ReloadHint />
+    <div style={{position:'absolute', width:"200px", height:"200px", left:`${myPos.x}px`, top:`${myPos.y}px`}} id={id} className="userContainer" ref={myRef} >
+      <VideoContainer>
+        {isOnStage && 
+          <UserBackdrop onStage>Currently on Stage</UserBackdrop>
+        }
+        {!isOnStage && 
+          <>
+            <UserBackdrop>Maybe try a reload</UserBackdrop>
+            {(videoType !== 'desktop') && <VideoTrack id={id} />}
+            {(videoType === 'desktop') && <DesktopVideo user={user} />}
+          </>
+        }
+      </VideoContainer>
       <AudioTrack id={id} volume={myVolume} />
       <NameTag>{user?.user?._displayName || 'Friendly Sphere'}</NameTag>
       <div>Volume {Math.round(myVolume * 11)}</div>
-      {isMute && <MuteIndicator>🤭</MuteIndicator>}
+      {isMute && <MuteIndicator />}
     </div>
   )
 }
+
+export default ConnectedUser

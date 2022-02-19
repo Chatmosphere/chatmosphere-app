@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useConferenceStore } from "./../../../store/ConferenceStore";
-import { NameTag } from "../../NameTag/NameTag";
-import {InputField} from '../../common/Input/InputField'
+import { useConferenceStore } from "../../../../store/ConferenceStore";
+import { NameTag } from "../../../NameTag/NameTag";
+import {InputField} from '../../../common/Input/InputField'
 
 export const NameContainer = () => {
 

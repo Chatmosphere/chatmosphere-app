@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { useLocalStore } from '../../store/LocalStore';
-import { useConferenceStore } from "../../store/ConferenceStore";
+import { useLocalStore } from '../../../store/LocalStore';
+import { useConferenceStore } from "../../../store/ConferenceStore";
 
 export const AudioTrack = ({id, volume}) => {
   const audioTrack = useConferenceStore(useCallback(store => store.users[id]['audio'], [id]))

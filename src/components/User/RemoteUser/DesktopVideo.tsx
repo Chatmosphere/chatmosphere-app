@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect, useRef } from "react"
 import styled from "styled-components"
-import { useLocalStore } from './../../store/LocalStore';
+import { useLocalStore } from '../../../store/LocalStore';
 
 
 const Video = styled.video`
