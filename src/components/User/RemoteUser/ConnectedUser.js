@@ -29,7 +29,7 @@ export const ConnectedUser = ({id}) => {
   },[id, calculateVolume, calculateUserInRadius, calculateUserOnScreen, user, myPos])
 
   return(
-    <div style={{position:'absolute', left:`${myPos.x}px`, top:`${myPos.y}px`}} id={id} className="userContainer" ref={myRef} >
+    <div style={{position:'absolute', width:"200px", height:"200px", left:`${myPos.x}px`, top:`${myPos.y}px`}} id={id} className="userContainer" ref={myRef} >
       <VideoContainer>
         {isOnStage && 
           <UserBackdrop onStage>Currently on Stage</UserBackdrop>
