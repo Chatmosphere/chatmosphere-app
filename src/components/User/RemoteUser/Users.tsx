@@ -11,8 +11,6 @@ export const Users = () => {
   return (
     <>
     {Object.keys(users).map((key) => {
-      //@ts-ignore
-      // if(user[1]?.properties?.onStage) return <StageUser key={user[0]} user={user} />
       return <RemoteUser key={key} id={key}/>
     })}
     </>

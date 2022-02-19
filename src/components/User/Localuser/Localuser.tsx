@@ -4,17 +4,18 @@ import { useLocalStore } from "../../../store/LocalStore"
 import LocalVideo from "./components/LocalVideo"
 import LocalAudio from "./components/LocalAudio"
 import { MuteIndicator } from "./components/MuteIndicator"
-import { ReloadHint } from "../components/Backdrop/UserBackdrop"
+import { UserBackdrop } from "../components/Backdrop/UserBackdrop"
 import { panOptions } from "../../PanWrapper/panOptions"
 import { AudioRadius } from "./components/AudioRadius"
 import { NameContainer } from "./components/NameContainer"
 import LocalDesktop from "../../../addons/Screenshare/components/LocalDesktop"
+import { VideoContainer } from "../RemoteUser/DesktopVideo"
 
 const Container = styled.div`
   width: ${panOptions.user.size.x}px;
   height: ${panOptions.user.size.y}px;
   position: absolute;
-  border: 4px solid #D9DBEB;
+  border: 4px solid ${(props) => props.theme.base[4]};
   border-radius: 300px;
   cursor: default;
   &:active {
@@ -34,6 +35,7 @@ export const Localuser: React.FC<ILocaluser> = ({audioRadius = false}) => {
   const videoTrack = useLocalStore((store) => store.video)
   const videoType = useLocalStore(store => store.videoType)
   const isMute = useLocalStore((store) => store.mute)
+  const isOnStage = useLocalStore((store) => store.onStage)
 
   const localUserNode = useRef<HTMLDivElement>(null)
 
@@ -42,13 +44,21 @@ export const Localuser: React.FC<ILocaluser> = ({audioRadius = false}) => {
       ref={localUserNode}
     >
       {audioRadius && <AudioRadius></AudioRadius>}
-      <ReloadHint />
-      {(videoTrack && videoType === "camera" ) && (
-        <LocalVideo key={videoTrack.track.id} track={videoTrack} />
-      )}
-      {(videoTrack && videoType === "desktop") && (
-        <LocalDesktop key={videoTrack.track.id} track={videoTrack} />
-      )}
+      <VideoContainer>
+      {isOnStage && <UserBackdrop onStage />}
+
+      {!isOnStage && 
+        <>
+          <UserBackdrop />
+          {(videoTrack && videoType === "camera" ) && (
+            <LocalVideo key={videoTrack.track.id} track={videoTrack} />
+            )}
+          {(videoTrack && videoType === "desktop") && (
+            <LocalDesktop key={videoTrack.track.id} track={videoTrack} />
+            )}
+        </>
+      }
+      </VideoContainer>
       {audioTrack && (
         <LocalAudio key={audioTrack.track.id} track={audioTrack} />
       )}
