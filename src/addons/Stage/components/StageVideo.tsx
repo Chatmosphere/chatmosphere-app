@@ -31,24 +31,16 @@ export const StageVideo = (props) => {
 }
 
 //Could be a General Video Element
+// BEWARE - this detaches and reattaches the video element from previous dom element!!!
 export const VideoComponent:React.FunctionComponent<IVideoParams> = (props) => {
 	const {video, mirrored=false, className, id, Element=Video, ...rest} = props
 	
 	const myRef: any = useRef<HTMLVideoElement>();
 	useEffect(() => {
 		const el = myRef.current;
-		let tmpEl = undefined;
-		if (video?.containers && video?.containers?.length > 0) {
-			tmpEl = video.containers[0];
-			if (tmpEl)
-				video?.detach(tmpEl);
-		}
-		if (video?.containers?.length === 0)
-			video.attach(el);
+		video?.attach(el);
 		return (() => {
 			video?.detach(el);
-			if (tmpEl)
-				video?.attach(tmpEl);
 		});
 	}, [video]);
 
