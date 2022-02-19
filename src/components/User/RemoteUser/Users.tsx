@@ -1,5 +1,5 @@
 import { useConferenceStore } from '../../../store/ConferenceStore';
-import { ConnectedUser } from "./ConnectedUser"
+import RemoteUser from "./ConnectedUser"
 
 //TODO check if incorporation of user Object causes rerendering problems -> it causes rerendering by pos update
 
@@ -13,7 +13,7 @@ export const Users = () => {
     {Object.keys(users).map((key) => {
       //@ts-ignore
       // if(user[1]?.properties?.onStage) return <StageUser key={user[0]} user={user} />
-      return <ConnectedUser key={key} id={key}/>
+      return <RemoteUser key={key} id={key}/>
     })}
     </>
   )

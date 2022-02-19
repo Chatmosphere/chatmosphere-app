@@ -4,7 +4,7 @@ import { useLocalStore } from "../../../store/LocalStore"
 import LocalVideo from "./components/LocalVideo"
 import LocalAudio from "./components/LocalAudio"
 import { MuteIndicator } from "./components/MuteIndicator"
-import { ReloadHint } from "../../ReloadHint/ReloadHint"
+import { ReloadHint } from "../components/Backdrop/UserBackdrop"
 import { panOptions } from "../../PanWrapper/panOptions"
 import { AudioRadius } from "./components/AudioRadius"
 import { NameContainer } from "./components/NameContainer"
@@ -42,13 +42,13 @@ export const Localuser: React.FC<ILocaluser> = ({audioRadius = false}) => {
       ref={localUserNode}
     >
       {audioRadius && <AudioRadius></AudioRadius>}
+      <ReloadHint />
       {(videoTrack && videoType === "camera" ) && (
         <LocalVideo key={videoTrack.track.id} track={videoTrack} />
       )}
       {(videoTrack && videoType === "desktop") && (
         <LocalDesktop key={videoTrack.track.id} track={videoTrack} />
       )}
-      <ReloadHint />
       {audioTrack && (
         <LocalAudio key={audioTrack.track.id} track={audioTrack} />
       )}
