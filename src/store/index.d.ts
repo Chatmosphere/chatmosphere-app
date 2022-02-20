@@ -37,6 +37,7 @@ declare type IJitsiConference={
   setLocalParticipantProperty:(key:string,value:any)=>void
   sendTextMessage:(txt:string)=>void
   getLocalTracks: () => IMediaTrack[]
+  getLocalVideoTrack: () => IVideoTrack
   replaceTrack:(oldTrack:IMediaTrack,newTrack:IMediaTrack)=>Promise<any>
 }
 

@@ -20,36 +20,38 @@ export const ScreenshareButton = (props) => {
 
 	const setTracks = (tracks) => {
 		const newTrack = tracks[0]
+		let tmpSharing = false;
 		if(newTrack.videoType === 'desktop') {
+			tmpSharing = true;
 			newTrack.addEventListener(
-				window.JitsiMeetJS?.events.track.LOCAL_TRACK_STOPPED,() => setIsSharing(false)
+				window.JitsiMeetJS?.events.track.LOCAL_TRACK_STOPPED,() => createVideoTrack(jsMeet)
 			)
 		}
 		// tracks[0].track.onended = () => console.log("Track onended") //chrome #and firefox getting that event (Safari is not :(
 		// tracks[0].track.onmute = () => console.log("Track onmuted") //Safari Event
-		const oldTrack = conferenceObject?.getLocalTracks().find(track => track.getType() === "video")
-		replaceLocalTrack(newTrack)
-		console.log("old videoTrack", oldTrack);
 		// TODO: dkg Reminder
 		// FIX: crazy wise this is deleting local audio track but its still delivered and live on the call - why is that? 
-
-		if(oldTrack && newTrack.videoType !== oldTrack.videoType)  {
+		
+		const oldTrack = conferenceObject?.getLocalVideoTrack()
+		if(oldTrack) {
 			conferenceObject?.replaceTrack(oldTrack, newTrack)
 			.then(()=>{
+				replaceLocalTrack(newTrack)
+				setIsSharing(tmpSharing)
 				oldTrack.dispose()
 			})
 		}
 	}
 
 		const createDesktopTrack = (jsmeet) => {
-			jsmeet.createLocalTracks({ devices: [ 'desktop' ] }, true) //TODO should happen in store also - just like in LocalVideo
+			jsmeet.createLocalTracks({ devices: [ 'desktop' ] }) //TODO should happen in store also - just like in LocalVideo
 			.then((tracks) => setTracks(tracks))
 			.catch(error => {
-				console.log(error)
+				console.log("Error Message", error)
 			});
 		}
 		const createVideoTrack = (jsmeet) => {
-			jsmeet.createLocalTracks({ devices: [ 'video' ] }, true)
+			jsmeet.createLocalTracks({ devices: [ 'video' ] })
 			.then((tracks) => setTracks(tracks))
 			.catch(error => {
 				console.log(error)
@@ -63,7 +65,6 @@ export const ScreenshareButton = (props) => {
 		} else {
 			createDesktopTrack(jsMeet)
 		}
-		setIsSharing(!isSharing)
 	}
 
 	return <IconButton round onClick={onClick} IconStart={<ScreenShareIcon />} label="Screenshare" />
