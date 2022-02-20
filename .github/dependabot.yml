@@ -9,5 +9,5 @@ updates:
     schedule: {interval: weekly}
 
   - package-ecosystem: npm
-    directory: /website
+    directory: /
     schedule: {interval: weekly}
