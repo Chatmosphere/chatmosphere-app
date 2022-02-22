@@ -10,7 +10,7 @@ import {
 // ****************************************************************
 export const useConnectionStore = create<IConnectionStore>((set, get) => {
   const initialState = {
-    serverUrl: "meet.jit.si",
+    serverUrl: process.env.REACT_APP_SERVICE_URL || "meet.jit.si",
     jsMeet: undefined,
     room: null,
     connection: undefined,
