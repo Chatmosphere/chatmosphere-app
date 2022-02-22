@@ -5,6 +5,7 @@ import { conferenceOptions } from '../components/JitsiConnection/jitsiOptions';
 import { getVolumeByDistance } from '../utils/VectorHelpers';
 import { useConnectionStore } from './ConnectionStore';
 import { useLocalStore } from './LocalStore';
+import { secureConferenceName } from "../utils/secureConferenceName"
 
 // # TS DEFINITIONS *******************************************
 
@@ -123,11 +124,11 @@ export const useConferenceStore = create<IConferenceStore>((set,get) => {
   // # Public functions *******************************************
   const initConference = (conferenceID:string):void => {
     const JitsiMeetJS = useConnectionStore.getState().jsMeet 
-    const connection = useConnectionStore.getState().connection //either move to ConnectionStore or handle undefined here
-    const enteredConferenceName = conferenceID.length > 0 ? conferenceID.toLowerCase() : get().conferenceName?.toLowerCase()
-    const conferenceName = process.env.REACT_APP_DEMO_SESSION || enteredConferenceName
+    const connection = useConnectionStore.getState().connection //TODO: either move to ConnectionStore or handle undefined here
+    // make sure there is a conference Name
+    const enteredConferenceName = process.env.REACT_APP_DEMO_SESSION || conferenceID.length > 0 ? conferenceID : get().conferenceName || "chatmosphere"
+    const conferenceName = secureConferenceName(enteredConferenceName, process.env.REACT_APP_SESSION_PREFIX)
     set({conferenceName:conferenceName})
-    // console.log("init:",connection ,JitsiMeetJS , conferenceName,useConnectionStore.getState().connected,conferenceID)
     if(connection && JitsiMeetJS && conferenceName) {
       const conference = connection.initJitsiConference(conferenceName, conferenceOptions) //TODO before unload close connection
       conference.on(JitsiMeetJS.events.conference.USER_JOINED, _addUser)
@@ -160,11 +161,10 @@ export const useConferenceStore = create<IConferenceStore>((set,get) => {
     const conference = get().conferenceObject
     conference?.leave()
   }
-  const setConferenceName = (name) => {
-    if(name.length < 1) return false
-    const lName:string = name.toLowerCase()
-    set({conferenceName:lName})
-    return true
+  const setConferenceName = (name = "chatmosphere") => {
+    const newName = secureConferenceName(name, process.env.REACT_APP_SESSION_PREFIX)
+    set({conferenceName:newName})
+    return newName
   }
 
   const setDisplayName = (name) => {

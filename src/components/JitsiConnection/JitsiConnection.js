@@ -29,9 +29,9 @@ const JitsiConnection = () => {
   },[initJitsiMeet])
 
   useEffect(() => {
-    connectServer(id)
+    connectServer()
     return ()=> disconnectServer()
-  },[id, connectServer, disconnectServer])
+  },[connectServer, disconnectServer])
 
   useEffect(() => {
     if(jsMeet && connected) {
