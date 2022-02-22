@@ -20,7 +20,8 @@ const customConnectionOptions = {
   //# bosh can be set to the url of the Prosody XMPP server to be contacted via BOSH.
   //# if you don't set this, it will default to /http-bind
   // bosh: `https://${process.env.REACT_APP_SERVICE_URL}/http-bind?room=chatmosphere1234`, // ! if you make your own please omit the "?room=chatmosphere1234" part
-  // websocket: 'wss://${process.env.REACT_APP_SERVICE_URL}/xmpp-websocket',
+  bosh: `https://${process.env.REACT_APP_SERVICE_URL}/http-bind`, // ! if you make your own please omit the "?room=chatmosphere1234" part
+  websocket: `wss://${process.env.REACT_APP_SERVICE_URL}/xmpp-websocket`,
 
   // !! leave this exactly as is !!
   clientNode: 'http://jitsi.org/jitsimeet'
