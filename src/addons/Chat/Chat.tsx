@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { useConferenceStore } from "../../store/ConferenceStore"
 import ChatIcon from "../../assets/icons/ChatIcon"
-import { Menu, MenuCard } from "../../components/common/Menu/Menu"
+import { MenuCard } from "../../components/common/Menu/Menu"
 
 const SendButton = styled.button``
 const Input = styled.div`

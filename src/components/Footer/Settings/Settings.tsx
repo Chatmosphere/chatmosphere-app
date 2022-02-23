@@ -1,9 +1,6 @@
-// import Button from "./Button"
-import { useState } from "react"
 import { MdMoreVert } from "react-icons/md"
 import styled from "styled-components"
-import { IconButton } from "../../common/Buttons/Button"
-import { Menu, MenuCard } from "../../common/Menu/Menu"
+import { Menu } from "../../common/Menu/Menu"
 import { useSettingsStore } from "./SettingsStore"
 
 export const Settings = () => {
