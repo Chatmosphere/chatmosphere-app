@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { useConferenceStore } from "../../store/ConferenceStore"
 import ChatIcon from "../../assets/icons/ChatIcon"
-import { Menu } from "../../components/common/Menu/Menu"
+import { MenuCard } from "../../components/common/Menu/Menu"
 
 const SendButton = styled.button``
 const Input = styled.div`
@@ -156,7 +156,7 @@ const Modal = ({ callback }) => {
   }, [sendMessage])
 
   return (
-    <Menu title="Chat" onClose={callback}>
+    <MenuCard title="Chat" onClose={callback}>
       <ContentArea ref={chatParentRef}>
         {messages.map((message, key) => {
           if (users[message.id]) return <Message key={key} name={users?.[message.id].user._displayName} content={message.text}/>
@@ -168,7 +168,7 @@ const Modal = ({ callback }) => {
         <StyledTextarea ref={inputFieldRef} id="chatInput" />
         <SendButton onClick={sendMessage}>Send</SendButton>
       </Input>
-    </Menu>
+    </MenuCard>
   )
 }
 

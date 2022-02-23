@@ -39,7 +39,11 @@ const defaultTheme = {
     small: "0.875rem",
     tiny: "0.75rem",
   },
-  fontWeights: {},
+  fontWeights: {
+    bold: '600',
+    medium: '500',
+    regular: '400'
+  },
   lineHeights: {},
   radius: {
     small: "5px",
