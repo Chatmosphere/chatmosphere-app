@@ -20,9 +20,9 @@ export const VideoContainer = styled.div`
   border-radius: 100px;
 `
 
-export const DesktopVideo:React.FC<{user:IUser}> = React.memo(({user}) => {
+export const DesktopVideo:React.FC<{id:number, videoTrack:IMediaTrack}> = React.memo(({id, videoTrack}) => {
 
-  const videoTrack = user?.video
+  // const videoTrack = user?.video
   const myRef:any = useRef()
 
   const localVideoTrack = useLocalStore((store) => store.video)
@@ -41,7 +41,7 @@ export const DesktopVideo:React.FC<{user:IUser}> = React.memo(({user}) => {
 
   return (
     <div>
-      <Video autoPlay={true} ref={myRef} className={`remoteTrack desktopTrack ${user.id}video`} id={`${user.id}desktop`} />
+      <Video autoPlay={true} ref={myRef} className={`remoteTrack desktopTrack ${id}video`} id={`${id}desktop`} />
     </div>
   )
 })

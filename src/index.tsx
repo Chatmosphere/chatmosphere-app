@@ -7,14 +7,15 @@ import { lightTheme } from './theme/theme'
 import { GlobalStyles } from './theme/GlobalStyles/GlobalStyles'
 
 ReactDOM.render(
-	<React.StrictMode>
+	// <React.StrictMode>
 		<ThemeProvider theme={lightTheme}>
 			<>
       <GlobalStyles/>
 			<App />
 			</>
 		</ThemeProvider>
-	</React.StrictMode>,
+	// </React.StrictMode>
+	,
 	document.getElementById('root'),
 )
 

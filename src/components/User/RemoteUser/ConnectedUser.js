@@ -18,7 +18,6 @@ export const ConnectedUser = ({id}) => {
   const calculateUserInRadius = useLocalStore(useCallback((store) => store.calculateUserInRadius,[]))
   const calculateUserOnScreen = useLocalStore(useCallback((store) => store.calculateUserOnScreen,[]))
   const user = useConferenceStore(useCallback(store => store.users[id], [id]))
-  const videoType = useConferenceStore(store => store.users[id]?.['video']?.['videoType']) // FIXME maybe thats why there is a red square????
   const isOnStage = user.properties?.onStage
   const myRef = useRef()
 
@@ -27,6 +26,9 @@ export const ConnectedUser = ({id}) => {
     calculateUserInRadius(id)
     calculateUserOnScreen(user, myRef.current)
   },[id, calculateVolume, calculateUserInRadius, calculateUserOnScreen, user, myPos])
+
+  if(user.videoType === 'desktop') console.dir("desktop", user.video.videoType)
+  if(user.videoType === 'camera') console.dir("camera", user.video.videoType)
 
   return(
     <div style={{position:'absolute', width:"200px", height:"200px", left:`${myPos.x}px`, top:`${myPos.y}px`}} id={id} className="userContainer" ref={myRef} >
@@ -37,8 +39,8 @@ export const ConnectedUser = ({id}) => {
         {!isOnStage && 
           <>
             <UserBackdrop>Maybe try a reload</UserBackdrop>
-            {(videoType !== 'desktop') && <VideoTrack id={id} />}
-            {(videoType === 'desktop') && <DesktopVideo user={user} />}
+            {(user.videoType !== 'desktop') && <VideoTrack id={id} videoTrack={user.video} />}
+            {(user.videoType === 'desktop') && <DesktopVideo id={id} videoTrack={user.video} />}
           </>
         }
       </VideoContainer>
