@@ -16,7 +16,6 @@ import { Users } from "../../components/User/RemoteUser/Users"
 import { LocalStoreLogic } from "../../store/LocalStoreLogic"
 import { ScreenshareButton } from "../../addons/Screenshare/ScreenshareButton/ScreenshareButton"
 import Chat from "../../addons/Chat/Chat"
-import {Settings} from "../../components/Footer/Settings/Settings"
 import { MoreTab } from "../../components/Footer/MoreTab/MoreTab"
 
 

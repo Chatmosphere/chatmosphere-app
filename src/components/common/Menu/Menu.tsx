@@ -2,7 +2,6 @@ import styled from "styled-components"
 import Card from "../Card/Card"
 import { useState } from "react"
 import { IconButton } from "../Buttons/Button"
-import { lighten } from "polished"
 
 export const MenuCard = styled(Card)`
   width: 270px;
