@@ -5,7 +5,7 @@ declare type IMediaTrack = {
   containers:any[]
   videoType?:string
   getType: () => deviceType
-  dispose: () => void
+  dispose: () => promise
   isLocal: () => boolean
   isMuted: () => boolean
   mute: () => void
