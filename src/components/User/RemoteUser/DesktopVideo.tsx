@@ -5,7 +5,7 @@ import { useLocalStore } from '../../../store/LocalStore';
 
 
 const Video = styled.video`
-  background: red;
+  /* background: red; */
   width: auto;
   height: 200px;
   object-position: 50% 50%;
@@ -25,8 +25,6 @@ export const DesktopVideo:React.FC<{id:number, videoTrack:IMediaTrack}> = React.
   // const videoTrack = user?.video
   const myRef:any = useRef()
 
-  const localVideoTrack = useLocalStore((store) => store.video)
-
   //For some reason; when camera permission is not granted yet, not only the local video track, but also the remote video tracks aren't rendered.
   //The solution is to reattach the remote tracks once local track is available.
   useEffect(() => {
@@ -37,7 +35,7 @@ export const DesktopVideo:React.FC<{id:number, videoTrack:IMediaTrack}> = React.
     return(() => {
       videoTrack?.detach(currentElement)
     })
-  },[videoTrack, localVideoTrack])
+  },[videoTrack])
 
   return (
     <div>
