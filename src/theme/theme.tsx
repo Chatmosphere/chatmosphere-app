@@ -94,6 +94,11 @@ const warm = {
       bg:color.blue100,
       bg_h:color.blue100,
       fg:color.mono100
+    },
+    active: {
+      bg:color.blue100,
+      bg_h:color.blue100,
+      fg:color.mono100
     }
   },
   input: {

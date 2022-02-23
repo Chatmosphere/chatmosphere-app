@@ -30,6 +30,7 @@ export const Menu = ({ title, label="", icon=undefined, children }:MenuProps) =>
       <IconButton
         IconStart={icon}
         label={label}
+				active={open}
         round
         ghost
         onClick={() => setOpen(!open)}

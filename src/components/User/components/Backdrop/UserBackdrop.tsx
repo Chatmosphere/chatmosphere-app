@@ -40,7 +40,7 @@ const OnStage = styled(BaseBackdrop)`
 	background: ${(props) => props.theme.bg.inset};
   color: white;
 	& svg {
-		fill: white;
+		stroke: white;
 	}
 `
 

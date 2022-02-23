@@ -1,29 +1,49 @@
 // used https://svg2jsx.com/ - thx a lot <3
-function MicOffIcon() {
+
+function Icon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
       version="1.1"
-      viewBox="280 1176.25 24 24"
-      style={{ WebkitPrintColorAdjust: "exact", stroke:"none" }}
+      viewBox="0 0 24 24"
+      style={{ WebkitPrintColorAdjust: "exact", fill:"none" }}
     >
-      <g>
-        <path
-          fillRule="evenodd"
-          d="M301.707 1178.371a1 1 0 00-1.414-1.414l-3.59 3.59a5.002 5.002 0 00-9.703 1.703v8l-6.293 6.293a1 1 0 101.414 1.414l19.586-19.586zM289 1188.25l6-6a3 3 0 00-6 0v6z"
-          clipRule="evenodd"
-        ></path>
-        <path
-          d="M295 1187.22l2-2v5.03a5 5 0 01-8.55 3.52l1.414-1.414a3 3 0 005.136-2.106v-3.03z"
-        ></path>
-        <path
-          d="M287.035 1195.185l-1.414 1.414.015.015A9 9 0 00301 1190.25h-2a7 7 0 01-11.965 4.935z"
-        ></path>
+      <g clipPath="url(#frame-clip-a6a78f70-94c5-11ec-a547-e7091bb4fd45-ed375f60-94c5-11ec-9f1c-11b5e9139405)">
+        <defs>
+          <clipPath
+            id="frame-clip-a6a78f70-94c5-11ec-a547-e7091bb4fd45-ed375f60-94c5-11ec-9f1c-11b5e9139405"
+            className="frame-clip"
+          >
+            <path d="M0 0H24V24H0z"></path>
+          </clipPath>
+        </defs>
+        <g opacity="1">
+          <g className="feather feather-mic-off">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M1 1l22 21.985"
+            ></path>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M8.532 10.82V14.2a3.382 3.382 0 005.771 2.39m.992-5.388v-6.02a3.382 3.382 0 00-6.696-.676"
+            ></path>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M17.55 19.78a7.89 7.89 0 01-13.527-5.579v-2.254m15.78 0V14.2c0 .465-.041.929-.123 1.386"
+            ></path>
+          </g>
+        </g>
       </g>
     </svg>
   );
 }
 
-export default MicOffIcon;
+export default Icon;

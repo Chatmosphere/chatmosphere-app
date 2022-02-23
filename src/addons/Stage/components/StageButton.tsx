@@ -22,7 +22,7 @@ export const StageButton = ({callback=()=>null}) => {
 	},[setOnStage])
 
 	return (
-		<IconButton onClick={onClick} round label="Stage" IconStart={<StageIcon/>} />
+		<IconButton active={onStage} onClick={onClick} round label="Stage" IconStart={<StageIcon />} />
 	)
 
 }
