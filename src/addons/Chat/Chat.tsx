@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { useConferenceStore } from "../../store/ConferenceStore"
 import ChatIcon from "../../assets/icons/ChatIcon"
 import { MenuCard } from "../../components/common/Menu/Menu"
+import { IconButton } from "../../components/common/Buttons/Button"
 
 const SendButton = styled.button``
 const Input = styled.div`
@@ -177,10 +178,18 @@ const Chat = () => {
 
   return (
     <>
-      <Button onClick={() => toggleShow(!show)}>
-        <ChatIcon /> <Label>Chat</Label>
-      </Button>
+      {/* <Button onClick={() => toggleShow(!show)}>
+        <ChatIcon/> <Label>Chat</Label>
+      </Button> */}
       {show && <Modal callback={() => toggleShow(!show)} />}
+      <IconButton 
+        IconStart={<ChatIcon />}
+        active={show}
+        label="Chat"
+        round
+        ghost
+        onClick={() => toggleShow(!show)}
+      />
     </>
   )
 }

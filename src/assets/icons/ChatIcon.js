@@ -1,25 +1,31 @@
 import React from "react";
 
-function ChatIcon() {
+function Icon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"
       version="1.1"
-      viewBox="656.483 1176.25 24 24"
-      style={{ WebkitPrintColorAdjust: "exact" }}
+      viewBox="0 0 24 24"
+      style={{ WebkitPrintColorAdjust: "exact", fill:"none" }}
     >
-      <g>
+      <g clipPath="url(#frame-clip-e404a610-94c9-11ec-a547-e7091bb4fd45-aaa6de50-94ca-11ec-a923-e7d894e359c9)">
+        <defs>
+          <clipPath
+            id="frame-clip-e404a610-94c9-11ec-a547-e7091bb4fd45-aaa6de50-94ca-11ec-a923-e7d894e359c9"
+            className="frame-clip"
+          >
+            <path d="M0 0H24V24H0z"></path>
+          </clipPath>
+        </defs>
         <path
-          fill="#434241"
-          fillRule="evenodd"
-          d="M658.483 1186.25a8 8 0 018-8h4a8 8 0 110 16h-4.323a6 6 0 00-4.516 2.049l-1.408 1.61a1 1 0 01-1.753-.659v-11zm8-6a6 6 0 00-6 6v8.363a8 8 0 015.677-2.363h4.323a6 6 0 000-12h-4z"
-          clipRule="evenodd"
+          strokeWidth="2"
+          d="M4 10c0-4.415 2.585-7 7-7h3c4.415 0 7 2.585 7 7h0c0 4.415-2.585 7-7 7h-3c-6 0-7 4.966-7 3.172V10zh0zh0z"
         ></path>
       </g>
     </svg>
   );
 }
 
-export default ChatIcon;
+export default Icon;
