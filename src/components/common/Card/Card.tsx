@@ -18,7 +18,7 @@ const Header = styled.div`
 	justify-content: space-between;
 `
 const Title = styled.span`
-
+	font-weight: ${props => props.theme.fontWeights.medium};
 `
 const Close = styled.button`
 	border: none;
@@ -39,13 +39,13 @@ const Close = styled.button`
 	}
 `
 
-export const Card = ({title, callback=()=>null, className="", children}) => {
+export const Card = ({title, onClose=():void|null=>null, className="", children}) => {
 
 	return (
 	<Box className={className}>
 		<Header>
 			<Title>{title}</Title>
-			<Close onClick={callback}><X/><label>Close</label></Close>
+			<Close onClick={onClose}><X/><label>Close</label></Close>
 		</Header>
 		{children}
 	</Box>

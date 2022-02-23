@@ -17,6 +17,7 @@ import { LocalStoreLogic } from "../../store/LocalStoreLogic"
 import { ScreenshareButton } from "../../addons/Screenshare/ScreenshareButton/ScreenshareButton"
 import Chat from "../../addons/Chat/Chat"
 import {Settings} from "../../components/Footer/Settings/Settings"
+import { MoreTab } from "../../components/Footer/MoreTab/MoreTab"
 
 
 
@@ -42,7 +43,7 @@ export const Session = () => {
         </Room>
       </PanWrapper>
       <Footer
-        rightBox={[<Chat key="rB1"/>,<Settings key="rB2" />]}
+        rightBox={[<Chat key="rB1"/>,<MoreTab key="rB2" />]}
         leftBox="Chatmosphere"
       >
         <StageButton />

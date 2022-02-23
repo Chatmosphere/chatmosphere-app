@@ -3,44 +3,17 @@ import { useState } from "react"
 import { MdMoreVert } from "react-icons/md"
 import styled from "styled-components"
 import { IconButton } from "../../common/Buttons/Button"
-import { Menu } from "../../common/Menu/Menu"
+import { Menu, MenuCard } from "../../common/Menu/Menu"
 import { useSettingsStore } from "./SettingsStore"
 
 export const Settings = () => {
-  const [open, setOpen] = useState(false)
   const elements = useSettingsStore((store) => store.elements)
 
   return (
-    <>
-      {open && (
-        <SettingsMenu
-          title="Settings"
-          children={elements}
-          onClose={() => setOpen(false)}
-        />
-      )}
-      <IconButton
-        IconStart={<MdMoreVert />}
-        label="Settings"
-        round
-				ghost
-        onClick={() => setOpen(!open)}
-      />
-    </>
-  )
-}
-
-const SettingsMenu = ({ title, onClose, children = [] as React.ReactNode }) => {
-  return (
-    <Menu title={title} onClose={onClose}>
+    <Menu title="Settings" label="Settings" icon={<MdMoreVert />}>
       <StyledContentBox>
-        {children}
-        {/* <Select name="whut">
-          Lorem ipsum dolor sit amet, consectetur adip Sit amet dklsjf fjf
-          jfdksa
-        </Select>
-        <Select name="whut">test</Select> */}
-				<Select name="whut">test</Select>
+        {elements.map((element) => element)}
+        <Select name="whut">test</Select>
       </StyledContentBox>
     </Menu>
   )
