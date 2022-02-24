@@ -50,20 +50,11 @@ export const useLocalStore = create<ILocalStore>((set, get) => {
 
   const setLocalTracks = tracks => _produceAndSet(newState => {
     const audioTrack = tracks.find(t => t.getType() === "audio")
-    const videoTrack = tracks.find(t => t.getType() === "video")
+    const videoTrack = tracks.find(t => t.getType() === "video") // second array el should be video
 
     newState.videoType = videoTrack?.videoType === "desktop" ? "desktop" : "camera" //set videoType
-    newState.video = videoTrack
-    newState.audio = audioTrack
-  })
-
-  const replaceLocalTrack = newTrack => _produceAndSet(newState => {
-    if (newTrack.getType() === "audio") {
-      newState.audio = newTrack
-    } else {
-      newState.videoType = newTrack.videoType === "desktop" ? "desktop" : "camera"
-      newState.video = newTrack
-    }
+    if(videoTrack) newState.video = videoTrack
+    if(audioTrack) newState.audio = audioTrack
   })
 
   const clearLocalTracks = () => _produceAndSet(newState => {
@@ -221,7 +212,6 @@ export const useLocalStore = create<ILocalStore>((set, get) => {
     ...state,
     setLocalPosition,
     setLocalTracks,
-    replaceLocalTrack,
     toggleMute,
     clearLocalTracks,
     setMyID,

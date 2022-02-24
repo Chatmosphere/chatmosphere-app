@@ -5,7 +5,7 @@ declare type IMediaTrack = {
   containers:any[]
   videoType?:string
   getType: () => deviceType
-  dispose: () => void
+  dispose: () => promise
   isLocal: () => boolean
   isMuted: () => boolean
   mute: () => void
@@ -80,7 +80,6 @@ declare type Vector2 = {x:number, y:number}
 declare type ILocalStore = {
   setLocalPosition: (newPosition:IVector2) => void
   setLocalTracks: (tracks:Track[]) => void
-  replaceLocalTrack: (track:IMediaTrack) => void
   toggleMute: () => void
   clearLocalTracks: () => void
   setMyID: (id:string) => void
@@ -114,8 +113,7 @@ declare type IJsMeet = {
   events: IJitsiEvents
   mediaDevices: IMediaDevices
   createLocalTracks: (
-    options: { devices: deviceType[] },
-    notSure: boolean,
+    options: { devices: deviceType[] }
   ) => Promise<IMediaTrack[]>
   JitsiConnection: any
 }

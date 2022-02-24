@@ -22,9 +22,9 @@ export const VideoContainer = styled.div`
   border-radius: 100px;
 `
 
-export const VideoTrack:React.FC<{id:number}> = React.memo(({id}) => {
+export const VideoTrack:React.FC<{id:number, videoTrack:IMediaTrack}> = React.memo(({id, videoTrack}) => {
 
-  const videoTrack = useConferenceStore(useCallback(store => store.users[id]?.video, [id]))
+  // const videoTrack = useConferenceStore(useCallback(store => store.users[id]?.video, [id]))
   const myRef:any = useRef()
 
   const localVideoTrack = useLocalStore((store) => store.video)

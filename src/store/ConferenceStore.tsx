@@ -49,10 +49,16 @@ export const useConferenceStore = create<IConferenceStore>((set,get) => {
     if(newState.users[id]) newState.users[id].audio = undefined
   })
   const _addVideoTrack = (id:ID, track:IMediaTrack):void => produceAndSet (newState => {
-    if(newState.users[id]) newState.users[id].video = track
+    if(newState.users[id]) { 
+      newState.users[id].video = track
+      newState.users[id].videoType = track.videoType === "desktop" ? "desktop" : "camera" //set videoType directly
+    }
   })
   const _removeVideoTrack = (id:ID):void => produceAndSet (newState => {
-    if(newState.users[id]) newState.users[id].video = undefined
+    if(newState.users[id]) {
+      newState.users[id].video = undefined
+      newState.users[id].videoType = undefined //remove VideoType
+    }
   })
   const _onPositionReceived = (e:any):void => {
     const pos = JSON.parse(e.value)
@@ -80,19 +86,19 @@ export const useConferenceStore = create<IConferenceStore>((set,get) => {
     const JitsiMeetJS = useConnectionStore.getState().jsMeet 
     track.addEventListener(JitsiMeetJS?.events.track.TRACK_AUDIO_OUTPUT_CHANGED,deviceId =>console.log(`track audio output device was changed to ${deviceId}`))
     const id = track.getParticipantId() // get user id of track
-    track.addEventListener(JitsiMeetJS?.events.track.TRACK_VIDEOTYPE_CHANGED, (e)=>_onVideoTypeChanged(e, id, track))
+    track.addEventListener(JitsiMeetJS?.events.track.TRACK_VIDEOTYPE_CHANGED, (e)=>_onVideoTypeChanged(e, id))
     track.getType() === "audio" ? _addAudioTrack(id, track) : _addVideoTrack(id, track)
   }
   const _onRemoteTrackRemoved = (track:IMediaTrack):void => {
     // TODO: Remove track from user Object
-    if(track.isLocal()) return
-    const id = track.getParticipantId() // get user id of track
-    track.getType() === 'audio' ? _removeAudioTrack(id) : _removeVideoTrack(id) // do we need that? maybe if user is still there but closes video?
-    track.dispose()
+    // if(track.isLocal()) return
+    // const id = track.getParticipantId() // get user id of track
+    // track.getType() === 'audio' ? _removeAudioTrack(id) : _removeVideoTrack(id) // do we need that? maybe if user is still there but closes video?
+    // track.dispose()
   }
 
-  const _onVideoTypeChanged = (type:string, id, track) => produceAndSet (newState => {
-      newState.users[id].videoType = type
+  const _onVideoTypeChanged = (type:string, id) => produceAndSet (newState => {
+      newState.users[id].videoType = type === "desktop" ? "desktop" : "camera" //set videoType directly
       // alternative implementation if updating jitsi jvb doesnt fix current delay on switch of cam & screenshare
       // remove track from conference and add again
   })
@@ -187,7 +193,7 @@ export const useConferenceStore = create<IConferenceStore>((set,get) => {
     })
   })
 
-  // TODO: currently called by LocalVideo.tsx -> shouldn't it be called by store instead of dom components?
+  // TODO: Not used yet
   const addLocalTrackToConference = (newTrack:IMediaTrack) => {
     const conference = get().conferenceObject
     conference?.addTrack(newTrack)
