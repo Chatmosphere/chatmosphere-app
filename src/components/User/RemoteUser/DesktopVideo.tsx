@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useEffect, useRef } from "react"
 import styled from "styled-components"
-import { useLocalStore } from '../../../store/LocalStore';
 
 
 const Video = styled.video`
@@ -15,7 +14,7 @@ const Video = styled.video`
 `
 
 export const VideoContainer = styled.div`
-  width: 400px;
+  width: 200px;
   height: 200px;
   border-radius: 100px;
 `

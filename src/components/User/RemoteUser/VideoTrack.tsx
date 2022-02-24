@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { useCallback, useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import styled from "styled-components"
-import { useConferenceStore } from '../../../store/ConferenceStore';
 import { useLocalStore } from '../../../store/LocalStore';
 
 
