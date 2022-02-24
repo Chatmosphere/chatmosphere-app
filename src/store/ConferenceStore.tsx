@@ -45,21 +45,21 @@ export const useConferenceStore = create<IConferenceStore>((set,get) => {
       newState.users[id]['mute'] = track.isMuted()
     }
   })
-  const _removeAudioTrack = (id:ID):void => produceAndSet (newState => {
-    if(newState.users[id]) newState.users[id].audio = undefined
-  })
+  // const _removeAudioTrack = (id:ID):void => produceAndSet (newState => {
+  //   if(newState.users[id]) newState.users[id].audio = undefined
+  // })
   const _addVideoTrack = (id:ID, track:IMediaTrack):void => produceAndSet (newState => {
     if(newState.users[id]) { 
       newState.users[id].video = track
       newState.users[id].videoType = track.videoType === "desktop" ? "desktop" : "camera" //set videoType directly
     }
   })
-  const _removeVideoTrack = (id:ID):void => produceAndSet (newState => {
-    if(newState.users[id]) {
-      newState.users[id].video = undefined
-      newState.users[id].videoType = undefined //remove VideoType
-    }
-  })
+  // const _removeVideoTrack = (id:ID):void => produceAndSet (newState => {
+  //   if(newState.users[id]) {
+  //     newState.users[id].video = undefined
+  //     newState.users[id].videoType = undefined //remove VideoType
+  //   }
+  // })
   const _onPositionReceived = (e:any):void => {
     const pos = JSON.parse(e.value)
     _updateUserPosition(pos.id, {x:pos.x, y:pos.y})
