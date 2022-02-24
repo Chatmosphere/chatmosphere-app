@@ -27,8 +27,8 @@ export const ConnectedUser = ({id}) => {
     calculateUserOnScreen(user, myRef.current)
   },[id, calculateVolume, calculateUserInRadius, calculateUserOnScreen, user, myPos])
 
-  if(user.videoType === 'desktop') console.dir("desktop", user.video.videoType)
-  if(user.videoType === 'camera') console.dir("camera", user.video.videoType)
+  // if(user.videoType === 'desktop') console.dir("desktop", user.video.videoType)
+  // if(user.videoType === 'camera') console.dir("camera", user.video.videoType)
 
   return(
     <div style={{position:'absolute', width:"200px", height:"200px", left:`${myPos.x}px`, top:`${myPos.y}px`}} id={id} className="userContainer" ref={myRef} >

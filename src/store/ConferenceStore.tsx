@@ -91,10 +91,10 @@ export const useConferenceStore = create<IConferenceStore>((set,get) => {
   }
   const _onRemoteTrackRemoved = (track:IMediaTrack):void => {
     // TODO: Remove track from user Object
-    if(track.isLocal()) return
-    const id = track.getParticipantId() // get user id of track
-    track.getType() === 'audio' ? _removeAudioTrack(id) : _removeVideoTrack(id) // do we need that? maybe if user is still there but closes video?
-    track.dispose()
+    // if(track.isLocal()) return
+    // const id = track.getParticipantId() // get user id of track
+    // track.getType() === 'audio' ? _removeAudioTrack(id) : _removeVideoTrack(id) // do we need that? maybe if user is still there but closes video?
+    // track.dispose()
   }
 
   const _onVideoTypeChanged = (type:string, id) => produceAndSet (newState => {
@@ -193,7 +193,7 @@ export const useConferenceStore = create<IConferenceStore>((set,get) => {
     })
   })
 
-  // TODO: currently called by LocalVideo.tsx -> shouldn't it be called by store instead of dom components?
+  // TODO: Not used yet
   const addLocalTrackToConference = (newTrack:IMediaTrack) => {
     const conference = get().conferenceObject
     conference?.addTrack(newTrack)
