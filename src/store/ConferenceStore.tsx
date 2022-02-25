@@ -41,6 +41,8 @@ export const useConferenceStore = create<IConferenceStore>((set,get) => {
   const _addAudioTrack = (id:ID, track:IMediaTrack) => produceAndSet (newState => {
     if(newState.users[id]) 
     {
+      const JitsiMeetJS = useConnectionStore.getState().jsMeet 
+      track.addEventListener(JitsiMeetJS?.events.track.TRACK_AUDIO_OUTPUT_CHANGED,deviceId =>console.log(`track audio output device was changed to ${deviceId}`))
       newState.users[id].audio = track
       newState.users[id]['mute'] = track.isMuted()
     }
@@ -49,7 +51,9 @@ export const useConferenceStore = create<IConferenceStore>((set,get) => {
   //   if(newState.users[id]) newState.users[id].audio = undefined
   // })
   const _addVideoTrack = (id:ID, track:IMediaTrack):void => produceAndSet (newState => {
-    if(newState.users[id]) { 
+    if(newState.users[id]) {
+      const JitsiMeetJS = useConnectionStore.getState().jsMeet 
+      track.addEventListener(JitsiMeetJS?.events.track.TRACK_VIDEOTYPE_CHANGED, (e)=>_onVideoTypeChanged(e, id))
       newState.users[id].video = track
       newState.users[id].videoType = track.videoType === "desktop" ? "desktop" : "camera" //set videoType directly
     }
@@ -83,10 +87,7 @@ export const useConferenceStore = create<IConferenceStore>((set,get) => {
 
   const _onRemoteTrackAdded = (track:IMediaTrack):void => {
     if(track.isLocal()) return // also run on your own tracks so exit
-    const JitsiMeetJS = useConnectionStore.getState().jsMeet 
-    track.addEventListener(JitsiMeetJS?.events.track.TRACK_AUDIO_OUTPUT_CHANGED,deviceId =>console.log(`track audio output device was changed to ${deviceId}`))
     const id = track.getParticipantId() // get user id of track
-    track.addEventListener(JitsiMeetJS?.events.track.TRACK_VIDEOTYPE_CHANGED, (e)=>_onVideoTypeChanged(e, id))
     track.getType() === "audio" ? _addAudioTrack(id, track) : _addVideoTrack(id, track)
   }
   const _onRemoteTrackRemoved = (track:IMediaTrack):void => {

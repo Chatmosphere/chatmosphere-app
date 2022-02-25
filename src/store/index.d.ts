@@ -98,7 +98,6 @@ declare type ILocalStore = {
   setSelectedUserOnStage: (id:ID)=>void
   stageVisible: boolean
   stageMute: boolean
-  isSharing: boolean
 } & IUser & ZoomPan
 
 declare type deviceType = "audio" | "video" | "desktop"

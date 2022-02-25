@@ -27,9 +27,6 @@ export const ScreenshareButton = (props) => {
 			// -> but thats why the video track is called two times, manual stop calls it also
       newTrack.addEventListener(jsMeet?.events.track.LOCAL_TRACK_STOPPED, () => createVideoTrack())
     }
-    // TODO: dkg Reminder
-    // FIX: crazy wise this is deleting local audio track but its still delivered and live on the call - why is that?
-
     if (oldTrack) {
       conferenceObject?.replaceTrack(oldTrack, newTrack).then(() => {
         setLocalTracks(tracks)
@@ -40,11 +37,11 @@ export const ScreenshareButton = (props) => {
   }
 
   const createVideoTrack = () => {
-    if (!jsMeet) return // not needed
+    if (!jsMeet) return // not needed ?
 
     //delete old Track
     const oldTrack = conferenceObject?.getLocalVideoTrack()
-		const type = oldTrack?.videoType === "desktop" ? "video" : "desktop" //maybe other way round
+		const type = oldTrack?.videoType === "desktop" ? "video" : "desktop"
     oldTrack?.dispose()
 
     // create tracks
