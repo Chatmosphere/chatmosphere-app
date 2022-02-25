@@ -21,7 +21,6 @@ export const useLocalStore = create<ILocalStore>((set, get) => {
     onStage: false,
     stageVisible: true,
     stageMute: false,
-    isSharing: false,
     usersInRadius: [],
     visibleUsers: [],
     usersOnStage: [],
