@@ -16,22 +16,24 @@ export const ConnectedUser = ({id}) => {
   const isMute = useConferenceStore(useCallback(store => store.users[id]['mute'],[id]))
   const calculateVolume = useConferenceStore(useCallback(store => store.calculateVolume, []))
   const calculateUserInRadius = useLocalStore(useCallback((store) => store.calculateUserInRadius,[]))
+  // const videoType = useConferenceStore(store => store.users[id]?.['video']?.['videoType'])
   const calculateUserOnScreen = useLocalStore(useCallback((store) => store.calculateUserOnScreen,[]))
   const user = useConferenceStore(useCallback(store => store.users[id], [id]))
   const isOnStage = user.properties?.onStage
-  const myRef = useRef()
+  const dragRef = useRef()
 
   useEffect(() => {
     calculateVolume(id)
     calculateUserInRadius(id)
-    calculateUserOnScreen(user, myRef.current)
+    calculateUserOnScreen(user, dragRef.current)
   },[id, calculateVolume, calculateUserInRadius, calculateUserOnScreen, user, myPos])
 
-  // if(user.videoType === 'desktop') console.dir("desktop", user.video.videoType)
-  // if(user.videoType === 'camera') console.dir("camera", user.video.videoType)
+  // * on first switch to desktop its still recognized as camera - on second swtich its correctly recognized as desktop, so on track added needs to set type
+  // * the double deletion by event handler is a problem
 
+  // ATOMIC PICK correctly is undefined until camera image is really there!! so use user.video?.videoType instead fo user.videoType!!!
   return(
-    <div style={{position:'absolute', width:"200px", height:"200px", left:`${myPos.x}px`, top:`${myPos.y}px`}} id={id} className="userContainer" ref={myRef} >
+    <div style={{position:'absolute', width:"200px", height:"200px", left:`${myPos.x}px`, top:`${myPos.y}px`}} id={id} className="userContainer" ref={dragRef} >
       <VideoContainer>
         {isOnStage && 
           <UserBackdrop onStage>Currently on Stage</UserBackdrop>
@@ -39,8 +41,8 @@ export const ConnectedUser = ({id}) => {
         {!isOnStage && 
           <>
             <UserBackdrop>Maybe try a reload</UserBackdrop>
-            {(user.videoType !== 'desktop') && <VideoTrack id={id} videoTrack={user.video} />}
-            {(user.videoType === 'desktop') && <DesktopVideo id={id} videoTrack={user.video} />}
+            {(user.video?.videoType !== 'desktop') && <VideoTrack id={id} videoTrack={user.video} />}
+            {(user.video?.videoType === 'desktop') && <DesktopVideo id={id} videoTrack={user.video} />}
           </>
         }
       </VideoContainer>
