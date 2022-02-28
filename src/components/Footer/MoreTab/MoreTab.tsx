@@ -1,11 +1,10 @@
-import { title } from "process"
 import { GitHub, Heart, MessageCircle, MoreVertical, Twitter } from "react-feather"
 import styled from "styled-components"
 import { List, ListLink, Menu } from "../../common/Menu/Menu"
 
 const parameters = {
   title: "More",
-  label: title,
+  label: "More",
   icon: <MoreVertical />
 }
 

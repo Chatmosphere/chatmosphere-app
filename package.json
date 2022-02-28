@@ -35,9 +35,7 @@
     "build:demo": "env-cmd -f .env.demo.local react-scripts build && rm -rf demo && rm -rf app && mv build demo",
     "build:app": "env-cmd -f .env.app.local react-scripts build && rm -rf app && rm -rf demo && mv build app",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -58,21 +56,7 @@
     ]
   },
   "devDependencies": {
-    "@storybook/addon-docs": "^6.4.19",
-    "@storybook/addon-essentials": "^6.4.19",
-    "@storybook/addon-links": "^6.4.19",
-    "@storybook/builder-webpack5": "^6.4.19",
-    "@storybook/manager-webpack5": "^6.4.19",
-    "@storybook/node-logger": "^6.4.19",
-    "@storybook/preset-create-react-app": "^4.0.1",
-    "@storybook/react": "^6.4.19",
     "@testing-library/react-hooks": "^7.0.2",
-    "@types/storybook__react": "^5.2.1",
-    "prettier": "2.2.1",
-    "themeprovider-storybook": "^1.8.0",
-    "webpack": "5"
-  },
-  "resolutions": {
-    "babel-loader": "8.2.3"
+    "prettier": "2.2.1"
   }
 }
