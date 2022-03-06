@@ -107,7 +107,7 @@ fi
 # turn.fairmeeting.net will be replaced with the real domain of deployment
 for domain in $RENEWED_DOMAINS; do
         case $domain in
-        hello.fairmeeting.net)
+        chat.yourdomain.net)
                 # Make sure the certificate and private key files are
                 # never world readable, even just for an instant while
                 # we're copying them into daemon_cert_root.
