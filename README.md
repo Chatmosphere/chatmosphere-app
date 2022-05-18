@@ -24,7 +24,7 @@ To learn more about React, check out the [React documentation](https://reactjs.o
 -->
 <!-- TODO: write [Shoutout and Fame] -->
 
-### Funded from September 2020 until February 2021 and September 2021 until February 2021 by
+### Funded from September 2020 until February 2021 and September 2021 until February 2022 by
 
 <p style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
 <a href="https://www.bmbf.de/bmbf/en" rel="nofollow"><img src="https://github.com/Chatmosphere/chatmosphere-app/blob/24e0769f66ecea8cfb4b6f71d5af5380b441cd6a/docs/BMBF_sponsored_by_en.jpg" alt="Logo of the German Ministry for Education and Research" style="max-width:100%; padding:20px;" height="150px"></a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="https://prototypefund.de/en/" rel="nofollow"><img src="docs/PF-Logo.svg" alt="Logo of the Prototype Fund" style="max-width:100%; padding:20px;" height="150px"></a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="https://okfn.de/en/" rel="nofollow"><img src="docs/OKFD-Logo.svg" alt="Logo of the Open Knowledge Foundation Germany" style="max-width:100%; padding:20px;" height="150px"></a>
