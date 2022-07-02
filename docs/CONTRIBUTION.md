@@ -2,13 +2,13 @@
 
   
 ## 📋 Content
-- [**How Can I Contribute ?**](#How-Can-I-Contribute)
-    - [How to Report Bugs](#🐞-How-to-Report-Bugs)
-    - [How to suggest Ideas and new Feature](#💡-How-to-suggest-Ideas-and-new-Features)
-    - [How to make a nice Pull Request](#🔃-How-to-make-a-nice-Pull-Request)
- - [**What should I know before hacking on**](#What-should-I-know-before-hacking-on)
-    - [Code Architecture](#🏗-Code-Architecture)
-    - [Packages we use](#📦-Packages-we-use)
+- [**How Can I Contribute ?**](#How-Can-I-Contribute-)
+    - [How to Report Bugs](#-How-to-Report-Bugs)
+    - [How to suggest Ideas and new Feature](#-How-to-suggest-Ideas-and-new-Features)
+    - [How to make a nice Pull Request](#-How-to-make-a-nice-Pull-Request)
+ - [**What should I know before hacking on**](#What-should-I-know-before-hacking-on-)
+    - [Code Architecture](#-Code-Architecture)
+    - [Packages we use](#-Packages-we-use)
 <!--
 - **Styleguides**
     - Use our Prettifier
