@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Header } from './components/Header/Header'
 import styled from 'styled-components'
 
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { Home } from "./pages/Home/Home"
 import { Enter } from "./pages/Enter/Enter"
 import { Session } from "./pages/Session/Session"
@@ -20,21 +20,18 @@ function App() {
   return (
     <AppContainer>
       <Router>
-        <Switch>
-          <Route path="/enter/:id">
-            <Enter />
-          </Route>
-
-          <Route path="/session/:id">
-            {/* TODO: redirect to "/enter" if this the first time the user in this conference */}
-            <Session />
-          </Route>
-
-          <Route path="/">
-            <Header>Chatmosphere</Header>
-            <Home />
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path="/enter/:id?" element={<Enter />} />
+          
+          <Route path="/session/:id" element={<Session />} />
+          
+          <Route path="/" element={
+            <>
+              <Header>Chatmosphere</Header>
+              <Home />
+            </>
+          } />
+        </Routes>
       </Router>
     </AppContainer>
   )

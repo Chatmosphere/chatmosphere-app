@@ -41,7 +41,9 @@ export const Enter = () => {
 
 	React.useEffect(
 		() => {
+			if (id) {
 			setConferenceName(id)
+			}
 		},
 		[ id, setConferenceName ],
 	)

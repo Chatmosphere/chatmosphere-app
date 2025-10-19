@@ -19,7 +19,7 @@ const RoomContainer = styled.div`
 //   height:100%;
 // `
 
-export const Room:React.FC = ({children}) => {
+export const Room: React.FC<{ children: React.ReactNode }> = ({children}) => {
   return (
     <RoomContainer>
       {/* <Background /> */}
